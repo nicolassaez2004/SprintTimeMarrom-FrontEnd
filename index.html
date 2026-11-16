@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Protótipo da plataforma de Auditoria Cidadã dos ônibus de São Paulo. Explore painéis, linhas e dados ilustrativos." />
+    <meta name="theme-color" content="#765440" />
+    <title>Visão geral · Observa SP</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script src="js/data.js" defer></script>
+    <script src="js/visuals.js" defer></script>
+    <script src="js/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <a class="brand" href="#visao-geral" aria-label="Observa SP, visão geral">
+          <span class="brand-icon" data-icon="bus" aria-hidden="true"></span>
+          <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+        </a>
+        <p class="nav-caption">EXPLORAR</p>
+        <nav class="main-nav">
+          <a href="#visao-geral" data-page="visao-geral"><span data-icon="dashboard"></span>Visão geral</a>
+          <a href="#linhas" data-page="linhas"><span data-icon="bus"></span>Linhas de ônibus</a>
+          <a href="#mapa" data-page="mapa"><span data-icon="map"></span>Mapa da operação</a>
+          <a href="#dados" data-page="dados"><span data-icon="download"></span>Dados abertos</a>
+        </nav>
+        <p class="nav-caption nav-caption-secondary">O PROJETO</p>
+        <nav class="main-nav">
+          <a href="#sobre" data-page="sobre"><span data-icon="info"></span>Sobre e metodologia</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="prototype-label"><span class="status-dot"></span>Protótipo navegável</div>
+          <p>Um primeiro olhar para uma mobilidade mais transparente.</p>
+          <span class="team-label">Desenvolvido pelo Time Marrom</span>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div class="breadcrumb"><span data-icon="building"></span>São Paulo<span class="breadcrumb-divider">/</span><span id="breadcrumb-page">Visão geral</span></div>
+          <span class="demo-pill"><span class="status-dot"></span>Ambiente de demonstração</span>
+        </header>
+
+        <main id="main-content" tabindex="-1">
+          <div class="page-heading">
+            <div><p class="eyebrow">AUDITORIA CIDADÃ DOS ÔNIBUS</p><h1 id="page-title">Visão geral da operação</h1><p id="page-description">Entenda a oferta de viagens e a qualidade do serviço em São Paulo.</p></div>
+            <button id="export-button" class="button button-primary" type="button"><span data-icon="download"></span>Exportar CSV</button>
+          </div>
+
+          <div class="demo-notice"><span data-icon="info"></span><p><strong>Dados ilustrativos.</strong> Esta versão apresenta exemplos para explorar as telas. Não representa a operação real.</p></div>
+
+          <form id="filters" class="filters" aria-label="Filtros dos indicadores">
+            <label>Período<select id="period-filter" name="period"><option value="7">Últimos 7 dias</option><option value="30" selected>Últimos 30 dias</option><option value="90">Últimos 90 dias</option></select></label>
+            <label class="line-filter-label">Linha<select id="line-filter" name="line"><option value="all">Todas as linhas</option></select></label>
+            <label>Sentido<select id="direction-filter" name="direction"><option value="all">Ambos os sentidos</option><option value="ida">Ida</option><option value="volta">Volta</option></select></label>
+            <label>Faixa horária<select id="time-filter" name="time"><option value="all">Dia todo</option><option value="manha">Pico da manhã · 6h–9h</option><option value="dia">Entre picos · 9h–16h</option><option value="tarde">Pico da tarde · 16h–20h</option></select></label>
+            <button id="reset-filters" class="icon-button reset-button" type="button" title="Restaurar filtros" aria-label="Restaurar filtros"><span data-icon="reset"></span></button>
+          </form>
+
+          <div id="data-context" class="data-context" aria-live="polite"></div>
+          <div id="quality-notice" class="quality-notice" hidden><span data-icon="alert"></span><p>Há janelas com mais de 10% de falhas de coleta neste recorte. Consulte a cobertura de cada linha antes de comparar os resultados.</p><a href="#dados">Ver qualidade dos dados <span aria-hidden="true">↗</span></a></div>
+          <div id="page-content"></div>
+
+          <footer class="page-footer"><span>Observa SP <span aria-hidden="true">·</span> Time Marrom</span><span>Protótipo com dados fictícios <span aria-hidden="true">·</span> Base de exemplo até 15/11/2026</span></footer>
+        </main>
+      </div>
+    </div>
+
+    <dialog id="line-dialog" aria-labelledby="dialog-title">
+      <div class="dialog-header"><div><p class="eyebrow">DETALHES DA LINHA</p><h2 id="dialog-title"></h2></div><button class="icon-button" id="close-dialog" type="button" aria-label="Fechar detalhes"><span data-icon="close"></span></button></div>
+      <div id="dialog-content"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <noscript><p class="noscript-message">Ative o JavaScript para explorar os painéis deste protótipo.</p></noscript>
+  </body>
+</html>
