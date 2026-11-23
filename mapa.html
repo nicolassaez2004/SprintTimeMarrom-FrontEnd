@@ -18,24 +18,34 @@
         <div>
           <p class="eyebrow">MOBILIDADE EM TEMPO REAL</p>
           <h1>Ônibus <span>ao vivo</span></h1>
-          <p class="intro-copy">Acompanhe no mapa as posições mais recentes da frota.</p>
+          <p class="intro-copy">Acompanhe as posições mais recentes da frota. Clique em um grupo para aproximar o mapa.</p>
         </div>
       </section>
 
       <section class="toolbar" aria-label="Filtros do mapa">
-        <label class="line-filter" for="line-select">
-          <span class="filter-icon" aria-hidden="true">⌕</span>
-          <span class="select-wrap">
-            <span class="select-label">LINHA</span>
-            <select id="line-select" disabled>
-              <option value="">Todas as linhas</option>
-            </select>
+        <details id="line-filter" class="line-filter" hidden>
+          <summary><span class="select-label">LINHA</span><strong id="selected-line">Todas as linhas</strong></summary>
+          <div class="line-panel">
+            <label for="line-search">Buscar pelo letreiro</label>
+            <input id="line-search" type="search" placeholder="Ex.: 8000-10" autocomplete="off" />
+            <button type="button" id="all-lines">Todas as linhas</button>
+            <div id="line-options"></div>
+            <p id="line-empty" hidden>Nenhuma linha encontrada.</p>
+            <button type="button" id="more-lines" hidden>Mostrar mais linhas</button>
+          </div>
+        </details>
+        <span id="line-unavailable" hidden>Filtro de linhas indisponível.</span>
+        <label class="color-filter" id="color-filter" for="line-color" hidden>
+          <span class="select-label">COR DA LINHA</span>
+          <span class="color-select-wrap">
+            <span id="color-swatch" aria-hidden="true"></span>
+            <select id="line-color"><option value="">Todas as cores</option></select>
           </span>
         </label>
         <div class="vehicle-count" aria-live="polite">
           <span class="count-icon" aria-hidden="true">●</span>
           <strong id="vehicle-count">—</strong>
-          <span>veículos no mapa</span>
+          <span>veículos no município</span>
         </div>
       </section>
 
