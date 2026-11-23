@@ -1,0 +1,27 @@
+{
+  "tarefa": "US09-T02-FE",
+  "executado_em": "2026-11-23T13:27:26.744Z",
+  "respostas_api": "sintéticas, contrato US09-T02",
+  "verificacoes": [
+    "carregando sem links de download ativos",
+    "seleção do dia e download nativo do arquivo correspondente",
+    "editar data sem confirmar não troca o arquivo exibido",
+    "11 campos do dicionário e abertura da versão original",
+    "layout de 390 px sem rolagem horizontal da página",
+    "layout de 320 px sem rolagem horizontal da página",
+    "data não publicada aparece indisponível e sem link inventado",
+    "arquivo publicado com zero registros continua disponível",
+    "HEAD 404 impede baixar arquivo removido e mostra indisponibilidade",
+    "trocar dia cancela verificação antiga e impede download errado",
+    "catálogo vazio é estado sem publicação, não erro ou dados fictícios",
+    "erro do catálogo e recuperação por tentar novamente",
+    "erro isolado do dicionário não bloqueia arquivo e HTML é exibido como texto",
+    "sem exceções JavaScript no navegador"
+  ],
+  "download": {
+    "nome": "registros_gps_2026-11-21.parquet",
+    "sha256": "2f53cb056a9e3c5ebcae13ea367462dbb92618ef4b2832c59ef95affb37389ce",
+    "escopo": "Transporte do anexo recebido; conteúdo sintético, sem validação do formato Parquet."
+  },
+  "aprovacao": "Pendente de revisão por outra pessoa"
+}
