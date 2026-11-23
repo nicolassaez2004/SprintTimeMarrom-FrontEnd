@@ -1,0 +1,33 @@
+.site-topbar { gap: 16px; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+.site-nav a {
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.site-nav a[aria-current="page"] {
+  color: var(--brown-dark);
+  background: #f3eee8;
+}
+#painel-acervo { margin: 0 auto; }
+#erro-site { margin-top: 16px; color: var(--red); }
+@media (max-width: 540px) {
+  .site-topbar {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+#painel-mapa { margin: -20px -28px 0; }
+#mapa-incorporado {
+  display: block;
+  width: 100%;
+  height: max(730px, calc(100dvh - 82px));
+  border: 0;
+}
+@media (max-width: 800px) {
+  #painel-mapa { margin: -12px -15px 0; }
+}
