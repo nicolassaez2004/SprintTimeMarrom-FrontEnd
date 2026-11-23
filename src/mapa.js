@@ -1,4 +1,6 @@
 import { MAPA_CONFIG } from './config.js';
+import { agruparPosicoes } from './agrupamento.js';
+import { corDoTexto, letreiroDoVeiculo, listarCores, listarLinhas } from './linhas.js';
 import {
   calcularDefasagemSegundos,
   LIMITE_DEFASAGEM_SEGUNDOS,
@@ -14,18 +16,32 @@ import {
   const messageTitle = document.querySelector('#message-title');
   const messageDetail = document.querySelector('#message-detail');
   const retryButton = document.querySelector('#retry-button');
-  const lineSelect = document.querySelector('#line-select');
+  const lineFilter = document.querySelector('#line-filter');
+  const selectedLineLabel = document.querySelector('#selected-line');
+  const lineSearch = document.querySelector('#line-search');
+  const lineColor = document.querySelector('#line-color');
+  const lineOptions = document.querySelector('#line-options');
+  const moreLines = document.querySelector('#more-lines');
+  const TAMANHO_PAGINA = 60;
+  let catalogo;
+  let linhaSelecionada = '';
+  let corSelecionada = '';
+  let quantidadeOpcoes = TAMANHO_PAGINA;
   const countElement = document.querySelector('#vehicle-count');
 
   let map;
   let markers;
-  let municipio;
+  let poligonosMunicipais;
   let municipioBounds;
   const requestCoordinator = criarCoordenadorDeRequisicoes();
   const positionStore = criarEstadoPosicoes();
   let hasSuccessfulResponse = false;
   let timer;
   let freshnessTimer;
+  let redrawFrame;
+  let popupAberto = false;
+  let desenhoPendente = false;
+  const dateFormatter = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'medium' });
 
   function setMessage(state, title, detail, canRetry = false) {
     message.className = `map-message ${state}`;
@@ -80,7 +96,7 @@ import {
     const feature = featureCollection.features?.find((item) => item.properties?.codarea === '3550308')
       || featureCollection.features?.[0];
     if (!feature?.geometry) throw new Error('O limite municipal de São Paulo está vazio.');
-    municipio = feature.geometry;
+    poligonosMunicipais = municipioPolygons(feature.geometry);
 
     const boundaryLayer = L.geoJSON(feature);
     municipioBounds = boundaryLayer.getBounds();
@@ -113,7 +129,7 @@ import {
   }
 
   function insideMunicipality(lat, lng) {
-    return municipioPolygons(municipio).some((polygon) =>
+    return municipioBounds.contains([lat, lng]) && poligonosMunicipais.some((polygon) =>
       pointInRing(lat, lng, polygon[0]) && !polygon.slice(1).some((hole) => pointInRing(lat, lng, hole)));
   }
 
@@ -121,7 +137,7 @@ import {
     if (!value) return 'Horário indisponível';
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return 'Horário indisponível';
-    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'medium' }).format(date);
+    return dateFormatter.format(date);
   }
 
   function formatAge(seconds) {
@@ -131,9 +147,7 @@ import {
     return `há ${minutes} min`;
   }
 
-  function markerFor(vehicle) {
-    const lagSeconds = calcularDefasagemSegundos(vehicle.coletado_em);
-    const isFresh = lagSeconds !== null && lagSeconds <= LIMITE_DEFASAGEM_SEGUNDOS;
+  function markerFor(vehicle, isFresh) {
     const icon = L.divIcon({
       className: '',
       html: `<div class="bus-marker ${isFresh ? 'fresh' : 'delayed'}" title="${isFresh ? 'Posição coletada há até 60 segundos' : 'Atenção: posição antiga ou horário de coleta indisponível'}"><span aria-hidden="true">▰</span></div>`,
@@ -141,7 +155,13 @@ import {
       iconAnchor: [16, 29],
       popupAnchor: [0, -28],
     });
-    const line = vehicle.linha?.codigo_olho_vivo || 'Linha não informada';
+    return L.marker([vehicle.latitude, vehicle.longitude], { icon }).bindPopup(() => popupFor(vehicle));
+  }
+
+  function popupFor(vehicle) {
+    const lagSeconds = calcularDefasagemSegundos(vehicle.coletado_em);
+    const isFresh = lagSeconds !== null && lagSeconds <= LIMITE_DEFASAGEM_SEGUNDOS;
+    const line = vehicle.letreiro || 'Letreiro não identificado';
     const gtfs = vehicle.linha?.gtfs?.nome || vehicle.linha?.gtfs?.codigo;
     const popup = document.createElement('div');
     popup.className = 'bus-popup';
@@ -149,7 +169,7 @@ import {
     title.textContent = `Ônibus ${vehicle.prefixo || 'sem prefixo'}`;
     popup.append(title);
     const details = [
-      `Linha Olho Vivo: ${line}`,
+      `Linha: ${line}`,
       ...(gtfs ? [`Linha GTFS: ${gtfs}`] : []),
       isFresh
         ? `Defasagem coleta até exibição: ${formatAge(lagSeconds)}`
@@ -162,52 +182,170 @@ import {
       span.textContent = detail;
       popup.append(span);
     }
-    return L.marker([vehicle.latitude, vehicle.longitude], { icon }).bindPopup(popup);
+    return popup;
   }
 
-  function scheduleFreshnessTransition(vehicles) {
+  function popupDoGrupo(veiculos) {
+    const painel = document.createElement('div');
+    const seletor = document.createElement('select');
+    seletor.setAttribute('aria-label', 'Escolher ônibus do grupo');
+    veiculos.forEach((veiculo, i) => {
+      seletor.add(new Option('Ônibus ' + (veiculo.prefixo || 'sem prefixo'), String(i)));
+    });
+    const detalhes = document.createElement('div');
+    const mostrar = () => detalhes.replaceChildren(popupFor(veiculos[Number(seletor.value)]));
+    seletor.addEventListener('change', mostrar);
+    painel.append(seletor, detalhes);
+    mostrar();
+    return painel;
+  }
+
+  function desenharGrupo(grupo, temAtraso) {
+    const { latitude, longitude, veiculos } = grupo;
+    const quantidade = veiculos.length;
+    const icon = L.divIcon({
+      className: '',
+      html: '<span class="bus-cluster ' + (temAtraso ? 'delayed' : 'fresh') + '">' + quantidade + '</span>',
+      iconSize: [40, 40],
+      iconAnchor: [20, 20],
+    });
+    const marcador = L.marker([latitude, longitude], { icon, title: quantidade + ' ônibus agrupados' });
+    if (map.getZoom() < map.getMaxZoom()) {
+      marcador.on('click', () => map.setView([latitude, longitude], Math.min(map.getZoom() + 2, map.getMaxZoom())));
+    } else {
+      marcador.bindPopup(() => popupDoGrupo(veiculos));
+    }
+    marcador.addTo(markers);
+  }
+
+  function desenharVisiveis() {
     clearTimeout(freshnessTimer);
-    const nextTransition = vehicles
-      .map((vehicle) => calcularDefasagemSegundos(vehicle.coletado_em))
-      .filter((age) => age !== null && age < LIMITE_DEFASAGEM_SEGUNDOS)
-      .map((age) => Math.ceil((LIMITE_DEFASAGEM_SEGUNDOS - age) * 1000) + 1)
-      .sort((a, b) => a - b)[0];
-    if (nextTransition !== undefined) {
-      freshnessTimer = setTimeout(() => renderVehicles(positionStore.obter()), nextTransition);
-    }
-  }
-
-  function renderVehicles(vehicles) {
     markers.clearLayers();
-    const bounds = [];
-    for (const vehicle of vehicles) {
-      const lat = Number(vehicle.latitude);
-      const lng = Number(vehicle.longitude);
-      if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180
-          || !insideMunicipality(lat, lng)) continue;
-      markerFor(vehicle).addTo(markers);
-      bounds.push([lat, lng]);
+    const zoom = map.getZoom();
+    const limites = map.getPixelBounds();
+    const margem = 24;
+    const grupos = agruparPosicoes(posicoesFiltradas(), veiculo => map.project([veiculo.latitude, veiculo.longitude], zoom), {
+      minX: limites.min.x - margem, minY: limites.min.y - margem,
+      maxX: limites.max.x + margem, maxY: limites.max.y + margem,
+    });
+    const agora = Date.now();
+    const limiteMs = LIMITE_DEFASAGEM_SEGUNDOS * 1000;
+    let proximaMudanca = Infinity;
+
+    for (const grupo of grupos) {
+      let temAtraso = false;
+      for (const veiculo of grupo.veiculos) {
+        const idade = agora - veiculo.coletaMs;
+        if (idade >= 0 && idade <= limiteMs) {
+          proximaMudanca = Math.min(proximaMudanca, limiteMs - idade + 1);
+        } else {
+          temAtraso = true;
+        }
+      }
+      if (grupo.veiculos.length === 1) markerFor(grupo.veiculos[0], !temAtraso).addTo(markers);
+      else desenharGrupo(grupo, temAtraso);
     }
-    countElement.textContent = String(bounds.length);
-    scheduleFreshnessTransition(vehicles);
-    return bounds.length;
+    if (Number.isFinite(proximaMudanca)) {
+      freshnessTimer = setTimeout(agendarDesenho, Math.max(1000, proximaMudanca));
+    }
   }
 
-  function updateLineOptions(vehicles) {
-    const previous = lineSelect.value;
-    const lines = [...new Set(vehicles.map((vehicle) => vehicle.linha?.codigo_olho_vivo).filter(Boolean))]
-      .sort((a, b) => a.localeCompare(b, 'pt-BR', { numeric: true }));
-    lineSelect.replaceChildren(new Option('Todas as linhas', ''));
-    for (const line of lines) lineSelect.add(new Option(`Linha ${line}`, line));
-    lineSelect.value = lines.includes(previous) ? previous : '';
-    lineSelect.disabled = false;
+  function agendarDesenho() {
+    if (popupAberto) {
+      desenhoPendente = true;
+      return;
+    }
+    if (!municipioBounds || redrawFrame !== undefined) return;
+    redrawFrame = requestAnimationFrame(() => {
+      redrawFrame = undefined;
+      desenharVisiveis();
+    });
   }
 
-  async function loadPositions({ keepTimer = true } = {}) {
-    const selectedLine = lineSelect.value;
-    const query = new URLSearchParams();
-    if (selectedLine) query.set('linha', selectedLine);
-    const endpoint = `${API_BASE_URL}/posicoes/atuais${query.size ? `?${query}` : ''}`;
+  function prepararPosicoes(veiculos) {
+    const posicoes = [];
+    for (const veiculo of veiculos) {
+      if (veiculo.latitude == null || veiculo.longitude == null) continue;
+      const lat = Number(veiculo.latitude);
+      const lng = Number(veiculo.longitude);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng) || !insideMunicipality(lat, lng)) continue;
+      posicoes.push({
+        ...veiculo, latitude: lat, longitude: lng,
+        coletaMs: Date.parse(veiculo.coletado_em),
+        letreiro: catalogo ? letreiroDoVeiculo(veiculo.linha, catalogo) : null,
+      });
+    }
+    return posicoes;
+  }
+
+  function posicoesFiltradas() {
+    const veiculos = positionStore.obter();
+    if (!linhaSelecionada && !corSelecionada) return veiculos;
+    return veiculos.filter(({ letreiro }) => (
+      (!linhaSelecionada || letreiro === linhaSelecionada)
+      && (!corSelecionada || catalogo.linhas[letreiro] === corSelecionada)
+    ));
+  }
+
+  function atualizarMapa({ preservarErro = false } = {}) {
+    const quantidade = posicoesFiltradas().length;
+    countElement.textContent = String(quantidade);
+    agendarDesenho();
+    if (preservarErro && message.classList.contains('error')) return;
+    if (quantidade === 0) {
+      setMessage('empty', 'Nenhum veículo para este filtro', 'Tente outra linha ou aguarde a próxima atualização.');
+    } else {
+      hideMessage();
+    }
+  }
+
+  function exibirOpcoes() {
+    const linhas = listarLinhas(catalogo, lineSearch.value, corSelecionada);
+    const fragmento = document.createDocumentFragment();
+    for (const { letreiro, cor } of linhas.slice(0, quantidadeOpcoes)) {
+      const opcao = document.createElement('button');
+      opcao.type = 'button';
+      opcao.dataset.letreiro = letreiro;
+      opcao.textContent = letreiro;
+      opcao.setAttribute('aria-pressed', String(letreiro === linhaSelecionada));
+      opcao.style.backgroundColor = cor ?? '';
+      opcao.style.color = corDoTexto(cor);
+      fragmento.append(opcao);
+    }
+    lineOptions.replaceChildren(fragmento);
+    moreLines.hidden = linhas.length <= quantidadeOpcoes;
+    document.querySelector('#line-empty').hidden = linhas.length > 0;
+  }
+
+  function selecionarLinha(letreiro, foco = lineFilter.querySelector('summary')) {
+    linhaSelecionada = letreiro;
+    const cor = catalogo.linhas[letreiro];
+    selectedLineLabel.textContent = letreiro || 'Todas as linhas';
+    selectedLineLabel.style.backgroundColor = cor ?? '';
+    selectedLineLabel.style.color = corDoTexto(cor);
+    lineFilter.open = false;
+    foco.focus();
+    map.closePopup();
+    if (hasSuccessfulResponse) atualizarMapa({ preservarErro: true });
+  }
+
+  async function carregarCatalogo() {
+    try {
+      const resposta = await fetch('./data/linhas-sptrans.json');
+      if (!resposta.ok) throw new Error('Catálogo indisponível.');
+      catalogo = await resposta.json();
+      for (const { nome, cor } of listarCores(catalogo)) {
+        lineColor.add(new Option(nome, cor));
+      }
+      document.querySelector('#color-filter').hidden = false;
+      lineFilter.hidden = false;
+    } catch {
+      document.querySelector('#line-unavailable').hidden = false;
+    }
+  }
+
+  async function loadPositions() {
+    const endpoint = API_BASE_URL + '/posicoes/atuais';
     const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store' });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
     retryButton.hidden = true;
@@ -223,17 +361,9 @@ import {
       if (!requestCoordinator.eAtual(request.id)) return;
       if (!payload || !Array.isArray(payload.veiculos)) throw new Error('Resposta inesperada do serviço de posições.');
 
-      const latestVehicles = positionStore.substituir(payload.veiculos);
+      positionStore.substituir(prepararPosicoes(payload.veiculos));
       hasSuccessfulResponse = true;
-      if (!selectedLine) updateLineOptions(latestVehicles);
-      // Respostas de filtros rápidos não mudam a lista-base de linhas.
-      const visibleCount = renderVehicles(latestVehicles);
-
-      if (visibleCount === 0) {
-        setMessage('empty', 'Nenhum veículo para este filtro', 'A consulta foi concluída com sucesso. Tente outra linha ou aguarde a próxima atualização.');
-      } else {
-        hideMessage();
-      }
+      atualizarMapa();
     } catch (error) {
       if (!requestCoordinator.eAtual(request.id)) return;
       const detail = error.status === 503
@@ -242,14 +372,14 @@ import {
           ? 'Não foi possível conectar ao serviço de posições. Verifique a conexão e tente novamente.'
           : error.message || 'Não foi possível consultar as posições agora.';
       if (hasSuccessfulResponse) {
-        renderVehicles(positionStore.obter());
+        agendarDesenho();
         setMessage('error', 'Falha ao atualizar o mapa', `${detail} Os marcadores exibidos são da última consulta válida. Posições com mais de 60 s aparecem em âmbar.`, true);
       } else {
         setMessage('error', 'Não foi possível carregar o mapa', detail, true);
         countElement.textContent = '—';
       }
     } finally {
-      if (keepTimer && requestCoordinator.eAtual(request.id)) {
+      if (requestCoordinator.eAtual(request.id)) {
         clearTimeout(timer);
         timer = setTimeout(() => loadPositions(), REFRESH_MS);
       }
@@ -259,17 +389,69 @@ import {
   ensureLeaflet().then(() => {
     try {
       initializeMap();
+      map.on('moveend', agendarDesenho);
+      map.on('popupopen', () => { popupAberto = true; });
+      map.on('popupclose', () => {
+        popupAberto = false;
+        if (desenhoPendente) {
+          desenhoPendente = false;
+          agendarDesenho();
+        }
+      });
       window.addEventListener('pagehide', () => {
         requestCoordinator.cancelar();
         clearTimeout(timer);
         clearTimeout(freshnessTimer);
+        cancelAnimationFrame(redrawFrame);
       }, { once: true });
-      lineSelect.addEventListener('change', () => loadPositions());
+      lineFilter.addEventListener('toggle', () => {
+        if (lineFilter.open) {
+          exibirOpcoes();
+          lineSearch.focus();
+        }
+      });
+      lineFilter.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && lineFilter.open) {
+          lineFilter.open = false;
+          lineFilter.querySelector('summary').focus();
+        }
+      });
+      lineColor.addEventListener('change', () => {
+        corSelecionada = lineColor.value;
+        document.querySelector('#color-swatch').style.backgroundColor = corSelecionada;
+        quantidadeOpcoes = TAMANHO_PAGINA;
+        lineSearch.value = '';
+        if (linhaSelecionada && corSelecionada && catalogo.linhas[linhaSelecionada] !== corSelecionada) {
+          selecionarLinha('', lineColor);
+        } else {
+          map.closePopup();
+          if (hasSuccessfulResponse) atualizarMapa({ preservarErro: true });
+        }
+        if (lineFilter.open) exibirOpcoes();
+      });
+      lineSearch.addEventListener('input', () => {
+        quantidadeOpcoes = TAMANHO_PAGINA;
+        exibirOpcoes();
+      });
+      moreLines.addEventListener('click', () => {
+        const primeiraNovaOpcao = quantidadeOpcoes;
+        quantidadeOpcoes += TAMANHO_PAGINA;
+        exibirOpcoes();
+        lineOptions.children[primeiraNovaOpcao]?.focus();
+      });
+      lineOptions.addEventListener('click', event => {
+        const opcao = event.target.closest('button[data-letreiro]');
+        if (opcao) selecionarLinha(opcao.dataset.letreiro);
+      });
+      document.querySelector('#all-lines').addEventListener('click', () => selecionarLinha(''));
+      document.addEventListener('click', event => {
+        if (lineFilter.open && !lineFilter.contains(event.target)) lineFilter.open = false;
+      });
       retryButton.addEventListener('click', () => loadPositions());
       document.querySelector('#fit-button').addEventListener('click', () => {
         if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
       });
-      loadMunicipality().then(() => loadPositions()).catch((error) => {
+      Promise.all([loadMunicipality(), carregarCatalogo()]).then(() => loadPositions()).catch((error) => {
         setMessage('error', 'Mapa indisponível', error.message || 'Não foi possível carregar o limite municipal.', true);
       });
     } catch (error) {
