@@ -59,3 +59,18 @@ A navegação e os marcadores são limitados ao município de São Paulo pelo
 polígono oficial (código IBGE 3550308), armazenado em
 `data/municipio-sp-3550308.geojson`. O contorno aparece no mapa, sem máscara
 opaca no entorno. Fonte: [API de Malhas Municipais do IBGE](https://servicodados.ibge.gov.br/api/v3/malhas/municipios/3550308?formato=application/vnd.geo+json&qualidade=maxima).
+
+
+## US22-T03 — Atualização e defasagem
+
+O mapa consulta novamente a API a cada 30 s sem recarregar a página. Uma nova
+consulta aborta a anterior; respostas antigas são ignoradas mesmo se o servidor
+terminar de enviá-las após o cancelamento. O tempo entre `coletado_em` e a
+renderização do marcador é medido no navegador. Posições com até 60 s ficam em
+verde; as mais antigas (ou sem horário de coleta) ficam em âmbar com um aviso,
+e a falha temporária preserva os últimos marcadores válidos.
+
+Verificações sintéticas, sem depender do Aiven/SPTrans: `node --test
+ tests/mapa/atualizacao.test.mjs tests/qualidade.test.mjs`. Cobrem a medição da
+defasagem, coleta antiga/horário inválido, resposta fora de ordem/cancelamento
+e falha temporária. O teste não comprova disponibilidade real da fonte externa.

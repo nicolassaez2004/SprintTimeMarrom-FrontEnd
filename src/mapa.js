@@ -1,5 +1,13 @@
+import { MAPA_CONFIG } from './config.js';
+import {
+  calcularDefasagemSegundos,
+  LIMITE_DEFASAGEM_SEGUNDOS,
+  criarCoordenadorDeRequisicoes,
+  criarEstadoPosicoes,
+} from './atualizacao.js';
+
 (() => {
-  const API_BASE_URL = (window.MAPA_CONFIG?.apiBaseUrl || 'http://localhost:5000').replace(/\/$/, '');
+  const API_BASE_URL = MAPA_CONFIG.apiBaseUrl.replace(/\/$/, '');
   const REFRESH_MS = 30_000;
   const mapElement = document.querySelector('#map');
   const message = document.querySelector('#map-message');
@@ -13,10 +21,11 @@
   let markers;
   let municipio;
   let municipioBounds;
-  let latestVehicles = [];
-  let requestSequence = 0;
+  const requestCoordinator = criarCoordenadorDeRequisicoes();
+  const positionStore = criarEstadoPosicoes();
   let hasSuccessfulResponse = false;
   let timer;
+  let freshnessTimer;
 
   function setMessage(state, title, detail, canRetry = false) {
     message.className = `map-message ${state}`;
@@ -29,6 +38,19 @@
   function hideMessage() {
     message.hidden = true;
     message.className = 'map-message';
+  }
+
+  function ensureLeaflet() {
+    if (window.L) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      script.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+      script.crossOrigin = 'anonymous';
+      script.onload = resolve;
+      script.onerror = () => reject(new Error('MAP_LIBRARY_UNAVAILABLE'));
+      document.head.append(script);
+    });
   }
 
   function initializeMap() {
@@ -104,16 +126,17 @@
 
   function formatAge(seconds) {
     if (!Number.isFinite(seconds) || seconds < 0) return 'idade não informada';
-    if (seconds < 60) return `há ${Math.round(seconds)} s`;
+    if (seconds < 60) return `há ${Math.ceil(seconds)} s`;
     const minutes = Math.floor(seconds / 60);
     return `há ${minutes} min`;
   }
 
   function markerFor(vehicle) {
-    const isFresh = vehicle.recente === true;
+    const lagSeconds = calcularDefasagemSegundos(vehicle.coletado_em);
+    const isFresh = lagSeconds !== null && lagSeconds <= LIMITE_DEFASAGEM_SEGUNDOS;
     const icon = L.divIcon({
       className: '',
-      html: `<div class="bus-marker ${isFresh ? 'fresh' : 'delayed'}"><span aria-hidden="true">▰</span></div>`,
+      html: `<div class="bus-marker ${isFresh ? 'fresh' : 'delayed'}" title="${isFresh ? 'Posição coletada há até 60 segundos' : 'Atenção: posição antiga ou horário de coleta indisponível'}"><span aria-hidden="true">▰</span></div>`,
       iconSize: [32, 32],
       iconAnchor: [16, 29],
       popupAnchor: [0, -28],
@@ -128,8 +151,11 @@
     const details = [
       `Linha Olho Vivo: ${line}`,
       ...(gtfs ? [`Linha GTFS: ${gtfs}`] : []),
-      `Posição coletada ${formatAge(vehicle.idade_segundos)}`,
-      `GPS: ${formatDate(vehicle.horario_gps)}`,
+      isFresh
+        ? `Defasagem coleta até exibição: ${formatAge(lagSeconds)}`
+        : `ATENÇÃO: posição antiga — ${lagSeconds === null ? 'horário da coleta indisponível' : `defasagem de ${formatAge(lagSeconds)}`}`,
+      `Horário GPS: ${formatDate(vehicle.horario_gps)}`,
+      `Coletado em: ${formatDate(vehicle.coletado_em)}`,
     ];
     for (const detail of details) {
       const span = document.createElement('span');
@@ -137,6 +163,18 @@
       popup.append(span);
     }
     return L.marker([vehicle.latitude, vehicle.longitude], { icon }).bindPopup(popup);
+  }
+
+  function scheduleFreshnessTransition(vehicles) {
+    clearTimeout(freshnessTimer);
+    const nextTransition = vehicles
+      .map((vehicle) => calcularDefasagemSegundos(vehicle.coletado_em))
+      .filter((age) => age !== null && age < LIMITE_DEFASAGEM_SEGUNDOS)
+      .map((age) => Math.ceil((LIMITE_DEFASAGEM_SEGUNDOS - age) * 1000) + 1)
+      .sort((a, b) => a - b)[0];
+    if (nextTransition !== undefined) {
+      freshnessTimer = setTimeout(() => renderVehicles(positionStore.obter()), nextTransition);
+    }
   }
 
   function renderVehicles(vehicles) {
@@ -151,6 +189,7 @@
       bounds.push([lat, lng]);
     }
     countElement.textContent = String(bounds.length);
+    scheduleFreshnessTransition(vehicles);
     return bounds.length;
   }
 
@@ -165,26 +204,26 @@
   }
 
   async function loadPositions({ keepTimer = true } = {}) {
-    const sequence = ++requestSequence;
     const selectedLine = lineSelect.value;
     const query = new URLSearchParams();
     if (selectedLine) query.set('linha', selectedLine);
     const endpoint = `${API_BASE_URL}/posicoes/atuais${query.size ? `?${query}` : ''}`;
+    const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store' });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
     retryButton.hidden = true;
 
     try {
-      const response = await fetch(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+      const response = await request.promise;
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
         const error = new Error(payload?.erro?.mensagem || `HTTP_${response.status}`);
         error.status = response.status;
         throw error;
       }
-      if (sequence !== requestSequence) return;
+      if (!requestCoordinator.eAtual(request.id)) return;
       if (!payload || !Array.isArray(payload.veiculos)) throw new Error('Resposta inesperada do serviço de posições.');
 
-      latestVehicles = payload.veiculos;
+      const latestVehicles = positionStore.substituir(payload.veiculos);
       hasSuccessfulResponse = true;
       if (!selectedLine) updateLineOptions(latestVehicles);
       // Respostas de filtros rápidos não mudam a lista-base de linhas.
@@ -196,39 +235,47 @@
         hideMessage();
       }
     } catch (error) {
-      if (sequence !== requestSequence) return;
+      if (!requestCoordinator.eAtual(request.id)) return;
       const detail = error.status === 503
         ? 'O serviço de posições está indisponível. Isso não confirma que a frota esteja vazia.'
         : error instanceof TypeError
           ? 'Não foi possível conectar ao serviço de posições. Verifique a conexão e tente novamente.'
           : error.message || 'Não foi possível consultar as posições agora.';
       if (hasSuccessfulResponse) {
-        setMessage('error', 'Falha ao atualizar o mapa', `${detail} Os marcadores exibidos são da última consulta válida.`, true);
+        renderVehicles(positionStore.obter());
+        setMessage('error', 'Falha ao atualizar o mapa', `${detail} Os marcadores exibidos são da última consulta válida. Posições com mais de 60 s aparecem em âmbar.`, true);
       } else {
         setMessage('error', 'Não foi possível carregar o mapa', detail, true);
         countElement.textContent = '—';
       }
     } finally {
-      if (keepTimer) {
+      if (keepTimer && requestCoordinator.eAtual(request.id)) {
         clearTimeout(timer);
         timer = setTimeout(() => loadPositions(), REFRESH_MS);
       }
     }
   }
 
-  try {
-    initializeMap();
-    lineSelect.addEventListener('change', () => loadPositions());
-    retryButton.addEventListener('click', () => loadPositions());
-    document.querySelector('#fit-button').addEventListener('click', () => {
-      if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
-    });
-    loadMunicipality().then(() => loadPositions()).catch((error) => {
-      setMessage('error', 'Mapa indisponível', error.message || 'Não foi possível carregar o limite municipal.', true);
-    });
-  } catch (error) {
-    setMessage('error', 'Mapa indisponível', error.message === 'MAP_LIBRARY_UNAVAILABLE'
-      ? 'A biblioteca do mapa não carregou. Verifique sua conexão e recarregue a página.'
-      : 'Não foi possível inicializar o mapa.', true);
-  }
+  ensureLeaflet().then(() => {
+    try {
+      initializeMap();
+      window.addEventListener('pagehide', () => {
+        requestCoordinator.cancelar();
+        clearTimeout(timer);
+        clearTimeout(freshnessTimer);
+      }, { once: true });
+      lineSelect.addEventListener('change', () => loadPositions());
+      retryButton.addEventListener('click', () => loadPositions());
+      document.querySelector('#fit-button').addEventListener('click', () => {
+        if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
+      });
+      loadMunicipality().then(() => loadPositions()).catch((error) => {
+        setMessage('error', 'Mapa indisponível', error.message || 'Não foi possível carregar o limite municipal.', true);
+      });
+    } catch (error) {
+      setMessage('error', 'Mapa indisponível', 'Não foi possível inicializar o mapa.', true);
+    }
+  }).catch(() => {
+    setMessage('error', 'Mapa indisponível', 'A biblioteca do mapa não carregou. Verifique sua conexão e recarregue a página.', true);
+  });
 })();
