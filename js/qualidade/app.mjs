@@ -2,7 +2,7 @@ import { consultarQualidade } from './cliente.mjs';
 import { SITUACOES, escapar as h, numero, percentual, hojeSP, somarDias, validarPeriodo, dataValida, dataCurta, diaSemana, dataExtensa, horario, fimNoDia, causa, recorteLacuna } from './modelo.mjs';
 
 const el = id => document.getElementById(id);
-const base = document.querySelector('meta[name="api-base"]').content;
+const API_BASE_URL = document.querySelector('meta[name="api-base"]').content;
 let relatorio = null, indice = 0, requisicao = null;
 const parametros = new URLSearchParams(location.search);
 const hoje = hojeSP();
@@ -34,7 +34,7 @@ async function carregar() {
   el('consultar').disabled = true;
   el('inicio').disabled = el('fim').disabled = true;
   try {
-    relatorio = await consultarQualidade(base, inicio, fim, { signal: atual.signal });
+    relatorio = await consultarQualidade(API_BASE_URL, inicio, fim, { signal: atual.signal });
     if (atual !== requisicao) return;
     indice = Math.max(0, relatorio.dias.length - 1);
     el('dias').innerHTML = relatorio.dias.map((dia, i) => `<button class="day-button" type="button" data-dia="${i}" aria-pressed="false"><span>${h(diaSemana(dia.data))}</span><strong>${h(dataCurta(dia.data))}</strong></button>`).join('');

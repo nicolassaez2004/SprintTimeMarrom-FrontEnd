@@ -1,4 +1,4 @@
-# SprintTimeMarrom
+# SprintTimeMarrom Frontend
 
 ## US13-T03 — Qualidade dos dados
 
@@ -9,8 +9,8 @@ Não contém credenciais nem substitui falhas por dados de demonstração.
 2. Nesta pasta, executar `python -m http.server 5173 --bind 127.0.0.1`.
 3. Abrir **http://127.0.0.1:5173/qualidade.html**.
 
-O meta `api-base` em `qualidade.html` aponta por padrão para
-`http://127.0.0.1:5000/`. Em outra instalação, informar o endereço HTTP público
+A meta `api-base` em `qualidade.html` aponta por padrão para
+`http://localhost:5000`. Em outra instalação, informar o endereço HTTP público
 do backend e configurar a origem correspondente no CORS do Flask.
 Não informar URL do MySQL, senha ou token no frontend.
 
@@ -43,4 +43,19 @@ Capturas conferidas em `docs/evidencias/qualidade-desktop.jpg`,
 `qualidade-mobile.jpg` e `qualidade-indisponivel.jpg`.
 A página segue a identidade do protótipo `origin/exemplo`, mas ficou separada
 dos seus arquivos para reduzir conflitos e não apresentar seus dados fictícios
-como dados reais. A main do frontend só possuía README antes desta tarefa.
+como dados reais.
+
+## US22-T02 — Mapa público ao vivo
+
+Protótipo estático sem etapa de build. Execute `python -m http.server 5173` nesta
+pasta e abra **http://localhost:5173/**. A URL da API fica em `src/config.js`; o
+padrão de desenvolvimento é `http://localhost:5000`.
+
+Consome `GET /posicoes/atuais` e `GET /posicoes/atuais?linha=<código Olho Vivo>`,
+conforme o contrato da US22-T01. Usa Leaflet 1.9.4 e tiles do OpenStreetMap com
+atribuição visível.
+
+A navegação e os marcadores são limitados ao município de São Paulo pelo
+polígono oficial (código IBGE 3550308), armazenado em
+`data/municipio-sp-3550308.geojson`. O contorno aparece no mapa, sem máscara
+opaca no entorno. Fonte: [API de Malhas Municipais do IBGE](https://servicodados.ibge.gov.br/api/v3/malhas/municipios/3550308?formato=application/vnd.geo+json&qualidade=maxima).
