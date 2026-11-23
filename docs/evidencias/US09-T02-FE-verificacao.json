@@ -1,6 +1,6 @@
 {
   "tarefa": "US09-T02-FE",
-  "executado_em": "2026-11-23T13:27:26.744Z",
+  "executado_em": "2026-11-23T13:36:07.956Z",
   "respostas_api": "sintéticas, contrato US09-T02",
   "verificacoes": [
     "carregando sem links de download ativos",
@@ -16,6 +16,9 @@
     "catálogo vazio é estado sem publicação, não erro ou dados fictícios",
     "erro do catálogo e recuperação por tentar novamente",
     "erro isolado do dicionário não bloqueia arquivo e HTML é exibido como texto",
+    "servidor.py serve brutos.html e seus módulos com HTTP 200",
+    "redirecionamento de qualidade preservado e acesso aos downloads pela navegação da main",
+    "retorno de Dados brutos ao Acervo oficial mantendo as três abas da main",
     "sem exceções JavaScript no navegador"
   ],
   "download": {
@@ -23,5 +26,6 @@
     "sha256": "2f53cb056a9e3c5ebcae13ea367462dbb92618ef4b2832c59ef95affb37389ce",
     "escopo": "Transporte do anexo recebido; conteúdo sintético, sem validação do formato Parquet."
   },
+  "integracao_main": "fd8bf2a",
   "aprovacao": "Pendente de revisão por outra pessoa"
 }

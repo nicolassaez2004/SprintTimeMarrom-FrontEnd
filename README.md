@@ -1,4 +1,4 @@
-# SprintTimeMarrom Frontend
+# SprintTimeMarrom
 
 ## US09-T02-FE — Dados brutos e dicionário
 
@@ -8,23 +8,23 @@ o dicionário. Inclui carregamento, erro, nova tentativa e indisponibilidade.
 O arquivo é recebido do backend; não há geração no navegador.
 
 Com o backend atualizado em `http://localhost:5000`, iniciar este frontend com
-`python -m http.server 5173 --bind 127.0.0.1` e abrir
-`http://127.0.0.1:5173/brutos.html`. O endereço do backend está na meta `api-base`.
+`python servidor.py` e abrir **Dados brutos** na navegação principal ou
+`http://127.0.0.1:5173/brutos.html`. O endereço do backend desta página está na meta `api-base` de `brutos.html`.
 
-Testes: `node --test tests/brutos.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs`
-(20 passaram). [Entrega, contrato, capturas e limites da verificação](docs/US09-T02-FE.md).
+Testes: `node --test tests/brutos.test.mjs tests/acervo.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs`
+(27 passaram). [Entrega, contrato, capturas e limites da verificação](docs/US09-T02-FE.md).
 
 ## US13-T03 — Qualidade dos dados
 
-Página pública em **`qualidade.html`**, consumindo o backend Flask real.
+Mapa ao vivo, Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.
 Não contém credenciais nem substitui falhas por dados de demonstração.
 
 1. Iniciar o backend configurado: `python app.py`, na pasta do backend.
-2. Nesta pasta, executar `python -m http.server 5173 --bind 127.0.0.1`.
-3. Abrir **http://127.0.0.1:5173/qualidade.html**.
+2. Nesta pasta, executar `python servidor.py`.
+3. O navegador abre em **http://127.0.0.1:5173/**. O mapa é a tela inicial. Use as abas para abrir **Acervo oficial** ou **Qualidade da coleta**.
 
-A meta `api-base` em `qualidade.html` aponta por padrão para
-`http://localhost:5000`. Em outra instalação, informar o endereço HTTP público
+O meta `api-base` em `index.html` aponta por padrão para
+`http://127.0.0.1:5000/`. Em outra instalação, informar o endereço HTTP público
 do backend e configurar a origem correspondente no CORS do Flask.
 Não informar URL do MySQL, senha ou token no frontend.
 
@@ -33,7 +33,7 @@ Não informar URL do MySQL, senha ou token no frontend.
 No backend: `python -m scripts.demonstrar_qualidade_us13`.
 Manter o servidor estático do passo 2 e abrir:
 
-http://127.0.0.1:5173/qualidade.html?inicio=2026-11-17&fim=2026-11-20
+http://127.0.0.1:5173/?inicio=2026-11-17&fim=2026-11-20#qualidade
 
 O aviso **Cenário de teste** identifica os dados sintéticos. Em 18 e 19/11,
 conferir a mesma falha atravessando meia-noite e a troca GTFS A → B. Em 20/11,
@@ -57,13 +57,11 @@ Capturas conferidas em `docs/evidencias/qualidade-desktop.jpg`,
 `qualidade-mobile.jpg` e `qualidade-indisponivel.jpg`.
 A página segue a identidade do protótipo `origin/exemplo`, mas ficou separada
 dos seus arquivos para reduzir conflitos e não apresentar seus dados fictícios
-como dados reais.
+como dados reais. A main do frontend só possuía README antes desta tarefa.
 
 ## US22-T02 — Mapa público ao vivo
 
-Protótipo estático sem etapa de build. Execute `python -m http.server 5173` nesta
-pasta e abra **http://localhost:5173/**. A URL da API fica em `src/config.js`; o
-padrão de desenvolvimento é `http://localhost:5000`.
+Abra a aba **Mapa ao vivo** na página inicial. A URL da API fica em `src/config.js`. O padrão de desenvolvimento é `http://127.0.0.1:5000`.
 
 Consome `GET /posicoes/atuais` e `GET /posicoes/atuais?linha=<código Olho Vivo>`,
 conforme o contrato da US22-T01. Usa Leaflet 1.9.4 e tiles do OpenStreetMap com

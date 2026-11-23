@@ -6,8 +6,10 @@ outra pessoa e validação com o serviço de downloads ativo. Data de Pronta em 
 
 ## Entrega
 
-Página `brutos.html`, com acesso pela navegação do mapa e do relatório de
-qualidade. Mantém a identidade visual do frontend e adapta a disposição ao celular.
+Página `brutos.html`, com acesso pela navegação principal do Observa SP.
+Preserva a estrutura integrada de Mapa, Qualidade e Acervo da main, incluindo
+o redirecionamento de `qualidade.html` para `/#qualidade`. A página de brutos
+oferece retorno às três áreas e adapta a disposição ao celular.
 
 - Lista os dias publicados, do mais recente para o mais antigo, com quantidade
   de registros. Permite escolher um dia da lista ou consultar uma data.
@@ -21,7 +23,7 @@ qualidade. Mantém a identidade visual do frontend e adapta a disposição ao ce
 
 ## Dependência e contrato utilizado
 
-Frontend baseado em `origin/main` no commit `f118759`. Contrato da US09-T02
+Frontend integrado a `origin/main` no commit `fd8bf2a`. Contrato da US09-T02
 conferido no backend `origin/main`, commit `5a14687`, em
 `app/exportacoes/routes.py`, `app/exportacoes/parquet.py` e `docs/US09-T02.md`.
 Nenhum arquivo do backend ou banco foi alterado nesta tarefa.
@@ -59,10 +61,12 @@ Textos vindos do dicionário são escapados antes de entrar na tabela.
 2. Na pasta deste frontend, executar:
 
    ```powershell
-   python -m http.server 5173 --bind 127.0.0.1
+   python servidor.py
    ```
 
-3. Abrir `http://127.0.0.1:5173/brutos.html` ou clicar em **Dados brutos** no mapa.
+3. Abrir `http://127.0.0.1:5173/brutos.html` ou clicar em **Dados brutos** na
+   navegação principal. O servidor local inclui essa página na lista de arquivos
+   públicos, sem liberar arquivos internos do repositório.
 4. Selecionar um dia publicado, baixar o Parquet e consultar a tabela ou
    **Abrir original** no dicionário. Uma data fora do catálogo deve aparecer
    como indisponível, sem link de download inventado.
@@ -82,11 +86,11 @@ de iniciar a versão correta do serviço e de haver arquivos publicados.
 Sem instalação npm; requer Node 20+:
 
 ```powershell
-node --test tests/brutos.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs
+node --test tests/brutos.test.mjs tests/acervo.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs
 ```
 
-Resultado: **20 testes passaram**, sem falhas ou ignorados. São oito testes
-novos da tarefa, além dos testes existentes de qualidade e atualização do mapa.
+Resultado: **27 testes passaram**, sem falhas ou ignorados. São oito testes
+da tarefa, além dos testes existentes de acervo, qualidade e atualização do mapa.
 `git diff --check` passou.
 
 Os novos testes cobrem: catálogo e dia do link, zero registros, catálogo vazio,
@@ -103,6 +107,9 @@ A conferência no Chrome também verificou:
 - Texto HTML exibido como texto, sem execução.
 - Layouts de 1440, 390 e 320 pixels, sem rolagem horizontal da página no celular.
 - Ausência de exceções JavaScript.
+- Servidor `servidor.py` servindo a página de brutos e seus módulos.
+- Redirecionamento de Qualidade, acesso aos downloads pela navegação da main
+  e retorno ao Acervo, preservando as três abas existentes.
 
 **Esses testes de navegador usam respostas sintéticas**, com o formato observado
 no contrato da US09-T02, interceptadas apenas pela automação. O fixture fica em
@@ -118,6 +125,7 @@ Evidências da tarefa:
 - [Tela de celular](evidencias/brutos-mobile.jpg).
 - [Arquivo indisponível](evidencias/brutos-indisponivel.jpg).
 - [Erro ao consultar o catálogo](evidencias/brutos-erro.jpg).
+- [Navegação integrada com o Acervo](evidencias/brutos-merge-navegacao.jpg).
 
 Antes de concluir o cartão, outra pessoa deve revisar a alteração e repetir
 o download e a abertura do dicionário com a API da equipe disponível.

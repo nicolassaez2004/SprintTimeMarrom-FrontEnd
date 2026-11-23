@@ -213,7 +213,7 @@ import {
     retryButton.hidden = true;
 
     try {
-      const response = await request.promise;
+      const { response } = await request.promise;
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
         const error = new Error(payload?.erro?.mensagem || `HTTP_${response.status}`);

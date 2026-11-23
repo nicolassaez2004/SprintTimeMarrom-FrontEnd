@@ -20,10 +20,6 @@ button, select { font: inherit; }
 .topbar { height: 78px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); }
 .brand { display:flex; align-items:center; gap:11px; color:#26342e; text-decoration:none; font-size:12px; letter-spacing:.13em; font-weight:600; }
 .brand b { color:var(--green); font-weight:800; }
-.topbar-nav { display:flex; gap:18px; align-items:center; font-size:12px; }
-.topbar-nav a { color:var(--green); text-decoration:none; padding:8px 0; }
-.topbar-nav a:hover { text-decoration:underline; }
-.topbar-nav a:focus-visible { outline:3px solid var(--green); outline-offset:4px; }
 .brand-mark { width:34px; height:34px; display:grid; place-items:center; background:var(--green); border-radius:11px; color:#fff; font:800 15px Manrope,sans-serif; letter-spacing:-.08em; }
 .intro { display:flex; align-items:flex-end; justify-content:space-between; padding:42px 0 31px; }
 .eyebrow { margin:0 0 10px; color:var(--green); font-size:10px; font-weight:700; letter-spacing:.17em; }
