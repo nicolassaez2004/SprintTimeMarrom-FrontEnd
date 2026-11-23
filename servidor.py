@@ -10,11 +10,13 @@ from urllib.parse import unquote, urlsplit
 
 
 RAIZ = Path(__file__).resolve().parent
-PAGINAS = {"/", "/index.html", "/qualidade.html", "/acervo.html"}
+PAGINAS = {"/", "/index.html", "/qualidade.html", "/acervo.html", "/mapa.html"}
 ASSETS = {
     "assets": {".svg", ".png", ".jpg", ".webp", ".ico"},
     "css": {".css"},
     "js": {".js", ".mjs"},
+    "src": {".js", ".css"},
+    "data": {".geojson"},
 }
 
 

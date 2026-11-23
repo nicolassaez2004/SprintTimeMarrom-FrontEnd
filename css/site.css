@@ -21,3 +21,13 @@
     padding-bottom: 8px;
   }
 }
+#painel-mapa { margin: -20px -28px 0; }
+#mapa-incorporado {
+  display: block;
+  width: 100%;
+  height: max(730px, calc(100dvh - 82px));
+  border: 0;
+}
+@media (max-width: 800px) {
+  #painel-mapa { margin: -12px -15px 0; }
+}

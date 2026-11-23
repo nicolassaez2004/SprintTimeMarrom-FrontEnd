@@ -1,8 +1,8 @@
 import { validarPeriodo, validarRelatorio } from './modelo.mjs';
 
-export async function consultarQualidade(base, inicio, fim, { signal, fetchImpl = fetch, timeoutMs = 20000 } = {}) {
+export async function consultarQualidade(baseUrl, inicio, fim, { signal, fetchImpl = fetch, timeoutMs = 20000 } = {}) {
   validarPeriodo(inicio, fim);
-  const url = new URL('api/qualidade', base.endsWith('/') ? base : `${base}/`);
+  const url = new URL('api/qualidade', baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`);
   url.search = new URLSearchParams({ inicio, fim, janelas: 'true' }).toString();
   const controle = new AbortController();
   let expirou = false;

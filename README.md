@@ -2,12 +2,12 @@
 
 ## US13-T03 — Qualidade dos dados
 
-Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.
+Mapa ao vivo, Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.
 Não contém credenciais nem substitui falhas por dados de demonstração.
 
 1. Iniciar o backend configurado: `python app.py`, na pasta do backend.
 2. Nesta pasta, executar `python servidor.py`.
-3. O navegador abre em **http://127.0.0.1:5173/**. Escolha **Acervo oficial** ou **Qualidade da coleta**.
+3. O navegador abre em **http://127.0.0.1:5173/**. O mapa é a tela inicial. Use as abas para abrir **Acervo oficial** ou **Qualidade da coleta**.
 
 O meta `api-base` em `index.html` aponta por padrão para
 `http://127.0.0.1:5000/`. Em outra instalação, informar o endereço HTTP público
@@ -44,3 +44,31 @@ Capturas conferidas em `docs/evidencias/qualidade-desktop.jpg`,
 A página segue a identidade do protótipo `origin/exemplo`, mas ficou separada
 dos seus arquivos para reduzir conflitos e não apresentar seus dados fictícios
 como dados reais. A main do frontend só possuía README antes desta tarefa.
+
+## US22-T02 — Mapa público ao vivo
+
+Abra a aba **Mapa ao vivo** na página inicial. A URL da API fica em `src/config.js`. O padrão de desenvolvimento é `http://127.0.0.1:5000`.
+
+Consome `GET /posicoes/atuais` e `GET /posicoes/atuais?linha=<código Olho Vivo>`,
+conforme o contrato da US22-T01. Usa Leaflet 1.9.4 e tiles do OpenStreetMap com
+atribuição visível.
+
+A navegação e os marcadores são limitados ao município de São Paulo pelo
+polígono oficial (código IBGE 3550308), armazenado em
+`data/municipio-sp-3550308.geojson`. O contorno aparece no mapa, sem máscara
+opaca no entorno. Fonte: [API de Malhas Municipais do IBGE](https://servicodados.ibge.gov.br/api/v3/malhas/municipios/3550308?formato=application/vnd.geo+json&qualidade=maxima).
+
+
+## US22-T03 — Atualização e defasagem
+
+O mapa consulta novamente a API a cada 30 s sem recarregar a página. Uma nova
+consulta aborta a anterior; respostas antigas são ignoradas mesmo se o servidor
+terminar de enviá-las após o cancelamento. O tempo entre `coletado_em` e a
+renderização do marcador é medido no navegador. Posições com até 60 s ficam em
+verde; as mais antigas (ou sem horário de coleta) ficam em âmbar com um aviso,
+e a falha temporária preserva os últimos marcadores válidos.
+
+Verificações sintéticas, sem depender do Aiven/SPTrans: `node --test
+ tests/mapa/atualizacao.test.mjs tests/qualidade.test.mjs`. Cobrem a medição da
+defasagem, coleta antiga/horário inválido, resposta fora de ordem/cancelamento
+e falha temporária. O teste não comprova disponibilidade real da fonte externa.
