@@ -1,5 +1,19 @@
 # SprintTimeMarrom
 
+## US09-T02-FE — Dados brutos e dicionário
+
+Página **`brutos.html`**, acessível por **Dados brutos** na navegação. Lista o
+catálogo pronto da US09-T02, permite escolher o dia e baixar o Parquet e exibe
+o dicionário. Inclui carregamento, erro, nova tentativa e indisponibilidade.
+O arquivo é recebido do backend; não há geração no navegador.
+
+Com o backend atualizado em `http://localhost:5000`, iniciar este frontend com
+`python servidor.py` e abrir **Dados brutos** na navegação principal ou
+`http://127.0.0.1:5173/brutos.html`. O endereço do backend desta página está na meta `api-base` de `brutos.html`.
+
+Testes: `node --test tests/brutos.test.mjs tests/acervo.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs`
+(27 passaram). [Entrega, contrato, capturas e limites da verificação](docs/US09-T02-FE.md).
+
 ## US13-T03 — Qualidade dos dados
 
 Mapa ao vivo, Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.

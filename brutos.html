@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="api-base" content="http://localhost:5000">
+  <meta name="description" content="Downloads diários dos dados brutos de transporte e dicionário dos campos.">
+  <meta name="theme-color" content="#765440">
+  <title>Dados brutos · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/brutos.css">
+  <script type="module" src="js/brutos/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para os downloads</a>
+  <aside class="sidebar">
+    <a class="brand" href="index.html" aria-label="Observa SP, início">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span>
+      <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+    </a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="./#mapa"><span aria-hidden="true">◎</span> Ônibus ao vivo</a>
+      <a class="nav-link" href="./#qualidade"><span aria-hidden="true">▥</span> Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
+      <a class="nav-link active" href="brutos.html" aria-current="page"><span aria-hidden="true">↓</span> Dados brutos</a>
+    </nav>
+    <div class="sidebar-note"><span class="note-label">DADOS PARA EXPLORAR</span><p>Consulte a origem, conheça os campos e faça sua própria análise.</p><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> Dados brutos</span><span class="public-pill">Acesso público</span></header>
+    <main id="conteudo" tabindex="-1">
+      <div class="page-heading"><div><p class="eyebrow">TRANSPARÊNCIA EM ARQUIVOS</p><h1>Dados brutos</h1><p>Registros de coleta, organizados por dia. Baixe os dados e conheça o significado de cada campo.</p></div><a class="button secondary dictionary-shortcut" href="#dicionario">Ver dicionário <span aria-hidden="true">↗</span></a></div>
+      <section class="download-intro" aria-label="Sobre os arquivos"><span class="format-icon" aria-hidden="true">↓</span><div><strong>Um arquivo, um dia de coleta.</strong><p>Disponível em Parquet, um formato para análise de dados. As datas consideram o horário de São Paulo.</p></div><span class="format-pill">PARQUET</span></section>
+      <div id="carregando-catalogo" class="loading" role="status">Carregando os dias disponíveis…</div>
+      <section id="erro-catalogo" class="message error" role="alert" hidden><div><h2>Não foi possível carregar os downloads</h2><p id="erro-catalogo-texto"></p></div><button class="button secondary" id="tentar-catalogo" type="button">Tentar novamente</button></section>
+      <div id="catalogo" hidden>
+        <div class="section-top catalog-heading"><div><h2>Escolha o dia</h2><p id="resumo-catalogo" class="muted"></p></div><button class="button secondary" id="atualizar-catalogo" type="button">Atualizar lista <span aria-hidden="true">↻</span></button></div>
+        <div class="download-grid">
+          <section class="panel dates-panel" aria-labelledby="titulo-dias"><h3 id="titulo-dias">Dias publicados</h3><p class="muted small-copy">Mais recentes primeiro</p><div id="dias-disponiveis" class="available-days"></div><p id="catalogo-vazio" class="empty-days" hidden>Nenhum dia publicado ainda.</p></section>
+          <section class="panel file-panel" aria-labelledby="titulo-arquivo">
+            <form id="selecionar-dia" class="date-picker"><label for="dia">Ou consulte uma data<input id="dia" name="data" type="date" required></label><button class="button secondary" type="submit">Consultar dia</button></form>
+            <div id="selecao" hidden><div class="file-heading"><span class="document-icon" aria-hidden="true"><svg viewBox="0 0 40 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2h15l10 10v33H5V2h4Z"/><path d="M24 2v11h10M12 23h15M12 29h15M12 35h10"/></svg></span><span id="situacao-arquivo" class="status-tag">Disponível</span></div><h2 id="titulo-arquivo"></h2><p id="data-arquivo" class="muted"></p></div>
+            <div id="arquivo-disponivel" hidden><dl class="file-metadata"><div><dt>Registros</dt><dd id="registros"></dd></div><div><dt>Tamanho</dt><dd id="tamanho"></dd></div><div><dt>Formato</dt><dd>Parquet</dd></div></dl><a id="baixar-arquivo" class="button primary download-button" href="#">Baixar Parquet <span aria-hidden="true">↓</span></a><p id="gerado-em" class="muted small-copy"></p></div>
+            <div id="arquivo-indisponivel" class="unavailable-note" role="status" hidden><strong>Arquivo ainda indisponível</strong><p>Não há arquivo publicado para este dia no catálogo. Atualize a lista para conferir novamente.</p></div>
+            <p id="status-download" class="download-status" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+        <p id="origem-catalogo" class="source-note"></p>
+      </div>
+      <section class="dictionary-section" id="dicionario" aria-labelledby="titulo-dicionario" tabindex="-1">
+        <div class="section-top"><div><p class="eyebrow">ANTES DE ANALISAR</p><h2 id="titulo-dicionario">Dicionário dos dados</h2><p class="muted">Entenda os campos que acompanham o arquivo.</p></div><a id="dicionario-original" class="button secondary" target="_blank" rel="noopener noreferrer" hidden>Abrir original <span aria-hidden="true">↗</span><span class="sr-only"> em uma nova aba</span></a></div>
+        <p id="carregando-dicionario" class="muted" role="status">O dicionário será consultado com o catálogo.</p>
+        <section id="erro-dicionario" class="message error" role="alert" hidden><div><h3>Não foi possível abrir o dicionário</h3><p id="erro-dicionario-texto"></p></div><button class="button secondary" id="tentar-dicionario" type="button">Tentar novamente</button></section>
+        <div id="conteudo-dicionario" hidden><p id="recorte-dicionario" class="dictionary-context"></p><div class="dictionary-scroll" tabindex="0" role="region" aria-label="Tabela de campos do dicionário"><table><caption class="sr-only">Campos do arquivo de dados brutos</caption><thead><tr><th scope="col">Campo e tipo</th><th scope="col">Descrição</th><th scope="col">Unidade</th><th scope="col">Aceita vazio?</th></tr></thead><tbody id="campos-dicionario"></tbody></table></div><p id="publicacao-dicionario" class="source-note"></p></div>
+      </section>
+      <footer><span>Observa SP · Time Marrom</span><span>Dados públicos para análise</span></footer>
+    </main>
+  </div>
+  <noscript><p class="message">Ative o JavaScript para consultar os dias e links de download disponíveis.</p></noscript>
+</body>
+</html>

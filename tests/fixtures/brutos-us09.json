@@ -1,0 +1,31 @@
+{
+  "observacao": "Respostas SINTÉTICAS no formato da US09-T02. Somente para testes.",
+  "catalogo": {
+    "datas": [
+      {"data":"2026-11-22","registros":184320,"tamanho_bytes":12582912,"gerado_em":"2026-11-23T03:18:00+00:00","url":"/downloads/brutos?data=2026-11-22"},
+      {"data":"2026-11-21","registros":179450,"tamanho_bytes":11953766,"gerado_em":"2026-11-22T03:15:00+00:00","url":"/downloads/brutos?data=2026-11-21"},
+      {"data":"2026-11-20","registros":156280,"tamanho_bytes":10485760,"gerado_em":"2026-11-21T03:20:00+00:00","url":"/downloads/brutos?data=2026-11-20"},
+      {"data":"2026-11-19","registros":0,"tamanho_bytes":2048,"gerado_em":"2026-11-20T03:12:00+00:00","url":"/downloads/brutos?data=2026-11-19"}
+    ],
+    "total":4,"fonte":"SPTrans Olho Vivo (registros brutos coletados pela aplicação)","licenca":"CC BY 4.0","dicionario":"/downloads/brutos/dicionario"
+  },
+  "dicionario": {
+    "formato":"Apache Parquet, compressão snappy",
+    "recorte":"coletado_em no dia civil de America/Sao_Paulo; instantes gravados em UTC",
+    "disponibilidade":"Arquivo do dia D publicado até 06:00 de D+1 (America/Sao_Paulo).",
+    "fonte":"SPTrans Olho Vivo (registros brutos coletados pela aplicação)","licenca":"CC BY 4.0",
+    "campos":[
+      {"nome":"id","tipo":"int64","anulavel":true,"descricao":"Identificador do registro bruto.","unidade":null},
+      {"nome":"execucao_id","tipo":"int64","anulavel":true,"descricao":"Ciclo de coleta que recebeu o registro.","unidade":null},
+      {"nome":"veiculo_prefixo","tipo":"string","anulavel":true,"descricao":"Veículo vinculado ao registro.","unidade":null},
+      {"nome":"prefixo_origem","tipo":"string","anulavel":true,"descricao":"Prefixo como recebido da fonte.","unidade":null},
+      {"nome":"linha_origem","tipo":"string","anulavel":true,"descricao":"Código de linha recebido da fonte.","unidade":null},
+      {"nome":"sentido_origem","tipo":"string","anulavel":true,"descricao":"Sentido informado na coleta.","unidade":null},
+      {"nome":"latitude","tipo":"double","anulavel":true,"descricao":"Latitude informada pelo veículo.","unidade":"graus decimais"},
+      {"nome":"longitude","tipo":"double","anulavel":true,"descricao":"Longitude informada pelo veículo.","unidade":"graus decimais"},
+      {"nome":"horario_gps","tipo":"timestamp[us, tz=UTC]","anulavel":true,"descricao":"Instante informado pelo GPS.","unidade":"UTC"},
+      {"nome":"coletado_em","tipo":"timestamp[us, tz=UTC]","anulavel":false,"descricao":"Instante de recebimento pela aplicação.","unidade":"UTC"},
+      {"nome":"payload","tipo":"string","anulavel":true,"descricao":"Conteúdo original recebido, como texto JSON.","unidade":null}
+    ]
+  }
+}
