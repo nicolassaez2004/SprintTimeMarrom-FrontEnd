@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="api-base" content="http://127.0.0.1:5000/">
+  <meta name="theme-color" content="#765440">
+  <title>Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/acervo.css">
+  <link rel="stylesheet" href="css/site.css">
+  <script type="module" src="js/site.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="topbar site-topbar">
+    <a class="acervo-brand" href="/">observa<span class="brand-sp">sp</span></a>
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a href="#qualidade" data-aba="qualidade" aria-controls="painel-qualidade">Qualidade da coleta</a>
+      <a href="#acervo" data-aba="acervo" aria-controls="painel-acervo">Acervo oficial</a>
+    </nav>
+  </header>
+  <main id="conteudo" tabindex="-1">
+    <section id="painel-qualidade" aria-label="Qualidade da coleta" hidden>
+
+      <div class="page-heading"><div><p class="eyebrow">QUALIDADE E DISPONIBILIDADE</p><h1>Qualidade dos dados</h1><p>Veja onde faltam registros da coleta e qual GTFS estava vigente em cada dia.</p></div><span class="timezone">Horário de São Paulo<br><strong>America/Sao_Paulo</strong></span></div>
+      <form id="periodo" class="filters" aria-label="Período do relatório">
+        <label>Data inicial<input id="inicio" name="inicio" type="date" required></label>
+        <label>Data final<input id="fim" name="fim" type="date" required></label>
+        <button class="button primary" id="consultar" type="submit">Consultar período <span aria-hidden="true">↗</span></button>
+        <p>Até 31 dias por consulta.<br>Os dias sem registros também são exibidos.</p>
+      </form>
+      <p id="carregamento" class="loading" role="status" hidden>Consultando o relatório de qualidade…</p>
+      <section id="erro" class="message error" role="alert" hidden><div><h2>Não foi possível carregar o relatório</h2><p id="erro-texto"></p></div><button class="button secondary" id="tentar" type="button">Tentar novamente</button></section>
+      <p id="simulacao" class="message warning" hidden><strong>Cenário de teste.</strong> Estes dados são sintéticos e não representam a operação real.</p>
+      <div id="relatorio" hidden>
+        <section class="day-navigation" aria-label="Selecionar dia do relatório"><div class="section-top"><div><p class="eyebrow">UM DIA DE CADA VEZ</p><h2 id="titulo-dia"></h2></div><div class="day-arrows"><button class="button secondary" id="anterior" type="button" aria-label="Selecionar dia anterior">←</button><button class="button secondary" id="proximo" type="button" aria-label="Selecionar próximo dia">→</button></div></div><div id="dias" class="day-strip" aria-label="Dias disponíveis"></div></section>
+        <p id="contexto" class="context"></p>
+        <div id="aviso" class="message warning" role="status" hidden></div>
+        <section id="metricas" class="metrics" aria-label="Resumo do dia"></section>
+        <section class="panel coverage-panel" aria-labelledby="titulo-cobertura"><div class="section-top"><div><h2 id="titulo-cobertura">Cobertura ao longo do dia</h2><p class="muted">Cada bloco representa 15 minutos. Selecione um para ver os detalhes.</p></div><span class="small-tag">00h → 24h</span></div><div id="janelas" class="window-grid" role="group" aria-label="Janelas de coleta; use as setas para navegar"></div><p id="janela-detalhe" class="window-detail" role="status"></p><ul class="legend" aria-label="Legenda das janelas"><li><i class="complete"></i>Completa</li><li><i class="with-failures"></i>Com falhas</li><li><i class="incomplete"></i>Incompleta</li><li><i class="no-data"></i>Sem dados</li><li><i class="unobserved"></i>Não observado</li><li><i class="pending"></i>Ainda não ocorreu</li></ul></section>
+        <div class="details-grid"><section class="panel gaps-panel" aria-labelledby="titulo-lacunas"><div class="section-top"><div><h2 id="titulo-lacunas">Lacunas da coleta</h2><p class="muted">O período deste dia e o intervalo completo de cada evento.</p></div><span id="total-lacunas" class="small-tag"></span></div><div id="lacunas"></div></section><section class="panel gtfs-panel" aria-labelledby="titulo-gtfs"><p class="eyebrow">REFERÊNCIA DA REDE</p><h2 id="titulo-gtfs">GTFS do dia</h2><div id="gtfs"></div></section></div>
+      </div>
+      <section id="como-ler" class="method"><h2>O que este relatório mostra?</h2><div><p><strong>Lacuna registrada:</strong> falha identificada pelo coletor, com início, causa e encerramento quando conhecido. Uma falha que cruza a meia-noite aparece nos dois dias.</p><p><strong>Silêncio identificado:</strong> período em que não há ciclos registrados após o início do monitoramento. Não é preenchido com posições inventadas.</p><p><strong>Sem dados não significa zero ônibus.</strong> Antes do primeiro ciclo, o percentual de falhas é desconhecido. Versões GTFS sobrepostas aparecem como ambiguidade.</p></div></section>
+      <footer><span>Observa SP · Time Marrom</span><span>Fonte: registros da coleta Olho Vivo / SPTrans</span></footer>
+    </section>
+    <section id="painel-acervo" class="acervo" aria-label="Acervo oficial" hidden>
+
+    <div class="page-heading">
+      <div>
+        <h1>Acervo oficial</h1>
+        <p>Consulte contratos e indicadores oficiais do transporte público de São Paulo.</p>
+      </div>
+    </div>
+    <form id="filtros" class="filters" aria-label="Filtros do acervo">
+      <label for="tipo">Tipo
+        <select id="tipo" name="tipo">
+          <option value="">Todos os tipos</option>
+          <option value="CONTRATO">Contrato</option>
+          <option value="INDICADOR_OFICIAL">Indicador oficial</option>
+        </select>
+      </label>
+      <label for="acervo-inicio">Data inicial do documento<input id="acervo-inicio" name="data_inicio" type="date"></label>
+      <label for="acervo-fim">Data final do documento<input id="acervo-fim" name="data_fim" type="date"></label>
+      <button class="button primary" type="submit">Buscar documentos</button>
+      <button class="button secondary" type="reset">Limpar filtros</button>
+    </form>
+    <section class="panel resultados" aria-labelledby="resultados-titulo">
+      <h2 id="resultados-titulo">Documentos</h2>
+      <p id="estado" role="status"></p>
+      <p id="acervo-erro" role="alert" hidden></p>
+      <ol id="lista" class="acervo-lista"></ol>
+      <nav id="paginacao" aria-label="Páginas do acervo" hidden>
+        <button id="acervo-anterior" class="button secondary" type="button">Anterior</button>
+        <button id="proxima" class="button secondary" type="button">Próxima</button>
+      </nav>
+    </section>
+    <footer>Observa SP · Time Marrom</footer>
+<dialog id="visor" aria-labelledby="pdf-titulo">
+    <div class="section-top">
+      <h2 id="pdf-titulo">PDF original</h2>
+      <form method="dialog"><button class="button secondary">Fechar</button></form>
+    </div>
+    <iframe id="pdf" title="Visualização do PDF original"></iframe>
+    <a id="pdf-link" class="button secondary" target="_blank" rel="noopener noreferrer">Abrir em outra aba</a>
+  </dialog>
+    </section>
+    <p id="erro-site" role="alert" hidden>Não foi possível carregar esta seção. Atualize a página e tente novamente.</p>
+    <noscript><p>Ative o JavaScript para navegar pelo Observa SP.</p></noscript>
+  </main>
+</body>
+</html>

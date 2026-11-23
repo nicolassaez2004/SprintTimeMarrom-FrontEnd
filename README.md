@@ -2,14 +2,14 @@
 
 ## US13-T03 — Qualidade dos dados
 
-Página pública em **`qualidade.html`**, consumindo o backend Flask real.
+Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.
 Não contém credenciais nem substitui falhas por dados de demonstração.
 
 1. Iniciar o backend configurado: `python app.py`, na pasta do backend.
-2. Nesta pasta, executar `python -m http.server 5173 --bind 127.0.0.1`.
-3. Abrir **http://127.0.0.1:5173/qualidade.html**.
+2. Nesta pasta, executar `python servidor.py`.
+3. O navegador abre em **http://127.0.0.1:5173/**. Escolha **Acervo oficial** ou **Qualidade da coleta**.
 
-O meta `api-base` em `qualidade.html` aponta por padrão para
+O meta `api-base` em `index.html` aponta por padrão para
 `http://127.0.0.1:5000/`. Em outra instalação, informar o endereço HTTP público
 do backend e configurar a origem correspondente no CORS do Flask.
 Não informar URL do MySQL, senha ou token no frontend.
@@ -19,7 +19,7 @@ Não informar URL do MySQL, senha ou token no frontend.
 No backend: `python -m scripts.demonstrar_qualidade_us13`.
 Manter o servidor estático do passo 2 e abrir:
 
-http://127.0.0.1:5173/qualidade.html?inicio=2026-11-17&fim=2026-11-20
+http://127.0.0.1:5173/?inicio=2026-11-17&fim=2026-11-20#qualidade
 
 O aviso **Cenário de teste** identifica os dados sintéticos. Em 18 e 19/11,
 conferir a mesma falha atravessando meia-noite e a troca GTFS A → B. Em 20/11,
