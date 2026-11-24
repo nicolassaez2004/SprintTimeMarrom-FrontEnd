@@ -54,6 +54,8 @@ select:disabled { color:#aab1ac; }
 .vehicle-count { margin-left:auto; display:flex; align-items:baseline; gap:7px; color:#78837d; font-size:12px; }
 .vehicle-count strong { color:#23342c; font:800 21px Manrope,sans-serif; }
 .count-icon { color:#2a805e; font-size:11px; }
+.last-update { flex-basis:100%; text-align:right; color:#78837d; font-size:12px; }
+.last-update.stale { color:#9a5b00; font-weight:700; }
 .map-frame { isolation:isolate; height:min(66vh,650px); min-height:420px; position:relative; overflow:hidden; border:1px solid #e1e6df; border-radius:18px; background:#e9eee8; box-shadow:0 12px 32px #22382b0a; }
 #map { position:absolute; inset:0; z-index:1; }
 .leaflet-container { background:#e9eee8; font-family:'DM Sans',sans-serif; }
@@ -107,3 +109,4 @@ select:disabled { color:#aab1ac; }
 }
 .bus-cluster.fresh { background: #23634d; }
 .bus-cluster.delayed { background: #8c5517; }
+.bus-cluster.mixed { outline: 3px solid #d4933e; outline-offset: 1px; }

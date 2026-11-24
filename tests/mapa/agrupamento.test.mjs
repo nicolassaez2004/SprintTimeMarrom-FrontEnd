@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { agruparPosicoes } from '../../src/agrupamento.js';
+import { agruparPosicoes, classificarGrupo } from '../../src/agrupamento.js';
 
 const limites = { minX: 0, minY: 0, maxX: 960, maxY: 480 };
 
@@ -24,4 +24,10 @@ test('recorta só o desenho e separa ônibus ao ampliar', () => {
   const ampliados = agruparPosicoes(posicoes, v => ({ x: (v.longitude - 10) * 60, y: (v.latitude - 10) * 60 }), limites);
   assert.deepEqual(ampliados.map(grupo => grupo.veiculos.length), [1, 1]);
   assert.equal(posicoes.length, 3);
+});
+
+test('grupo com posições antigas continua identificado sem pintar tudo de âmbar', () => {
+  assert.equal(classificarGrupo(50, 0), 'fresh');
+  assert.equal(classificarGrupo(50, 2), 'fresh mixed');
+  assert.equal(classificarGrupo(50, 50), 'delayed');
 });
