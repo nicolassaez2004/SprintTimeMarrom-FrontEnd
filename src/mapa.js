@@ -91,6 +91,28 @@ import {
     markers = L.layerGroup().addTo(map);
   }
 
+  function enquadrarLocalizacao(latitude, longitude) {
+    // Aproxima um quadrado de 1 km; a correção da longitude considera a latitude.
+    const meiaAltura = 500 / 111_320;
+    const meiaLargura = meiaAltura / Math.cos(latitude * Math.PI / 180);
+    const limites = L.latLngBounds(
+      [latitude - meiaAltura, longitude - meiaLargura],
+      [latitude + meiaAltura, longitude + meiaLargura],
+    );
+    map.fitBounds(limites, { animate: false });
+  }
+
+  function localizarUsuario() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => resolve({ latitude: coords.latitude, longitude: coords.longitude }),
+        () => resolve(null),
+        { enableHighAccuracy: false, timeout: 5_000, maximumAge: 60_000 },
+      );
+    });
+  }
+
   function municipioPolygons(geometry) {
     if (geometry?.type === 'Polygon') return [geometry.coordinates];
     if (geometry?.type === 'MultiPolygon') return geometry.coordinates;
@@ -486,7 +508,15 @@ import {
       document.querySelector('#fit-button').addEventListener('click', () => {
         if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
       });
-      Promise.all([loadMunicipality(), carregarCatalogo()]).then(() => loadPositions()).catch((error) => {
+      Promise.all([loadMunicipality(), carregarCatalogo()]).then(async () => {
+        loadPositions();
+        const localizacao = await localizarUsuario();
+        if (localizacao && insideMunicipality(localizacao.latitude, localizacao.longitude)) {
+          enquadrarLocalizacao(localizacao.latitude, localizacao.longitude);
+        } else {
+          enquadrarLocalizacao(-23.56, -46.63);
+        }
+      }).catch((error) => {
         setMessage('error', 'Mapa indisponível', error.message || 'Não foi possível carregar o limite municipal.', true);
       });
     } catch (error) {
