@@ -1,0 +1,108 @@
+{
+ "data": "2026-11-24",
+ "tarefa": "US23-T04 — Conferir o painel com os resultados da API",
+ "ambiente": "Windows 11, navegador do Claude Desktop, frontend servidor.py :5173, backend Flask sem alterações (commit 493b964 da branch Review--US16-T03],--US23-T02B],--US23-T02A],--US23-T01-) com SQLite descartável; dados SINTÉTICOS (qualidade.origem=SINTETICA); sem Aiven",
+ "metodo": "Para cada filtro, a tela foi comparada com uma chamada independente ao /series com os mesmos parâmetros: texto do resultado de cada linha da tabela, contagens, valores data-valor dos pontos do gráfico (apenas numéricos, na ordem), e número de lacunas listadas.",
+ "filtros": [
+  {
+   "caso": "3762-10 ida pontualidade, todo o histórico, página 2",
+   "tabela": "5/55",
+   "pontos": 5,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "2/2"
+  },
+  {
+   "caso": "3762-10 ida pontualidade, todo o histórico, página 1",
+   "tabela": "50/55",
+   "pontos": 49,
+   "nulos": 1,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "10/10"
+  },
+  {
+   "caso": "3762-10 ida pontualidade, 20/11",
+   "tabela": "11/11",
+   "pontos": 10,
+   "nulos": 1,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "4/4"
+  },
+  {
+   "caso": "3762-10 ida pontualidade, 19–23/11, faixa 06:30–07:45",
+   "tabela": "20/20",
+   "pontos": 19,
+   "nulos": 1,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "6/6"
+  },
+  {
+   "caso": "3762-10 ida cumprimento, todo o histórico",
+   "tabela": "12/12",
+   "pontos": 12,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "3/3"
+  },
+  {
+   "caso": "3762-10 volta pontualidade",
+   "tabela": "3/3",
+   "pontos": 3,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "2/2"
+  },
+  {
+   "caso": "8000-10 ida pontualidade",
+   "tabela": "3/3",
+   "pontos": 3,
+   "tabela_ok": true,
+   "grafico_ok": true,
+   "contagens_ok": true,
+   "lacunas_api_tela": "2/2"
+  },
+  {
+   "caso": "3762-10 volta cumprimento (sem publicação)",
+   "tabela": "0/0",
+   "pontos": 0,
+   "mensagem_sem_resultado": true,
+   "lacunas_api_tela": "1/1"
+  },
+  {
+   "caso": "3762-10 ida pontualidade, 01/01–18/11 (antes dos indicadores)",
+   "tabela": "0/0",
+   "pontos": 0,
+   "mensagem_sem_resultado": true,
+   "lacunas_api_tela": "0/0"
+  }
+ ],
+ "fora_de_ordem": {
+  "roteiro": "Pontualidade com atraso de 3 s no servidor; 150 ms depois troca para Cumprimento (resposta imediata). Espera 4,5 s.",
+  "resultado": "Tela final: Cumprimento, 12/12 linhas e 12 pontos iguais à API; a resposta tardia de Pontualidade foi descartada (AbortController + conferência do controle atual)."
+ },
+ "api_indisponivel_consulta_do_usuario": {
+  "roteiro": "Servidor forçado a 503 e troca de filtro.",
+  "resultado": "Mensagem 'Não foi possível consultar as séries. Tente novamente em instantes.'; tabela e gráfico ocultos (não mostra valores de outra seleção); 'Tentar novamente' após voltar a 200 recupera e confere com a API."
+ },
+ "historico_inicial": {
+  "resultado": "Sem período, a consulta começa no histórico (coleta iniciada 19/11 05:00; indicadores 19/11 06:00 a 23/11 09:00) e o período anterior aos indicadores não gera lacunas."
+ },
+ "atualizacao_15_min": {
+  "resultado": "NÃO VERIFICÁVEL: o painel não tem atualização automática (depende da US23-T03)."
+ },
+ "testes": {
+  "frontend": "node --test → 86 passaram (sem alteração de código)"
+ },
+ "data_de_consolidacao": {
+  "resultado": "NÃO VERIFICÁVEL: o painel não exibe data de consolidação (depende da US23-T03)."
+ }
+}
