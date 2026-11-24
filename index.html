@@ -14,16 +14,23 @@
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
-  <header class="topbar site-topbar">
-    <a class="acervo-brand" href="/">observa<span class="brand-sp">sp</span></a>
-    <nav class="site-nav" aria-label="Navegação principal">
-      <a href="#mapa" data-aba="mapa" aria-controls="painel-mapa">Mapa ao vivo</a>
-      <a href="#qualidade" data-aba="qualidade" aria-controls="painel-qualidade">Qualidade da coleta</a>
-      <a href="#acervo" data-aba="acervo" aria-controls="painel-acervo">Acervo oficial</a>
-      <a href="brutos.html">Dados brutos</a>
-      <a href="series.html">Histórico por linha</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="Observa SP, início">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span>
+      <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+    </a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="#mapa" data-aba="mapa" aria-controls="painel-mapa"><span aria-hidden="true">◎</span> Ônibus ao vivo</a>
+      <a class="nav-link" href="#qualidade" data-aba="qualidade" aria-controls="painel-qualidade"><span aria-hidden="true">▥</span> Qualidade da coleta</a>
+      <a class="nav-link" href="#acervo" data-aba="acervo" aria-controls="painel-acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
+      <a class="nav-link" href="brutos.html"><span aria-hidden="true">↓</span> Dados brutos</a>
+      <a class="nav-link" href="series.html"><span aria-hidden="true">◷</span> Histórico por linha</a>
     </nav>
-  </header>
+    <div class="sidebar-note"><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> <span class="crumb crumb-mapa">Ônibus ao vivo</span><span class="crumb crumb-qualidade">Qualidade da coleta</span><span class="crumb crumb-acervo">Acervo oficial</span></span><span class="public-pill">Acesso público</span></header>
   <main id="conteudo" tabindex="-1">
     <section id="painel-mapa" aria-label="Mapa ao vivo" hidden>
       <iframe id="mapa-incorporado" title="Mapa ao vivo dos ônibus" data-src="mapa.html"></iframe>
@@ -75,14 +82,14 @@
     <section class="panel resultados" aria-labelledby="resultados-titulo">
       <h2 id="resultados-titulo">Documentos</h2>
       <p id="estado" role="status"></p>
-      <p id="acervo-erro" role="alert" hidden></p>
+      <p id="acervo-erro" class="message error" role="alert" hidden></p>
       <ol id="lista" class="acervo-lista"></ol>
       <nav id="paginacao" aria-label="Páginas do acervo" hidden>
         <button id="acervo-anterior" class="button secondary" type="button">Anterior</button>
         <button id="proxima" class="button secondary" type="button">Próxima</button>
       </nav>
     </section>
-    <footer>Observa SP · Time Marrom</footer>
+    <footer><span>Observa SP · Time Marrom</span></footer>
 <dialog id="visor" aria-labelledby="pdf-titulo">
     <div class="section-top">
       <h2 id="pdf-titulo">PDF original</h2>
@@ -92,8 +99,9 @@
     <a id="pdf-link" class="button secondary" target="_blank" rel="noopener noreferrer">Abrir em outra aba</a>
   </dialog>
     </section>
-    <p id="erro-site" role="alert" hidden>Não foi possível carregar esta seção. Atualize a página e tente novamente.</p>
+    <p id="erro-site" class="message error" role="alert" hidden>Não foi possível carregar esta seção. Atualize a página e tente novamente.</p>
     <noscript><p>Ative o JavaScript para navegar pelo Observa SP.</p></noscript>
   </main>
+  </div>
 </body>
 </html>
