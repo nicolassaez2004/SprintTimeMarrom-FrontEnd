@@ -10,6 +10,8 @@ const MOTIVOS = Object.freeze({
   estimativa_nao_executada: 'Estimativa de passagens não executada',
   programacao_ausente: 'Programação da data ausente',
   programacao_ambigua: 'Programação da data ambígua',
+  divisor_invalido: 'Soma dos intervalos inválida',
+  intervalo_programado_ausente: 'Sem intervalo programado vigente na janela',
 });
 
 /** Motivo legível; códigos de coleta (coleta_<situação>) e combinados também são explicados. */

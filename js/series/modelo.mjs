@@ -4,9 +4,14 @@ export const TIPOS = Object.freeze({
   PONTUALIDADE_VIAGENS: 'Pontualidade das saídas',
   CUMPRIMENTO_VIAGENS: 'Cumprimento das viagens',
   REGULARIDADE_INTERVALOS: 'Regularidade dos intervalos',
+  ESPERA_ESTIMADA: 'Espera estimada e excesso de espera',
 });
-// US17: a regularidade é publicada por parada; os demais indicadores, por linha.
-export const POR_PARADA = new Set(['REGULARIDADE_INTERVALOS']);
+// US18: o excesso não é escolhido sozinho; vem junto com a espera estimada.
+export const TIPOS_AUXILIARES = new Set(['EXCESSO_ESPERA']);
+// Título de cada série nos gráficos: espera e excesso nunca dividem o mesmo título.
+export const TITULOS_SERIE = Object.freeze({ ESPERA_ESTIMADA: 'Espera estimada', EXCESSO_ESPERA: 'Excesso de espera' });
+// US17/US18: regularidade e espera são publicadas por parada; os demais indicadores, por linha.
+export const POR_PARADA = new Set(['REGULARIDADE_INTERVALOS', 'ESPERA_ESTIMADA', 'EXCESSO_ESPERA']);
 export const CAMPOS = ['linha', 'sentido', 'tipo', 'parada', 'inicio', 'fim', 'hora_inicio', 'hora_fim'];
 const HORA = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
@@ -28,11 +33,11 @@ export function validarFiltros(filtros) {
   const f = Object.fromEntries(CAMPOS.map(campo => [campo, String(filtros[campo] ?? '').trim()]));
   if (!f.linha || f.linha.length > 64 || /[\x00-\x1f\x7f]/.test(f.linha)) throw new Error('Informe um código de linha válido.');
   if (!['0', '1'].includes(f.sentido)) throw new Error('Selecione ida ou volta.');
-  if (!Object.hasOwn(TIPOS, f.tipo)) throw new Error('Selecione um indicador disponível.');
+  if (!Object.hasOwn(TIPOS, f.tipo) && !TIPOS_AUXILIARES.has(f.tipo)) throw new Error('Selecione um indicador disponível.');
   if (POR_PARADA.has(f.tipo) && (!f.parada || f.parada.length > 64 || /[\x00-\x1f\x7f]/.test(f.parada))) {
-    throw new Error('Informe o código da parada para consultar a regularidade.');
+    throw new Error('Informe o código da parada para consultar este indicador.');
   }
-  if (!POR_PARADA.has(f.tipo) && f.parada) throw new Error('A parada só se aplica à regularidade dos intervalos.');
+  if (!POR_PARADA.has(f.tipo) && f.parada) throw new Error('A parada só se aplica à regularidade e à espera.');
   for (const campo of ['inicio', 'fim']) {
     if (f[campo] && !dataValida(f[campo])) throw new Error('Confira as datas do período.');
   }
