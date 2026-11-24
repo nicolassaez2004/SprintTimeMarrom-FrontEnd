@@ -1,6 +1,9 @@
 import { buscarSeries } from './cliente.mjs';
 import { CAMPOS, TIPOS, buscaDaSelecao, dataHora, lerSelecao, validarFiltros, valorFormatado } from './modelo.mjs';
 import { escapar as h } from '../qualidade/modelo.mjs';
+import { instalarGraficos } from './graficos.mjs';
+
+instalarGraficos();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');

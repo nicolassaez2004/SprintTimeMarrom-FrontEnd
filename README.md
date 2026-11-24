@@ -1,10 +1,12 @@
 # SprintTimeMarrom
 
-## Histórico por linha (US23-T02A)
+## Histórico por linha (US23-T02A / US23-T02B)
 
 Abra `series.html` pelo menu **Histórico por linha**. Os filtros consultam o
 backend `/series`, ficam no endereço e preservam zero e ausência de resultado.
-[Contrato, uso e evidências](docs/US23-T02A.md). Requer US23-T01 no backend.
+[Filtros e consulta](docs/US23-T02A.md), [gráficos e evidências](docs/US23-T02B.md).
+Os gráficos usam os resultados da mesma consulta, com unidades, zero e lacunas.
+Requer US23-T01 no backend; a branch T02B inclui a T02A.
 
 ## Mapa ao vivo (US22)
 
