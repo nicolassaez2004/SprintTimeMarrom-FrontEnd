@@ -2,13 +2,14 @@ import { buscarSeries } from './cliente.mjs';
 import { CAMPOS, TIPOS, buscaDaSelecao, contagensFormatadas, dataHora, lerSelecao, validarFiltros, valorFormatado } from './modelo.mjs';
 import { escapar as h } from '../qualidade/modelo.mjs';
 import { instalarGraficos } from './graficos.mjs';
+import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from './atualizacao.mjs';
 
 instalarGraficos();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');
 const base = document.querySelector('meta[name="api-base"]').content;
-let controle = null, pagina = 1, bloqueadoAte = 0, timer = null;
+let controle = null, pagina = 1, bloqueadoAte = 0, timer = null, timerAtualizacao = null;
 const campos = () => Object.fromEntries(CAMPOS.map(c => [c, form.elements[c].value]));
 
 function limparResultado() {
@@ -16,7 +17,7 @@ function limparResultado() {
   document.dispatchEvent(new CustomEvent('series:limpar'));
 }
 
-function renderizar(resposta, filtros) {
+function renderizar(resposta, filtros, estado = null) {
   const { dados, paginacao, historico, lacunas } = resposta;
   el('cenario-sintetico').hidden = !dados.some(p => p.qualidade.origem === 'SINTETICA');
   const sentido = filtros.sentido === '0' ? 'Ida' : 'Volta';
@@ -25,7 +26,7 @@ function renderizar(resposta, filtros) {
   el('limites-historico').textContent = historico.inicio_indicadores ? `${dataHora(historico.inicio_indicadores)} a ${dataHora(historico.fim_indicadores)}` : 'Nenhum indicador publicado ainda';
   el('inicio-coleta').textContent = historico.coleta_inicio ? `Coleta do projeto iniciada em ${dataHora(historico.coleta_inicio)}` : 'Início da coleta ainda não informado';
   el('sem-resultados').hidden = dados.length > 0;
-  el('valores-series').innerHTML = dados.map(p => `<tr><td>${h(dataHora(p.inicio))}<small>até ${h(dataHora(p.fim))}</small></td><td><strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}<small>Contagens: ${h(contagensFormatadas(p.contagens))}</small></td><td><details><summary>Ver versões</summary><small>Conjunto: ${h(p.versao_conjunto)}</small><small>Rede GTFS: ${h(p.versao_gtfs_id)}</small><small>Cálculo: ${h(p.versao_calculo ?? 'Não informado')}</small><small>Correspondência: ${h(p.versao_correspondencia ?? 'Não informada')}</small><small>Reconstrução: ${h(p.qualidade.versao_reconstrucao ?? 'Não informada')}</small></details></td></tr>`).join('');
+  el('valores-series').innerHTML = dados.map(p => `<tr><td>${h(dataHora(p.inicio))}<small>até ${h(dataHora(p.fim))}</small></td><td><strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}<small>Contagens: ${h(contagensFormatadas(p.contagens))}</small>${estado ? `<small>${h(rotuloPonto(p))}${p.consolidado_em ? ` em ${h(dataHora(p.consolidado_em))}` : ''}</small>` : ''}</td><td><details><summary>Ver versões</summary><small>Conjunto: ${h(p.versao_conjunto)}</small><small>Rede GTFS: ${h(p.versao_gtfs_id)}</small><small>Cálculo: ${h(p.versao_calculo ?? 'Não informado')}</small><small>Correspondência: ${h(p.versao_correspondencia ?? 'Não informada')}</small><small>Reconstrução: ${h(p.qualidade.versao_reconstrucao ?? 'Não informada')}</small></details></td></tr>`).join('');
   el('total-resultados').textContent = `${paginacao.total} ${paginacao.total === 1 ? 'resultado' : 'resultados'} · até ${paginacao.page_size} por página`;
   el('paginacao-series').hidden = paginacao.total <= paginacao.page_size;
   el('pagina-series').textContent = `Página ${pagina} de ${Math.max(1, Math.ceil(paginacao.total / paginacao.page_size))}`;
@@ -35,11 +36,42 @@ function renderizar(resposta, filtros) {
   el('lacunas-series').innerHTML = lacunas.map(l => `<li>${h(dataHora(l.inicio))} a ${h(dataHora(l.fim))} · ${l.motivo === 'RESULTADO_NULO' ? 'Resultado indisponível' : 'Sem publicação'}</li>`).join('');
   el('nenhuma-lacuna').hidden = lacunas.length !== 0;
   el('aviso-lacunas').hidden = !resposta.consulta.lacunas_truncadas;
+  const textos = textosAtualizacao(estado);
+  el('estado-atualizacao').textContent = textos.atualizacao;
+  el('estado-consolidacao').textContent = textos.consolidacao;
+  el('aviso-atualizacao').hidden = true;
   el('resultado-series').hidden = false;
   document.dispatchEvent(new CustomEvent('series:resultado', { detail: { resposta, filtros: { ...filtros } } }));
 }
 
+// US23-T03: nova consulta silenciosa na hora prevista da próxima atualização.
+// Falha não troca "Atualizado em" nem apaga os valores: só avisa.
+function agendarAtualizacao(espera) {
+  clearTimeout(timerAtualizacao);
+  timerAtualizacao = espera === null ? null : setTimeout(() => { void atualizarEmSegundoPlano(); }, espera);
+}
+
+async function atualizarEmSegundoPlano() {
+  if (form.getAttribute('aria-busy') === 'true' || el('resultado-series').hidden) return agendarAtualizacao(60_000);
+  const atual = new AbortController();
+  controle = atual;
+  try {
+    const filtros = validarFiltros(campos());
+    const resposta = await buscarSeries(base, filtros, pagina, { signal: atual.signal });
+    if (controle !== atual || atual.signal.aborted) return;
+    const estado = lerAtualizacao(resposta);
+    renderizar(resposta, filtros, estado);
+    agendarAtualizacao(esperaAteProxima(estado));
+  } catch (erro) {
+    if (controle !== atual || atual.signal.aborted) return;
+    el('aviso-atualizacao').textContent = `Não foi possível atualizar às ${dataHora(new Date().toISOString())}. Os valores exibidos continuam os da última consulta bem-sucedida.`;
+    el('aviso-atualizacao').hidden = false;
+    agendarAtualizacao(erro.tentarEm ? erro.tentarEm * 1000 : 5 * 60_000);
+  }
+}
+
 async function consultar({ resetarPagina = false } = {}) {
+  agendarAtualizacao(null);
   controle?.abort();
   const atual = new AbortController();
   controle = atual;
@@ -62,7 +94,9 @@ async function consultar({ resetarPagina = false } = {}) {
     if (controle !== atual || atual.signal.aborted) return;
     // Endereço salvo com página além do total: volta à primeira em vez de sugerir ausência.
     if (!resposta.dados.length && resposta.paginacao.total > 0 && pagina > 1) { pagina = 1; return consultar(); }
-    renderizar(resposta, filtros);
+    const estado = lerAtualizacao(resposta);
+    renderizar(resposta, filtros, estado);
+    agendarAtualizacao(esperaAteProxima(estado));
   } catch (erro) {
     if (controle !== atual || atual.signal.aborted) return;
     el('erro-texto').textContent = erro.message;
