@@ -1,5 +1,13 @@
 # SprintTimeMarrom
 
+## Mapa ao vivo (US22)
+
+`mapa.html` consulta `GET /posicoes/atuais` a cada 10 s. A API responde 304
+quando não há ciclo novo. Posições com mais de 60 s de coleta ficam âmbar, e a
+barra mostra a última coleta ("coleta atrasada" acima de 60 s). O filtro usa
+`data/linhas-sptrans.json`, cuja chave é a mesma `codigo_olho_vivo:sentido_olho_vivo` da API.
+Testes: `node --test tests/` e `python -m unittest tests/test_servidor.py`.
+
 ## US09-T02-FE — Dados brutos e dicionário
 
 Página **`brutos.html`**, acessível por **Dados brutos** na navegação. Lista o

@@ -5,6 +5,8 @@ import {
   calcularDefasagemSegundos,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
+  descreverUltimaColeta,
+  INTERVALO_CONSULTA_MS,
 } from '../../src/atualizacao.js';
 
 test('mede a defasagem entre a coleta e a exibição do marcador', () => {
@@ -50,4 +52,17 @@ test('falha temporária preserva a última lista válida para manter os marcador
   const requisicao = coordenador.iniciar('/posicoes/atuais');
   await assert.rejects(requisicao.promise, /rede indisponível/);
   assert.equal(estado.obter(), ultimaResposta);
+});
+
+test('consulta a cada 10 s: coleta (30 s) + espera da tela não somam outros 30 s', () => {
+  assert.equal(INTERVALO_CONSULTA_MS, 10_000);
+});
+
+test('informa o horário da última coleta e marca coleta parada', () => {
+  const agora = Date.parse('2026-11-24T12:00:00Z');
+  assert.deepEqual(descreverUltimaColeta('2026-11-24T11:59:35Z', agora),
+    { texto: 'Última coleta às 08:59:35 (há 25 s)', desatualizada: false });
+  assert.deepEqual(descreverUltimaColeta('2026-11-24T11:55:00Z', agora),
+    { texto: 'Última coleta às 08:55:00 (há 5 min) · coleta atrasada', desatualizada: true });
+  assert.deepEqual(descreverUltimaColeta(null, agora), { texto: 'Sem coleta registrada', desatualizada: true });
 });

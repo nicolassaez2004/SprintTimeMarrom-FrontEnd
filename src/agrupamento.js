@@ -22,3 +22,10 @@ export function agruparPosicoes(posicoes, projetar, limites, tamanhoCelula = 48)
     veiculos: grupo.veiculos,
   }));
 }
+
+// Grupo só fica âmbar se todas as posições forem antigas; misto ganha contorno
+// âmbar. Assim ~3% de GPS sem atualização da fonte não pintam a cidade inteira.
+export function classificarGrupo(total, antigos) {
+  if (antigos === 0) return 'fresh';
+  return antigos === total ? 'delayed' : 'fresh mixed';
+}

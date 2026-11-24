@@ -22,3 +22,13 @@ test('agrupa opções por cor e escolhe texto contrastante', () => {
   assert.equal(corDoTexto('#002F6C'), '#ffffff');
   assert.equal(corDoTexto('#FFD100'), '#000000');
 });
+
+test('filtro usa os identificadores no formato da API (/posicoes/atuais)', () => {
+  // A API devolve código e sentido Olho Vivo como texto; GTFS tem precedência.
+  assert.equal(letreiroDoVeiculo({ codigo_olho_vivo: '1273', sentido_olho_vivo: '1', gtfs: null }, catalogo), '8000-10');
+  assert.equal(letreiroDoVeiculo({ codigo_olho_vivo: '1273', sentido_olho_vivo: null, gtfs: null }, catalogo), null);
+  const [routeId, letreiro] = Object.entries(catalogo.gtfs)[0];
+  assert.equal(letreiroDoVeiculo({ codigo_olho_vivo: '1273', sentido_olho_vivo: '1', gtfs: { codigo: routeId } }, catalogo), letreiro);
+  // Chaves ambíguas são excluídas do catálogo: nenhuma chave aponta para letreiro desconhecido.
+  assert.ok(Object.values(catalogo.olho_vivo).every((l) => Object.hasOwn(catalogo.linhas, l)));
+});

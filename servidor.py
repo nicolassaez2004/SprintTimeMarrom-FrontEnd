@@ -17,7 +17,7 @@ ASSETS = {
     "css": {".css"},
     "js": {".js", ".mjs"},
     "src": {".js", ".css"},
-    "data": {".geojson"},
+    "data": {".geojson", ".json"},  # linhas-sptrans.json alimenta o filtro do mapa
 }
 
 
@@ -37,6 +37,11 @@ class FrontendHandler(SimpleHTTPRequestHandler):
             self.send_error(404)
             return None
         return super().send_head()
+
+    def end_headers(self):
+        # Sem isto o navegador reutiliza JS/HTML antigos por heurística após atualizações.
+        self.send_header("Cache-Control", "no-cache")
+        super().end_headers()
 
     def list_directory(self, path):
         self.send_error(404)
