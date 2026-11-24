@@ -94,7 +94,8 @@
   "resultado": "Mensagem 'Não foi possível consultar as séries. Tente novamente em instantes.'; tabela e gráfico ocultos (não mostra valores de outra seleção); 'Tentar novamente' após voltar a 200 recupera e confere com a API."
  },
  "historico_inicial": {
-  "resultado": "Sem período, a consulta começa no histórico (coleta iniciada 19/11 05:00; indicadores 19/11 06:00 a 23/11 09:00) e o período anterior aos indicadores não gera lacunas."
+  "resultado": "Sem período, a consulta começa no histórico (coleta iniciada 19/11 05:00; indicadores 19/11 06:00 a 23/11 09:00) e o período anterior aos indicadores não gera lacunas.",
+  "main_backend_ae13232": "NÃO CONFERE: o commit 493b964 não está na main do backend; com a main (ae13232), período 01/01–19/11 devolve 1 lacuna SEM_PUBLICACAO de 2026-01-01T03:00Z a 2026-11-19T03:00Z (com 493b964: 0 lacunas)."
  },
  "atualizacao_15_min": {
   "resultado": "NÃO VERIFICÁVEL: o painel não tem atualização automática (depende da US23-T03)."
