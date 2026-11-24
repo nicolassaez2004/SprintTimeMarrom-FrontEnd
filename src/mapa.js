@@ -6,6 +6,7 @@ import {
   descreverUltimaColeta,
   INTERVALO_CONSULTA_MS,
   LIMITE_DEFASAGEM_SEGUNDOS,
+  criarBuscaPosicoes,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
 } from './atualizacao.js';
@@ -39,7 +40,7 @@ import {
   let markers;
   let poligonosMunicipais;
   let municipioBounds;
-  const requestCoordinator = criarCoordenadorDeRequisicoes();
+  const requestCoordinator = criarCoordenadorDeRequisicoes(criarBuscaPosicoes());
   const positionStore = criarEstadoPosicoes();
   let hasSuccessfulResponse = false;
   let usaUltimaColeta = true;
@@ -360,18 +361,24 @@ import {
   async function loadPositions() {
     const modo = usaUltimaColeta ? '?modo=ultima_coleta' : '';
     const endpoint = API_BASE_URL + '/posicoes/atuais' + modo;
-    // no-cache: o navegador revalida com o ETag e a API responde 304 sem ciclo novo.
-    const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-cache' });
+    const request = requestCoordinator.iniciar(endpoint, {
+      headers: { Accept: 'application/json' },
+      etagLocal: ultimaEtag,
+    });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
     retryButton.hidden = true;
 
     try {
       const { response } = await request.promise;
+      if (!requestCoordinator.eAtual(request.id)) return;
       const etag = response.headers.get('ETag');
-      if (response.ok && etag && etag === ultimaEtag && hasSuccessfulResponse) {
+      if ((response.ok || response.status === 304) && etag && etag === ultimaEtag) {
         // Mesmo ciclo de coleta: idades e cores são recalculadas sem reprocessar a frota.
-        if (requestCoordinator.eAtual(request.id)) atualizarMapa();
+        atualizarMapa();
         return;
+      }
+      if (response.status === 304) {
+        throw new Error('O serviço não enviou as posições completas. Tente novamente.');
       }
       const payload = await response.json().catch(() => null);
       if (!requestCoordinator.eAtual(request.id)) return;

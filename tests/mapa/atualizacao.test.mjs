@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   LIMITE_DEFASAGEM_SEGUNDOS,
   calcularDefasagemSegundos,
+  criarBuscaPosicoes,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
   descreverUltimaColeta,
@@ -65,4 +66,33 @@ test('informa o horário da última coleta e marca coleta parada', () => {
   assert.deepEqual(descreverUltimaColeta('2026-11-24T11:55:00Z', agora),
     { texto: 'Última coleta às 08:55:00 (há 5 min) · coleta atrasada', desatualizada: true });
   assert.deepEqual(descreverUltimaColeta(null, agora), { texto: 'Sem coleta registrada', desatualizada: true });
+});
+
+
+test('recupera o corpo se a primeira consulta receber 304 sem posições locais', async () => {
+  const chamadas = [];
+  const dados = { veiculos: [{ prefixo: '11001' }] };
+  const busca = criarBuscaPosicoes(async (_url, opcoes) => {
+    chamadas.push(opcoes.cache);
+    return chamadas.length === 1
+      ? new Response(null, { status: 304, headers: { ETag: 'W/"ciclo-1"' } })
+      : Response.json(dados);
+  });
+
+  const resposta = await busca('/posicoes/atuais', {});
+  assert.deepEqual(await resposta.json(), dados);
+  assert.deepEqual(chamadas, ['reload', 'no-store']);
+});
+
+test('revalida as posições já carregadas sem baixar a mesma frota', async () => {
+  const etagLocal = 'W/"ciclo-1"';
+  let consultas = 0;
+  const busca = criarBuscaPosicoes(async (_url, { cache }) => {
+    consultas += 1;
+    assert.equal(cache, 'no-cache');
+    return new Response(null, { status: 304, headers: { ETag: etagLocal } });
+  });
+
+  assert.equal((await busca('/posicoes/atuais', { etagLocal })).status, 304);
+  assert.equal(consultas, 1);
 });

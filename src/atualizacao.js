@@ -19,6 +19,23 @@ export function calcularDefasagemSegundos(coletadoEm, exibidoEmMs = Date.now()) 
   return (exibidoEmMs - instanteColeta) / 1000;
 }
 
+export function criarBuscaPosicoes(fetchImpl = fetch) {
+  return async (url, { etagLocal, ...opcoes }) => {
+    const resposta = await fetchImpl(url, {
+      ...opcoes,
+      // A primeira carga precisa do corpo e deve renovar o cache do navegador.
+      cache: etagLocal ? 'no-cache' : 'reload',
+    });
+    if (resposta.status !== 304 || (etagLocal && resposta.headers.get('ETag') === etagLocal)) {
+      return resposta;
+    }
+
+    // O navegador pode receber um 304 sem ter o corpo que ele valida.
+    opcoes.signal?.throwIfAborted();
+    return fetchImpl(url, { ...opcoes, cache: 'no-store' });
+  };
+}
+
 export function criarCoordenadorDeRequisicoes(fetchImpl = fetch) {
   let sequenciaAtual = 0;
   let controladorAtual = null;
