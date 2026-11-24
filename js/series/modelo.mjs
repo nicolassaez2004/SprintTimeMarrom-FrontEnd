@@ -3,8 +3,11 @@ import { dataValida } from '../qualidade/modelo.mjs';
 export const TIPOS = Object.freeze({
   PONTUALIDADE_VIAGENS: 'Pontualidade das saídas',
   CUMPRIMENTO_VIAGENS: 'Cumprimento das viagens',
+  REGULARIDADE_INTERVALOS: 'Regularidade dos intervalos',
 });
-export const CAMPOS = ['linha', 'sentido', 'tipo', 'inicio', 'fim', 'hora_inicio', 'hora_fim'];
+// US17: a regularidade é publicada por parada; os demais indicadores, por linha.
+export const POR_PARADA = new Set(['REGULARIDADE_INTERVALOS']);
+export const CAMPOS = ['linha', 'sentido', 'tipo', 'parada', 'inicio', 'fim', 'hora_inicio', 'hora_fim'];
 const HORA = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 const instante = v => typeof v === 'string' && ISO.test(v) && Number.isFinite(Date.parse(v));
@@ -26,6 +29,10 @@ export function validarFiltros(filtros) {
   if (!f.linha || f.linha.length > 64 || /[\x00-\x1f\x7f]/.test(f.linha)) throw new Error('Informe um código de linha válido.');
   if (!['0', '1'].includes(f.sentido)) throw new Error('Selecione ida ou volta.');
   if (!Object.hasOwn(TIPOS, f.tipo)) throw new Error('Selecione um indicador disponível.');
+  if (POR_PARADA.has(f.tipo) && (!f.parada || f.parada.length > 64 || /[\x00-\x1f\x7f]/.test(f.parada))) {
+    throw new Error('Informe o código da parada para consultar a regularidade.');
+  }
+  if (!POR_PARADA.has(f.tipo) && f.parada) throw new Error('A parada só se aplica à regularidade dos intervalos.');
   for (const campo of ['inicio', 'fim']) {
     if (f[campo] && !dataValida(f[campo])) throw new Error('Confira as datas do período.');
   }
@@ -57,6 +64,7 @@ export function parametrosApi(filtros, pagina = 1) {
   const f = validarFiltros(filtros);
   const args = new URLSearchParams({ linha: f.linha, sentido: f.sentido, tipo: f.tipo,
     page: String(pagina), page_size: '50' });
+  if (f.parada) args.set('parada', f.parada);
   if (f.inicio) args.set('inicio', meiaNoiteSP(f.inicio));
   if (f.fim) {
     const proximo = new Date(`${f.fim}T12:00:00Z`);
@@ -97,6 +105,7 @@ export function validarResposta(corpo, filtros, pagina) {
   if ((consulta.inicio === null) !== (consulta.fim === null)) invalida();
   for (const item of corpo.dados) {
     if (!objeto(item) || item.linha !== filtros.linha || item.sentido !== filtros.sentido || item.tipo !== filtros.tipo
+        || (item.parada ?? '') !== (filtros.parada || '')
         || !texto(item.id) || !texto(item.unidade) || !texto(item.versao_conjunto) || !texto(item.versao_gtfs_id)
         || !instante(item.inicio) || !instante(item.fim) || Date.parse(item.inicio) >= Date.parse(item.fim)
         || !(item.valor === null || (typeof item.valor === 'number' && Number.isFinite(item.valor)))
@@ -113,8 +122,9 @@ export function validarResposta(corpo, filtros, pagina) {
   return corpo;
 }
 
+// CV (US17) com três casas: perto do limite 0,5 duas casas esconderiam o agrupamento.
 export const valorFormatado = (valor, unidade) => valor === null ? 'Sem resultado' :
-  `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(valor)} ${unidade}`;
+  `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: unidade.startsWith('CV') ? 3 : 2 }).format(valor)} ${unidade}`;
 // Contagens publicadas (ex.: pontuais de realizadas); null permanece não informado.
 export const contagensFormatadas = c => c.denominador === null ? 'Contagens não informadas'
   : `${c.numerador ?? '—'} de ${c.denominador}${c.denominador === 0 ? ' · sem observações suficientes' : ''}`;
