@@ -1,0 +1,180 @@
+{
+  "consulta": {
+    "criterio_periodo": "JANELAS_INTEIRAMENTE_CONTIDAS",
+    "fim": "2026-11-24T12:00:00+00:00",
+    "fuso": "America/Sao_Paulo",
+    "hora_fim": null,
+    "hora_inicio": null,
+    "inicio": "2026-11-20T03:00:00+00:00",
+    "lacunas_escopo": "PAGINA",
+    "lacunas_truncadas": false
+  },
+  "dados": [
+    {
+      "contagens": {
+        "denominador": 100,
+        "numerador": null
+      },
+      "fim": "2026-11-20T12:00:00+00:00",
+      "id": "sintetico-0-PONTUALIDADE_VIAGENS-0",
+      "indicador": "PONTUALIDADE_VIAGENS",
+      "inicio": "2026-11-20T11:00:00+00:00",
+      "instante": "2026-11-20T11:00:00+00:00",
+      "linha": "3762-10",
+      "parada": null,
+      "qualidade": {
+        "origem": "SINTETICA",
+        "versao_reconstrucao": "recon-sintetica-1"
+      },
+      "sentido": "0",
+      "status": "DISPONIVEL",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "trecho": null,
+      "unidade": "%",
+      "valor": 92.5,
+      "versao_calculo": "regra-sintetica-1",
+      "versao_conjunto": "conjunto-sintetico-0",
+      "versao_correspondencia": "corr-sintetica-1",
+      "versao_gtfs_id": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "contagens": {
+        "denominador": 100,
+        "numerador": null
+      },
+      "fim": "2026-11-21T12:00:00+00:00",
+      "id": "sintetico-0-PONTUALIDADE_VIAGENS-1",
+      "indicador": "PONTUALIDADE_VIAGENS",
+      "inicio": "2026-11-21T11:00:00+00:00",
+      "instante": "2026-11-21T11:00:00+00:00",
+      "linha": "3762-10",
+      "parada": null,
+      "qualidade": {
+        "origem": "SINTETICA",
+        "versao_reconstrucao": "recon-sintetica-1"
+      },
+      "sentido": "0",
+      "status": "DISPONIVEL",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "trecho": null,
+      "unidade": "%",
+      "valor": 0.0,
+      "versao_calculo": "regra-sintetica-1",
+      "versao_conjunto": "conjunto-sintetico-1",
+      "versao_correspondencia": "corr-sintetica-1",
+      "versao_gtfs_id": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "contagens": {
+        "denominador": 0,
+        "numerador": null
+      },
+      "fim": "2026-11-22T12:00:00+00:00",
+      "id": "sintetico-0-PONTUALIDADE_VIAGENS-2",
+      "indicador": "PONTUALIDADE_VIAGENS",
+      "inicio": "2026-11-22T11:00:00+00:00",
+      "instante": "2026-11-22T11:00:00+00:00",
+      "linha": "3762-10",
+      "parada": null,
+      "qualidade": {
+        "origem": "SINTETICA",
+        "versao_reconstrucao": "recon-sintetica-1"
+      },
+      "sentido": "0",
+      "status": "SEM_RESULTADO",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "trecho": null,
+      "unidade": "%",
+      "valor": null,
+      "versao_calculo": "regra-sintetica-1",
+      "versao_conjunto": "conjunto-sintetico-2",
+      "versao_correspondencia": "corr-sintetica-1",
+      "versao_gtfs_id": "00000000-0000-0000-0000-000000000001"
+    },
+    {
+      "contagens": {
+        "denominador": 100,
+        "numerador": null
+      },
+      "fim": "2026-11-24T12:00:00+00:00",
+      "id": "sintetico-0-PONTUALIDADE_VIAGENS-4",
+      "indicador": "PONTUALIDADE_VIAGENS",
+      "inicio": "2026-11-24T11:00:00+00:00",
+      "instante": "2026-11-24T11:00:00+00:00",
+      "linha": "3762-10",
+      "parada": null,
+      "qualidade": {
+        "origem": "SINTETICA",
+        "versao_reconstrucao": "recon-sintetica-1"
+      },
+      "sentido": "0",
+      "status": "DISPONIVEL",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "trecho": null,
+      "unidade": "%",
+      "valor": 88.75,
+      "versao_calculo": "regra-sintetica-1",
+      "versao_conjunto": "conjunto-sintetico-4",
+      "versao_correspondencia": "corr-sintetica-1",
+      "versao_gtfs_id": "00000000-0000-0000-0000-000000000001"
+    }
+  ],
+  "historico": {
+    "coleta_inicio": "2026-11-20T03:00:00+00:00",
+    "coleta_ultimo_ciclo": "2026-11-24T12:00:00+00:00",
+    "fim_indicadores": "2026-11-24T12:00:00+00:00",
+    "inicio_indicadores": "2026-11-20T11:00:00+00:00"
+  },
+  "lacunas": [
+    {
+      "fim": "2026-11-20T11:00:00+00:00",
+      "inicio": "2026-11-20T03:00:00+00:00",
+      "linha": "3762-10",
+      "motivo": "SEM_PUBLICACAO",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "unidade": "%"
+    },
+    {
+      "fim": "2026-11-21T11:00:00+00:00",
+      "inicio": "2026-11-20T12:00:00+00:00",
+      "linha": "3762-10",
+      "motivo": "SEM_PUBLICACAO",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "unidade": "%"
+    },
+    {
+      "fim": "2026-11-22T11:00:00+00:00",
+      "inicio": "2026-11-21T12:00:00+00:00",
+      "linha": "3762-10",
+      "motivo": "SEM_PUBLICACAO",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "unidade": "%"
+    },
+    {
+      "fim": "2026-11-22T12:00:00+00:00",
+      "inicio": "2026-11-22T11:00:00+00:00",
+      "linha": "3762-10",
+      "motivo": "RESULTADO_NULO",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "unidade": "%"
+    },
+    {
+      "fim": "2026-11-24T11:00:00+00:00",
+      "inicio": "2026-11-22T12:00:00+00:00",
+      "linha": "3762-10",
+      "motivo": "SEM_PUBLICACAO",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "unidade": "%"
+    }
+  ],
+  "paginacao": {
+    "page": 1,
+    "page_size": 50,
+    "total": 4
+  }
+}

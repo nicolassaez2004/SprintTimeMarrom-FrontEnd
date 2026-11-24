@@ -1,5 +1,11 @@
 # SprintTimeMarrom
 
+## Histórico por linha (US23-T02A)
+
+Abra `series.html` pelo menu **Histórico por linha**. Os filtros consultam o
+backend `/series`, ficam no endereço e preservam zero e ausência de resultado.
+[Contrato, uso e evidências](docs/US23-T02A.md). Requer US23-T01 no backend.
+
 ## Mapa ao vivo (US22)
 
 `mapa.html` consulta `GET /posicoes/atuais` a cada 10 s. A API responde 304

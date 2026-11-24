@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="api-base" content="http://127.0.0.1:5000/">
+  <meta name="description" content="Histórico de pontualidade e cumprimento das viagens por linha de ônibus de São Paulo.">
+  <meta name="theme-color" content="#765440">
+  <title>Histórico por linha · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/series.css">
+  <script type="module" src="js/series/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o histórico</a>
+  <aside class="sidebar">
+    <a class="brand" href="./#mapa" aria-label="Observa SP, início"><span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span></a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="./#mapa">Ônibus ao vivo</a>
+      <a class="nav-link active" href="series.html" aria-current="page">Histórico por linha</a>
+      <a class="nav-link" href="./#qualidade">Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo">Acervo oficial</a>
+      <a class="nav-link" href="brutos.html">Dados brutos</a>
+    </nav>
+    <div class="sidebar-note"><span class="note-label">ACOMPANHE NO TEMPO</span><p>Uma linha, seus resultados e os intervalos em que ainda faltam dados.</p><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><a href="./#mapa">São Paulo</a><span class="public-pill">Acesso público</span></header>
+    <main id="conteudo" tabindex="-1">
+      <div class="page-heading"><div><p class="eyebrow">INDICADORES DA OPERAÇÃO</p><h1>Histórico por linha</h1><p>Consulte o desempenho de uma linha, desde o início da coleta.</p></div><span class="timezone">Horário de São Paulo<br><strong>America/Sao_Paulo</strong></span></div>
+      <form id="filtros-series" class="series-filtros" aria-label="Filtros do histórico">
+        <label class="linha-filtro" for="linha">Linha<input id="linha" name="linha" placeholder="Ex.: 3762-10" maxlength="64" list="linhas" autocomplete="off" required><datalist id="linhas"></datalist></label>
+        <label for="sentido">Sentido<select id="sentido" name="sentido"><option value="0">Ida</option><option value="1">Volta</option></select></label>
+        <label class="indicador-filtro" for="tipo">Indicador<select id="tipo" name="tipo"><option value="PONTUALIDADE_VIAGENS">Pontualidade das saídas</option><option value="CUMPRIMENTO_VIAGENS">Cumprimento das viagens</option></select></label>
+        <fieldset><legend>Período <span>· deixe vazio para todo o histórico</span></legend><div class="par-filtros"><label for="inicio">Data inicial<input id="inicio" name="inicio" type="date"></label><label for="fim">Data final<input id="fim" name="fim" type="date"></label></div></fieldset>
+        <fieldset><legend>Faixa diária <span>· opcional</span></legend><div class="par-filtros"><label for="hora_inicio">De<input id="hora_inicio" name="hora_inicio" type="time"></label><label for="hora_fim">Até<input id="hora_fim" name="hora_fim" type="time"></label></div></fieldset>
+        <div class="acoes-filtros"><button class="button primary" type="submit">Consultar histórico</button><button class="button secondary" type="reset">Limpar</button><p>Os filtros são mantidos neste endereço.</p></div>
+      </form>
+      <p class="nota-faixa">A faixa diária usa apenas resultados calculados para janelas que caibam inteiras nas horas escolhidas. Uma faixa como 22:00–02:00 atravessa a meia-noite.</p>
+      <p id="orientacao" class="series-vazio">Escolha uma linha para consultar os indicadores publicados. Não é necessário entrar em uma conta.</p>
+      <p id="carregando-series" class="loading" role="status" hidden>Buscando o histórico da linha…</p>
+      <section id="erro-series" class="message error" role="alert" hidden><div><h2>Não foi possível consultar</h2><p id="erro-texto"></p></div><button id="tentar-series" class="button secondary" type="button">Tentar novamente</button></section>
+      <div id="resultado-series" hidden>
+        <p id="cenario-sintetico" class="message warning" hidden><strong>Cenário de teste.</strong> Dados sintéticos; não representam a operação real.</p>
+        <section class="resumo-series" aria-label="Contexto da consulta"><div><p class="eyebrow">RESULTADOS PUBLICADOS</p><h2 id="titulo-resultado"></h2><p id="resumo-filtros"></p></div><div><span>Histórico disponível para este indicador</span><strong id="limites-historico"></strong><small id="inicio-coleta"></small></div></section>
+        <p id="sem-resultados" class="series-vazio" role="status" hidden>Nenhum resultado publicado para estes filtros. Ausência de resultado não significa valor zero.</p>
+        <section id="graficos-series" aria-label="Gráficos do histórico" hidden></section>
+        <section class="panel tabela-panel" aria-labelledby="titulo-tabela"><div class="section-top"><div><h2 id="titulo-tabela">Resultados da consulta</h2><p id="total-resultados" class="muted"></p></div><span class="small-tag">Horário de São Paulo</span></div><div class="series-scroll" tabindex="0" role="region" aria-label="Resultados publicados por intervalo"><table><caption class="sr-only">Valores, unidades e versões devolvidos pela API</caption><thead><tr><th scope="col">Intervalo</th><th scope="col">Resultado</th><th scope="col">Procedência</th></tr></thead><tbody id="valores-series"></tbody></table></div>
+          <nav id="paginacao-series" class="paginacao-series" aria-label="Páginas do histórico" hidden><button id="anterior-series" class="button secondary" type="button">Anterior</button><span id="pagina-series"></span><button id="proxima-series" class="button secondary" type="button">Próxima</button></nav>
+        </section>
+        <details class="panel lacunas-panel"><summary>Intervalos sem resultado nesta página <span id="total-lacunas"></span></summary><p>Os intervalos abaixo vêm da consulta. Valores ausentes são preservados, sem preencher com zero.</p><p id="aviso-lacunas" class="message warning" hidden>Há mais intervalos sem resultado do que esta página pode listar. Reduza o período para conferir todos.</p><ul id="lacunas-series"></ul><p id="nenhuma-lacuna" hidden>Nenhum intervalo sem resultado informado nesta página.</p></details>
+        <p class="nota-faixa">Os filtros permanecem selecionados ao navegar entre páginas e ficam disponíveis para a futura exportação.</p>
+      </div>
+      <footer><span>Observa SP · Time Marrom</span><span>Fonte: indicadores operacionais publicados</span></footer>
+    </main>
+  </div>
+  <noscript><p class="message">Ative o JavaScript para consultar o histórico.</p></noscript>
+</body>
+</html>
