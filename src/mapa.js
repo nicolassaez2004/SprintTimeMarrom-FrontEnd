@@ -1,8 +1,10 @@
 import { MAPA_CONFIG } from './config.js';
-import { agruparPosicoes } from './agrupamento.js';
+import { agruparPosicoes, classificarGrupo } from './agrupamento.js';
 import { corDoTexto, letreiroDoVeiculo, listarCores, listarLinhas } from './linhas.js';
 import {
   calcularDefasagemSegundos,
+  descreverUltimaColeta,
+  INTERVALO_CONSULTA_MS,
   LIMITE_DEFASAGEM_SEGUNDOS,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
@@ -10,7 +12,7 @@ import {
 
 (() => {
   const API_BASE_URL = MAPA_CONFIG.apiBaseUrl.replace(/\/$/, '');
-  const REFRESH_MS = 30_000;
+  const REFRESH_MS = INTERVALO_CONSULTA_MS;
   const mapElement = document.querySelector('#map');
   const message = document.querySelector('#map-message');
   const messageTitle = document.querySelector('#message-title');
@@ -28,6 +30,9 @@ import {
   let corSelecionada = '';
   let quantidadeOpcoes = TAMANHO_PAGINA;
   const countElement = document.querySelector('#vehicle-count');
+  const lastUpdate = document.querySelector('#last-update');
+  let ultimaColetaEm = null;
+  let ultimaEtag = null;
 
   let map;
   let markers;
@@ -200,16 +205,17 @@ import {
     return painel;
   }
 
-  function desenharGrupo(grupo, temAtraso) {
+  function desenharGrupo(grupo, antigos) {
     const { latitude, longitude, veiculos } = grupo;
     const quantidade = veiculos.length;
     const icon = L.divIcon({
       className: '',
-      html: '<span class="bus-cluster ' + (temAtraso ? 'delayed' : 'fresh') + '">' + quantidade + '</span>',
+      html: '<span class="bus-cluster ' + classificarGrupo(quantidade, antigos) + '">' + quantidade + '</span>',
       iconSize: [40, 40],
       iconAnchor: [20, 20],
     });
-    const marcador = L.marker([latitude, longitude], { icon, title: quantidade + ' ônibus agrupados' });
+    const titulo = quantidade + ' ônibus agrupados' + (antigos ? ', ' + antigos + ' com posição antiga (mais de 60 s)' : '');
+    const marcador = L.marker([latitude, longitude], { icon, title: titulo });
     if (map.getZoom() < map.getMaxZoom()) {
       marcador.on('click', () => map.setView([latitude, longitude], Math.min(map.getZoom() + 2, map.getMaxZoom())));
     } else {
@@ -233,17 +239,17 @@ import {
     let proximaMudanca = Infinity;
 
     for (const grupo of grupos) {
-      let temAtraso = false;
+      let antigos = 0;
       for (const veiculo of grupo.veiculos) {
         const idade = agora - veiculo.coletaMs;
         if (idade >= 0 && idade <= limiteMs) {
           proximaMudanca = Math.min(proximaMudanca, limiteMs - idade + 1);
         } else {
-          temAtraso = true;
+          antigos += 1;
         }
       }
-      if (grupo.veiculos.length === 1) markerFor(grupo.veiculos[0], !temAtraso).addTo(markers);
-      else desenharGrupo(grupo, temAtraso);
+      if (grupo.veiculos.length === 1) markerFor(grupo.veiculos[0], antigos === 0).addTo(markers);
+      else desenharGrupo(grupo, antigos);
     }
     if (Number.isFinite(proximaMudanca)) {
       freshnessTimer = setTimeout(agendarDesenho, Math.max(1000, proximaMudanca));
@@ -290,9 +296,14 @@ import {
   function atualizarMapa({ preservarErro = false } = {}) {
     const quantidade = posicoesFiltradas().length;
     countElement.textContent = String(quantidade);
+    const coleta = descreverUltimaColeta(ultimaColetaEm);
+    lastUpdate.textContent = coleta.texto;
+    lastUpdate.classList.toggle('stale', coleta.desatualizada);
     agendarDesenho();
     if (preservarErro && message.classList.contains('error')) return;
-    if (quantidade === 0) {
+    if (quantidade === 0 && positionStore.obter().length === 0) {
+      setMessage('empty', 'Nenhuma posição disponível', 'Não há posições coletadas nas últimas 24 h. Isso não indica que a frota esteja parada.');
+    } else if (quantidade === 0) {
       setMessage('empty', 'Nenhum veículo para este filtro', 'Tente outra linha ou aguarde a próxima atualização.');
     } else {
       hideMessage();
@@ -346,12 +357,19 @@ import {
 
   async function loadPositions() {
     const endpoint = API_BASE_URL + '/posicoes/atuais';
-    const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-store' });
+    // no-cache: o navegador revalida com o ETag e a API responde 304 sem ciclo novo.
+    const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-cache' });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
     retryButton.hidden = true;
 
     try {
       const { response } = await request.promise;
+      const etag = response.headers.get('ETag');
+      if (response.ok && etag && etag === ultimaEtag && hasSuccessfulResponse) {
+        // Mesmo ciclo de coleta: idades e cores são recalculadas sem reprocessar a frota.
+        if (requestCoordinator.eAtual(request.id)) atualizarMapa();
+        return;
+      }
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
         const error = new Error(payload?.erro?.mensagem || `HTTP_${response.status}`);
@@ -362,6 +380,8 @@ import {
       if (!payload || !Array.isArray(payload.veiculos)) throw new Error('Resposta inesperada do serviço de posições.');
 
       positionStore.substituir(prepararPosicoes(payload.veiculos));
+      ultimaColetaEm = payload.ultima_coleta_ok_em ?? null;
+      ultimaEtag = etag;
       hasSuccessfulResponse = true;
       atualizarMapa();
     } catch (error) {

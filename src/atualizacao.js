@@ -1,4 +1,16 @@
 export const LIMITE_DEFASAGEM_SEGUNDOS = 60;
+// Coleta a cada 30 s + gravação + consulta: com 10 s a tela não soma outros 30 s
+// de espera. Sem ciclo novo a API responde 304 (ETag), sem reenviar a frota.
+export const INTERVALO_CONSULTA_MS = 10_000;
+
+export function descreverUltimaColeta(ultimaColetaEm, agoraMs = Date.now()) {
+  const defasagem = calcularDefasagemSegundos(ultimaColetaEm, agoraMs);
+  if (defasagem === null) return { texto: 'Sem coleta registrada', desatualizada: true };
+  const hora = new Date(Date.parse(ultimaColetaEm)).toLocaleTimeString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+  const desatualizada = defasagem > LIMITE_DEFASAGEM_SEGUNDOS;
+  const idade = defasagem < 60 ? `${Math.floor(defasagem)} s` : `${Math.floor(defasagem / 60)} min`;
+  return { texto: `Última coleta às ${hora} (há ${idade})${desatualizada ? ' · coleta atrasada' : ''}`, desatualizada };
+}
 
 export function calcularDefasagemSegundos(coletadoEm, exibidoEmMs = Date.now()) {
   if (typeof coletadoEm !== 'string' || !coletadoEm) return null;
