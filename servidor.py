@@ -10,7 +10,7 @@ from urllib.parse import unquote, urlsplit
 
 
 RAIZ = Path(__file__).resolve().parent
-PAGINAS = {"/", "/index.html", "/qualidade.html", "/acervo.html", "/mapa.html", "/brutos.html"}
+PAGINAS = {"/", "/index.html", "/qualidade.html", "/acervo.html", "/mapa.html", "/brutos.html", "/series.html"}
 ARQUIVOS_PUBLICOS = {"/data/linhas-sptrans.json"}
 ASSETS = {
     "assets": {".svg", ".png", ".jpg", ".webp", ".ico"},

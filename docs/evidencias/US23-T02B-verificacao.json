@@ -1,0 +1,59 @@
+{
+  "data": "2026-11-24",
+  "origem": "SINTETICA",
+  "backend": "HTTP real + SQLite descartavel",
+  "navegador": "157.0.8103.39",
+  "verificacoes": [
+    "tres amostras numericas para quatro resultados",
+    "zero no eixo zero",
+    "null sem ponto ficticio",
+    "tres tracos separados sem interpolacao",
+    "unidade % visivel",
+    "ausencias sinalizadas",
+    "foco e descricao acessivel",
+    "resize sem consulta extra",
+    "celular sem transbordamento",
+    "recorte somente zero",
+    "recorte somente null",
+    "recorte sem publicacao",
+    "filtros preservados"
+  ],
+  "consultas": [
+    {
+      "linha": "3762-10",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-22T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-22T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-23T03:00:00.000Z",
+      "fim": "2026-11-24T03:00:00.000Z"
+    }
+  ],
+  "erros_javascript": [],
+  "aceite": "PENDENTE_REVISAO"
+}

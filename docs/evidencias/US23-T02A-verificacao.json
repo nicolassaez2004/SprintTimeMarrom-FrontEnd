@@ -1,0 +1,156 @@
+{
+  "data": "2026-11-24",
+  "origem": "SINTETICA",
+  "backend": "HTTP real + SQLite descartavel",
+  "navegador": "157.0.8103.39",
+  "fuso_navegador": "Asia/Tokyo",
+  "verificacoes": [
+    "carregando",
+    "filtros corretos",
+    "datas no fuso SP",
+    "filtros restaurados",
+    "zero",
+    "null",
+    "ausencia",
+    "503",
+    "429 e Retry-After",
+    "desktop",
+    "mobile sem transbordamento"
+  ],
+  "consultas": [
+    {
+      "linha": "3762-10",
+      "sentido": "0",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "PONTUALIDADE_VIAGENS",
+      "page": "1",
+      "page_size": "50"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "9999-99",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    },
+    {
+      "linha": "3762-10",
+      "sentido": "1",
+      "tipo": "CUMPRIMENTO_VIAGENS",
+      "page": "1",
+      "page_size": "50",
+      "inicio": "2026-11-21T03:00:00.000Z",
+      "fim": "2026-11-23T03:00:00.000Z",
+      "hora_inicio": "06:00",
+      "hora_fim": "10:00"
+    }
+  ],
+  "erros_javascript": [],
+  "aceite": "PENDENTE_REVISAO"
+}
