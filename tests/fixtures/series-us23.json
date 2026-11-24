@@ -12,8 +12,8 @@
   "dados": [
     {
       "contagens": {
-        "denominador": 100,
-        "numerador": null
+        "denominador": 40,
+        "numerador": 37
       },
       "fim": "2026-11-20T12:00:00+00:00",
       "id": "sintetico-0-PONTUALIDADE_VIAGENS-0",
@@ -39,8 +39,8 @@
     },
     {
       "contagens": {
-        "denominador": 100,
-        "numerador": null
+        "denominador": 12,
+        "numerador": 0
       },
       "fim": "2026-11-21T12:00:00+00:00",
       "id": "sintetico-0-PONTUALIDADE_VIAGENS-1",
@@ -67,7 +67,7 @@
     {
       "contagens": {
         "denominador": 0,
-        "numerador": null
+        "numerador": 0
       },
       "fim": "2026-11-22T12:00:00+00:00",
       "id": "sintetico-0-PONTUALIDADE_VIAGENS-2",
@@ -93,8 +93,8 @@
     },
     {
       "contagens": {
-        "denominador": 100,
-        "numerador": null
+        "denominador": 80,
+        "numerador": 71
       },
       "fim": "2026-11-24T12:00:00+00:00",
       "id": "sintetico-0-PONTUALIDADE_VIAGENS-4",
