@@ -1,5 +1,5 @@
 import { prepararGraficos, coordenadas } from './grafico.mjs';
-import { TIPOS, contagensFormatadas, dataHora, valorFormatado } from './modelo.mjs';
+import { TIPOS, TITULOS_SERIE, contagensFormatadas, dataHora, valorFormatado } from './modelo.mjs';
 import { escapar as h } from '../qualidade/modelo.mjs';
 
 const numero = v => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(v);
@@ -8,7 +8,7 @@ const dia = ms => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paul
 export function figura(grupo, indice, largura) {
   const id = `grafico-${indice}`;
   const ref = grupo.referencia;
-  const cabecalho = `<div class="cabecalho-grafico"><div><p class="eyebrow">SÉRIE DESTA PÁGINA</p><h2 id="${id}-titulo">${h(TIPOS[ref.tipo] ?? ref.tipo)}</h2></div><span class="unidade-grafico">Unidade: <strong>${h(ref.unidade)}</strong></span></div>`;
+  const cabecalho = `<div class="cabecalho-grafico"><div><p class="eyebrow">SÉRIE DESTA PÁGINA</p><h2 id="${id}-titulo">${h(TITULOS_SERIE[ref.tipo] ?? TIPOS[ref.tipo] ?? ref.tipo)}</h2></div><span class="unidade-grafico">Unidade: <strong>${h(ref.unidade)}</strong></span></div>`;
   const legenda = `<figcaption id="${id}-legenda">${grupo.numericos.length} ${grupo.numericos.length === 1 ? 'resultado numérico' : 'resultados numéricos'} · ${grupo.pontos.length - grupo.numericos.length} sem resultado. Horário de São Paulo. <strong>Zero é um resultado; intervalos sem dados não são preenchidos.</strong></figcaption>`;
   const versoes = `<details class="versoes-grafico"><summary>Versões desta série</summary><p>Rede GTFS: ${h(ref.versao_gtfs_id)}</p><p>Regra: ${h(ref.versao_calculo ?? 'Não informada')} · Correspondência: ${h(ref.versao_correspondencia ?? 'Não informada')} · Reconstrução: ${h(ref.qualidade.versao_reconstrucao ?? 'Não informada')}</p><p>Os conjuntos de cada janela estão na tabela de resultados.</p></details>`;
   if (!grupo.numericos.length) return `<figure class="panel figura-serie">${cabecalho}<div class="grafico-sem-valores" role="status"><strong>Nenhum valor numérico neste recorte</strong><p>Os resultados recebidos estão indisponíveis. A unidade é ${h(ref.unidade)}; não há valor zero implícito.</p></div>${legenda}${versoes}</figure>`;
