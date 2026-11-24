@@ -15,19 +15,22 @@
 <body>
   <a class="skip-link" href="#conteudo">Pular para o histórico</a>
   <aside class="sidebar">
-    <a class="brand" href="./#mapa" aria-label="Observa SP, início"><span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span></a>
+    <a class="brand" href="./" aria-label="Observa SP, início">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span>
+      <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+    </a>
     <p class="nav-caption">DADOS ABERTOS</p>
     <nav aria-label="Navegação principal">
-      <a class="nav-link" href="./#mapa">Ônibus ao vivo</a>
-      <a class="nav-link active" href="series.html" aria-current="page">Histórico por linha</a>
-      <a class="nav-link" href="./#qualidade">Qualidade da coleta</a>
-      <a class="nav-link" href="./#acervo">Acervo oficial</a>
-      <a class="nav-link" href="brutos.html">Dados brutos</a>
+      <a class="nav-link" href="./#mapa"><span aria-hidden="true">◎</span> Ônibus ao vivo</a>
+      <a class="nav-link" href="./#qualidade"><span aria-hidden="true">▥</span> Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
+      <a class="nav-link" href="brutos.html"><span aria-hidden="true">↓</span> Dados brutos</a>
+      <a class="nav-link active" href="series.html" aria-current="page"><span aria-hidden="true">◷</span> Histórico por linha</a>
     </nav>
     <div class="sidebar-note"><span class="note-label">ACOMPANHE NO TEMPO</span><p>Uma linha, seus resultados e os intervalos em que ainda faltam dados.</p><span>Desenvolvido pelo Time Marrom</span></div>
   </aside>
   <div class="workspace">
-    <header class="topbar"><a href="./#mapa">São Paulo</a><span class="public-pill">Acesso público</span></header>
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> Histórico por linha</span><span class="public-pill">Acesso público</span></header>
     <main id="conteudo" tabindex="-1">
       <div class="page-heading"><div><p class="eyebrow">INDICADORES DA OPERAÇÃO</p><h1>Histórico por linha</h1><p>Consulte o desempenho de uma linha, desde o início da coleta.</p></div><span class="timezone">Horário de São Paulo<br><strong>America/Sao_Paulo</strong></span></div>
       <form id="filtros-series" class="series-filtros" aria-label="Filtros do histórico">
