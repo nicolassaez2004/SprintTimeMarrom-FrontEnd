@@ -3,6 +3,7 @@ import { CAMPOS, TIPOS, buscaDaSelecao, contagensFormatadas, dataHora, lerSeleca
 import { escapar as h } from '../qualidade/modelo.mjs';
 import { instalarGraficos } from './graficos.mjs';
 import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from './atualizacao.mjs';
+import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
 
 instalarGraficos();
 
@@ -17,16 +18,23 @@ function limparResultado() {
   document.dispatchEvent(new CustomEvent('series:limpar'));
 }
 
+// US17-T03A-FE: regularidade mostra agrupamento, motivo da ausência e intervalos usados.
+function contagensDoPonto(p) {
+  if (p.tipo !== REGULARIDADE) return `<small>Contagens: ${h(contagensFormatadas(p.contagens))}</small>`;
+  const r = detalheRegularidade(p);
+  return [r.agrupamento, r.motivo, r.intervalos].filter(Boolean).map(t => `<small>${h(t)}</small>`).join('');
+}
+
 function renderizar(resposta, filtros, estado = null) {
   const { dados, paginacao, historico, lacunas } = resposta;
   el('cenario-sintetico').hidden = !dados.some(p => p.qualidade.origem === 'SINTETICA');
   const sentido = filtros.sentido === '0' ? 'Ida' : 'Volta';
-  el('titulo-resultado').textContent = `${filtros.linha} · ${sentido}`;
+  el('titulo-resultado').textContent = `${filtros.linha} · ${sentido}${filtros.parada ? ` · parada ${filtros.parada}` : ''}`;
   el('resumo-filtros').textContent = `${TIPOS[filtros.tipo]} · ${filtros.inicio || 'Desde o início'} a ${filtros.fim || 'último resultado'}${filtros.hora_inicio ? ` · ${filtros.hora_inicio}–${filtros.hora_fim}` : ' · dia inteiro'} · ${resposta.consulta.inicio ? `período efetivo ${dataHora(resposta.consulta.inicio)} a ${dataHora(resposta.consulta.fim)}` : 'período fora do histórico coletado'}`;
   el('limites-historico').textContent = historico.inicio_indicadores ? `${dataHora(historico.inicio_indicadores)} a ${dataHora(historico.fim_indicadores)}` : 'Nenhum indicador publicado ainda';
   el('inicio-coleta').textContent = historico.coleta_inicio ? `Coleta do projeto iniciada em ${dataHora(historico.coleta_inicio)}` : 'Início da coleta ainda não informado';
   el('sem-resultados').hidden = dados.length > 0;
-  el('valores-series').innerHTML = dados.map(p => `<tr><td>${h(dataHora(p.inicio))}<small>até ${h(dataHora(p.fim))}</small></td><td><strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}<small>Contagens: ${h(contagensFormatadas(p.contagens))}</small>${estado ? `<small>${h(rotuloPonto(p))}${p.consolidado_em ? ` em ${h(dataHora(p.consolidado_em))}` : ''}</small>` : ''}</td><td><details><summary>Ver versões</summary><small>Conjunto: ${h(p.versao_conjunto)}</small><small>Rede GTFS: ${h(p.versao_gtfs_id)}</small><small>Cálculo: ${h(p.versao_calculo ?? 'Não informado')}</small><small>Correspondência: ${h(p.versao_correspondencia ?? 'Não informada')}</small><small>Reconstrução: ${h(p.qualidade.versao_reconstrucao ?? 'Não informada')}</small></details></td></tr>`).join('');
+  el('valores-series').innerHTML = dados.map(p => `<tr><td>${h(dataHora(p.inicio))}<small>até ${h(dataHora(p.fim))}</small></td><td><strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}${contagensDoPonto(p)}${estado ? `<small>${h(rotuloPonto(p))}${p.consolidado_em ? ` em ${h(dataHora(p.consolidado_em))}` : ''}</small>` : ''}</td><td><details><summary>Ver versões</summary><small>Conjunto: ${h(p.versao_conjunto)}</small><small>Rede GTFS: ${h(p.versao_gtfs_id)}</small><small>Cálculo: ${h(p.versao_calculo ?? 'Não informado')}</small><small>Correspondência: ${h(p.versao_correspondencia ?? 'Não informada')}</small><small>Reconstrução: ${h(p.qualidade.versao_reconstrucao ?? 'Não informada')}</small></details></td></tr>`).join('');
   el('total-resultados').textContent = `${paginacao.total} ${paginacao.total === 1 ? 'resultado' : 'resultados'} · até ${paginacao.page_size} por página`;
   el('paginacao-series').hidden = paginacao.total <= paginacao.page_size;
   el('pagina-series').textContent = `Página ${pagina} de ${Math.max(1, Math.ceil(paginacao.total / paginacao.page_size))}`;
