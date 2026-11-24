@@ -65,6 +65,7 @@ footer { font-size: 14px; margin-top: 32px; }
 .legenda-grafico span { display: flex; align-items: center; gap: 8px; }
 .legenda-grafico i { display: inline-block; width: 22px; height: 10px; }
 .amostra-legenda { border-bottom: 3px solid #765440; }
+.nulo-legenda { background: repeating-linear-gradient(0deg, #fff, #fff 2px, #b9a08f 2px, #b9a08f 3px); border: 1px solid #b9a08f; }
 .ausencia-legenda { background: repeating-linear-gradient(135deg, #fff, #fff 3px, #d3d8d0 3px, #d3d8d0 4px); border: 1px solid #d3d8d0; }
 .figura-serie figcaption { margin-top: 20px; color: var(--muted); font-size: 14px; line-height: 1.8; }
 .figura-serie figcaption strong { display: block; color: var(--text); font-weight: 500; }

@@ -1,0 +1,94 @@
+{
+ "data": "2026-11-24",
+ "ambiente": "Linux, Firefox headless (Selenium), backend Flask local com SQLite descartável; dados SINTÉTICOS; sem Aiven",
+ "revisao": "review/us23-us16t03",
+ "abertura": {
+  "consulta_url": "http://127.0.0.1:5000/series?linha=3762-10&sentido=0&tipo=PONTUALIDADE_VIAGENS&page=1&page_size=50&inicio=2026-11-20T03%3A00%3A00.000Z&fim=2026-11-21T03%3A00%3A00.000Z",
+  "chamadas": 1,
+  "api_valores": [
+   92.5,
+   75.0,
+   0.0,
+   0.0,
+   null,
+   80.0,
+   90.0,
+   90.0,
+   50.0,
+   100.0
+  ],
+  "grafico_pontos": [
+   92.5,
+   75.0,
+   0.0,
+   0.0,
+   80.0,
+   90.0,
+   90.0,
+   50.0,
+   100.0
+  ],
+  "grafico_igual_api_numericos": true,
+  "faixas_ausencia": [
+   "SEM_PUBLICACAO",
+   "SEM_PUBLICACAO",
+   "RESULTADO_NULO",
+   "SEM_PUBLICACAO"
+  ],
+  "tracos": 2,
+  "consulta_efetiva": {
+   "criterio_periodo": "JANELAS_INTEIRAMENTE_CONTIDAS",
+   "fim": "2026-11-21T03:00:00+00:00",
+   "fuso": "America/Sao_Paulo",
+   "hora_fim": null,
+   "hora_inicio": null,
+   "inicio": "2026-11-20T08:00:00+00:00",
+   "lacunas_escopo": "PAGINA",
+   "lacunas_truncadas": false
+  },
+  "tabela_contagens": [
+   "92,5 %\nContagens: 37 de 40",
+   "75 %\nContagens: 30 de 40",
+   "0 %\nContagens: 0 de 12",
+   "0 %\nContagens: 0 de 12",
+   "Sem resultado\nUnidade: % · ausência preservada\nContagens: 0 de 0 · sem observações suficientes"
+  ],
+  "aviso_sintetico_visivel": true,
+  "pede_login": false
+ },
+ "faixa": {
+  "novas_chamadas": 1,
+  "consulta_url": "http://127.0.0.1:5000/series?linha=3762-10&sentido=0&tipo=PONTUALIDADE_VIAGENS&page=1&page_size=50&inicio=2026-11-20T03%3A00%3A00.000Z&fim=2026-11-21T03%3A00%3A00.000Z&hora_inicio=06%3A00&hora_fim=07%3A30",
+  "api_total": 4,
+  "pontos": 4,
+  "endereco": "http://127.0.0.1:5173/series.html?linha=3762-10&sentido=0&tipo=PONTUALIDADE_VIAGENS&inicio=2026-11-20&fim=2026-11-20&hora_inicio=06%3A00&hora_fim=07%3A30"
+ },
+ "sem_resultado": {
+  "consulta_url": "http://127.0.0.1:5000/series?linha=3762-10&sentido=1&tipo=PONTUALIDADE_VIAGENS&page=1&page_size=50&inicio=2026-11-20T03%3A00%3A00.000Z&fim=2026-11-21T03%3A00%3A00.000Z&hora_inicio=06%3A00&hora_fim=07%3A30",
+  "mensagem_visivel": true,
+  "grafico_oculto": true,
+  "pontos": 0
+ },
+ "periodo_anterior": {
+  "consulta_url": "http://127.0.0.1:5000/series?linha=3762-10&sentido=0&tipo=PONTUALIDADE_VIAGENS&page=1&page_size=50&inicio=2026-01-01T03%3A00%3A00.000Z",
+  "inicio_efetivo": "2026-11-20T08:00:00+00:00",
+  "historico": {
+   "coleta_inicio": "2026-11-20T08:00:00+00:00",
+   "coleta_ultimo_ciclo": "2026-11-21T15:00:00+00:00",
+   "fim_indicadores": "2026-11-20T12:00:00+00:00",
+   "inicio_indicadores": "2026-11-20T09:00:00+00:00"
+  },
+  "primeira_lacuna": "2026-11-20T08:00:00+00:00",
+  "erro_visivel": false
+ },
+ "mobile": {
+  "sem_rolagem_horizontal": true,
+  "pontos": 9
+ },
+ "erro": {
+  "erro_visivel": true,
+  "texto": "Não foi possível conectar ao serviço. Confira a conexão e tente novamente.",
+  "resultado_oculto": true,
+  "tentar_visivel": true
+ }
+}

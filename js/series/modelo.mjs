@@ -10,6 +10,9 @@ const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})
 const instante = v => typeof v === 'string' && ISO.test(v) && Number.isFinite(Date.parse(v));
 const objeto = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 const texto = v => typeof v === 'string' && v.length > 0;
+const contagem = v => v === null || (Number.isSafeInteger(v) && v >= 0);
+const contagensValidas = c => objeto(c) && contagem(c.numerador) && contagem(c.denominador)
+  && (c.numerador === null || c.denominador === null || c.numerador <= c.denominador);
 
 export function lerSelecao(busca = '') {
   const args = new URLSearchParams(busca);
@@ -88,16 +91,17 @@ export function validarResposta(corpo, filtros, pagina) {
   for (const chave of ['inicio', 'fim']) if (consulta[chave] !== null && !instante(consulta[chave])) invalida();
   const args = parametrosApi(filtros, pagina);
   for (const chave of ['hora_inicio', 'hora_fim']) if (consulta[chave] !== (filtros[chave] || null)) invalida();
-  for (const chave of ['inicio', 'fim']) {
-    if (args.has(chave) && Date.parse(args.get(chave)) !== Date.parse(consulta[chave])) invalida();
-  }
+  // A API recorta o período ao histórico (US23-T01): o efetivo fica dentro do pedido ou é null.
+  if (args.has('inicio') && consulta.inicio !== null && Date.parse(consulta.inicio) < Date.parse(args.get('inicio'))) invalida();
+  if (args.has('fim') && consulta.fim !== null && Date.parse(consulta.fim) > Date.parse(args.get('fim'))) invalida();
+  if ((consulta.inicio === null) !== (consulta.fim === null)) invalida();
   for (const item of corpo.dados) {
     if (!objeto(item) || item.linha !== filtros.linha || item.sentido !== filtros.sentido || item.tipo !== filtros.tipo
         || !texto(item.id) || !texto(item.unidade) || !texto(item.versao_conjunto) || !texto(item.versao_gtfs_id)
         || !instante(item.inicio) || !instante(item.fim) || Date.parse(item.inicio) >= Date.parse(item.fim)
         || !(item.valor === null || (typeof item.valor === 'number' && Number.isFinite(item.valor)))
         || item.status !== (item.valor === null ? 'SEM_RESULTADO' : 'DISPONIVEL')
-        || !objeto(item.qualidade) || !objeto(item.contagens)) invalida();
+        || !objeto(item.qualidade) || !contagensValidas(item.contagens)) invalida();
     if ((consulta.inicio && Date.parse(item.inicio) < Date.parse(consulta.inicio))
         || (consulta.fim && Date.parse(item.fim) > Date.parse(consulta.fim))) invalida();
   }
@@ -111,6 +115,9 @@ export function validarResposta(corpo, filtros, pagina) {
 
 export const valorFormatado = (valor, unidade) => valor === null ? 'Sem resultado' :
   `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(valor)} ${unidade}`;
+// Contagens publicadas (ex.: pontuais de realizadas); null permanece não informado.
+export const contagensFormatadas = c => c.denominador === null ? 'Contagens não informadas'
+  : `${c.numerador ?? '—'} de ${c.denominador}${c.denominador === 0 ? ' · sem observações suficientes' : ''}`;
 export const dataHora = valor => valor ? new Intl.DateTimeFormat('pt-BR', {
   timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short',
 }).format(new Date(valor)) : 'Ainda indisponível';
