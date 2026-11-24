@@ -6,6 +6,7 @@ import {
   descreverUltimaColeta,
   INTERVALO_CONSULTA_MS,
   LIMITE_DEFASAGEM_SEGUNDOS,
+  criarBuscaPosicoes,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
 } from './atualizacao.js';
@@ -13,6 +14,7 @@ import {
 (() => {
   const API_BASE_URL = MAPA_CONFIG.apiBaseUrl.replace(/\/$/, '');
   const REFRESH_MS = INTERVALO_CONSULTA_MS;
+  const ESPERA_INICIAL_MS = 5_000;
   const mapElement = document.querySelector('#map');
   const message = document.querySelector('#map-message');
   const messageTitle = document.querySelector('#message-title');
@@ -38,9 +40,10 @@ import {
   let markers;
   let poligonosMunicipais;
   let municipioBounds;
-  const requestCoordinator = criarCoordenadorDeRequisicoes();
+  const requestCoordinator = criarCoordenadorDeRequisicoes(criarBuscaPosicoes());
   const positionStore = criarEstadoPosicoes();
   let hasSuccessfulResponse = false;
+  let usaUltimaColeta = true;
   let timer;
   let freshnessTimer;
   let redrawFrame;
@@ -86,6 +89,28 @@ import {
     }).addTo(map);
     L.control.zoom({ position: 'topleft' }).addTo(map);
     markers = L.layerGroup().addTo(map);
+  }
+
+  function enquadrarLocalizacao(latitude, longitude) {
+    // Aproxima um quadrado de 1 km; a correção da longitude considera a latitude.
+    const meiaAltura = 500 / 111_320;
+    const meiaLargura = meiaAltura / Math.cos(latitude * Math.PI / 180);
+    const limites = L.latLngBounds(
+      [latitude - meiaAltura, longitude - meiaLargura],
+      [latitude + meiaAltura, longitude + meiaLargura],
+    );
+    map.fitBounds(limites, { animate: false });
+  }
+
+  function localizarUsuario() {
+    return new Promise((resolve) => {
+      if (!navigator.geolocation) return resolve(null);
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => resolve({ latitude: coords.latitude, longitude: coords.longitude }),
+        () => resolve(null),
+        { enableHighAccuracy: false, timeout: 5_000, maximumAge: 60_000 },
+      );
+    });
   }
 
   function municipioPolygons(geometry) {
@@ -356,27 +381,38 @@ import {
   }
 
   async function loadPositions() {
-    const endpoint = API_BASE_URL + '/posicoes/atuais';
-    // no-cache: o navegador revalida com o ETag e a API responde 304 sem ciclo novo.
-    const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-cache' });
+    const modo = usaUltimaColeta ? '?modo=ultima_coleta' : '';
+    const endpoint = API_BASE_URL + '/posicoes/atuais' + modo;
+    const request = requestCoordinator.iniciar(endpoint, {
+      headers: { Accept: 'application/json' },
+      etagLocal: ultimaEtag,
+    });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
     retryButton.hidden = true;
 
     try {
       const { response } = await request.promise;
+      if (!requestCoordinator.eAtual(request.id)) return;
       const etag = response.headers.get('ETag');
-      if (response.ok && etag && etag === ultimaEtag && hasSuccessfulResponse) {
+      if ((response.ok || response.status === 304) && etag && etag === ultimaEtag) {
         // Mesmo ciclo de coleta: idades e cores são recalculadas sem reprocessar a frota.
-        if (requestCoordinator.eAtual(request.id)) atualizarMapa();
+        atualizarMapa();
         return;
       }
+      if (response.status === 304) {
+        throw new Error('O serviço não enviou as posições completas. Tente novamente.');
+      }
       const payload = await response.json().catch(() => null);
+      if (!requestCoordinator.eAtual(request.id)) return;
+      if (usaUltimaColeta && response.status === 400 && payload?.erro?.campo === 'modo') {
+        usaUltimaColeta = false;
+        return loadPositions();
+      }
       if (!response.ok) {
         const error = new Error(payload?.erro?.mensagem || `HTTP_${response.status}`);
         error.status = response.status;
         throw error;
       }
-      if (!requestCoordinator.eAtual(request.id)) return;
       if (!payload || !Array.isArray(payload.veiculos)) throw new Error('Resposta inesperada do serviço de posições.');
 
       positionStore.substituir(prepararPosicoes(payload.veiculos));
@@ -401,7 +437,8 @@ import {
     } finally {
       if (requestCoordinator.eAtual(request.id)) {
         clearTimeout(timer);
-        timer = setTimeout(() => loadPositions(), REFRESH_MS);
+        const intervalo = positionStore.obter().length ? REFRESH_MS : ESPERA_INICIAL_MS;
+        timer = setTimeout(loadPositions, intervalo);
       }
     }
   }
@@ -471,7 +508,15 @@ import {
       document.querySelector('#fit-button').addEventListener('click', () => {
         if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
       });
-      Promise.all([loadMunicipality(), carregarCatalogo()]).then(() => loadPositions()).catch((error) => {
+      Promise.all([loadMunicipality(), carregarCatalogo()]).then(async () => {
+        loadPositions();
+        const localizacao = await localizarUsuario();
+        if (localizacao && insideMunicipality(localizacao.latitude, localizacao.longitude)) {
+          enquadrarLocalizacao(localizacao.latitude, localizacao.longitude);
+        } else {
+          enquadrarLocalizacao(-23.56, -46.63);
+        }
+      }).catch((error) => {
         setMessage('error', 'Mapa indisponível', error.message || 'Não foi possível carregar o limite municipal.', true);
       });
     } catch (error) {
