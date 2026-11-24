@@ -27,8 +27,8 @@ Testes: `node --test tests/brutos.test.mjs tests/acervo.test.mjs tests/qualidade
 Mapa ao vivo, Qualidade da coleta e Acervo oficial são abas do Observa SP e usam o backend Flask.
 Não contém credenciais nem substitui falhas por dados de demonstração.
 
-1. Iniciar o backend configurado: `python app.py`, na pasta do backend.
-2. Nesta pasta, executar `python servidor.py`.
+1. No VS Code, abra `app.py` do backend configurado e clique em **Executar Arquivo Python**. A API e o coletor de ônibus sobem juntos.
+2. Abra `servidor.py` do frontend e clique em **Executar Arquivo Python**. Mantenha os dois processos abertos.
 3. O navegador abre em **http://127.0.0.1:5173/**. O mapa é a tela inicial. Use as abas para abrir **Acervo oficial** ou **Qualidade da coleta**.
 
 O meta `api-base` em `index.html` aponta por padrão para
@@ -71,9 +71,9 @@ como dados reais. A main do frontend só possuía README antes desta tarefa.
 
 Abra a aba **Mapa ao vivo** na página inicial. A URL da API fica em `src/config.js`. O padrão de desenvolvimento é `http://127.0.0.1:5000`.
 
-Consome `GET /posicoes/atuais` e `GET /posicoes/atuais?linha=<código Olho Vivo>`,
-conforme o contrato da US22-T01. Usa Leaflet 1.9.4 e tiles do OpenStreetMap com
-atribuição visível.
+Consome `GET /posicoes/atuais?modo=ultima_coleta` e aplica os filtros de
+letreiro e cor sobre os dados recebidos. Usa Leaflet 1.9.4 e tiles do
+OpenStreetMap com atribuição visível.
 
 A navegação e os marcadores são limitados ao município de São Paulo pelo
 polígono oficial (código IBGE 3550308), armazenado em

@@ -13,6 +13,7 @@ import {
 (() => {
   const API_BASE_URL = MAPA_CONFIG.apiBaseUrl.replace(/\/$/, '');
   const REFRESH_MS = INTERVALO_CONSULTA_MS;
+  const ESPERA_INICIAL_MS = 5_000;
   const mapElement = document.querySelector('#map');
   const message = document.querySelector('#map-message');
   const messageTitle = document.querySelector('#message-title');
@@ -41,6 +42,7 @@ import {
   const requestCoordinator = criarCoordenadorDeRequisicoes();
   const positionStore = criarEstadoPosicoes();
   let hasSuccessfulResponse = false;
+  let usaUltimaColeta = true;
   let timer;
   let freshnessTimer;
   let redrawFrame;
@@ -356,7 +358,8 @@ import {
   }
 
   async function loadPositions() {
-    const endpoint = API_BASE_URL + '/posicoes/atuais';
+    const modo = usaUltimaColeta ? '?modo=ultima_coleta' : '';
+    const endpoint = API_BASE_URL + '/posicoes/atuais' + modo;
     // no-cache: o navegador revalida com o ETag e a API responde 304 sem ciclo novo.
     const request = requestCoordinator.iniciar(endpoint, { headers: { Accept: 'application/json' }, cache: 'no-cache' });
     if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
@@ -371,12 +374,16 @@ import {
         return;
       }
       const payload = await response.json().catch(() => null);
+      if (!requestCoordinator.eAtual(request.id)) return;
+      if (usaUltimaColeta && response.status === 400 && payload?.erro?.campo === 'modo') {
+        usaUltimaColeta = false;
+        return loadPositions();
+      }
       if (!response.ok) {
         const error = new Error(payload?.erro?.mensagem || `HTTP_${response.status}`);
         error.status = response.status;
         throw error;
       }
-      if (!requestCoordinator.eAtual(request.id)) return;
       if (!payload || !Array.isArray(payload.veiculos)) throw new Error('Resposta inesperada do serviço de posições.');
 
       positionStore.substituir(prepararPosicoes(payload.veiculos));
@@ -401,7 +408,8 @@ import {
     } finally {
       if (requestCoordinator.eAtual(request.id)) {
         clearTimeout(timer);
-        timer = setTimeout(() => loadPositions(), REFRESH_MS);
+        const intervalo = positionStore.obter().length ? REFRESH_MS : ESPERA_INICIAL_MS;
+        timer = setTimeout(loadPositions, intervalo);
       }
     }
   }

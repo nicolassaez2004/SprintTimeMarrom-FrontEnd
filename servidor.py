@@ -11,6 +11,7 @@ from urllib.parse import unquote, urlsplit
 
 RAIZ = Path(__file__).resolve().parent
 PAGINAS = {"/", "/index.html", "/qualidade.html", "/acervo.html", "/mapa.html", "/brutos.html"}
+ARQUIVOS_PUBLICOS = {"/data/linhas-sptrans.json"}
 ASSETS = {
     "assets": {".svg", ".png", ".jpg", ".webp", ".ico"},
     "css": {".css"},
@@ -32,7 +33,7 @@ class FrontendHandler(SimpleHTTPRequestHandler):
             and all(p and not p.startswith(".") and "\\" not in p and ":" not in p for p in partes)
             and (RAIZ.joinpath(*partes)).resolve().is_relative_to(RAIZ / partes[0])
         )
-        if caminho not in PAGINAS and not eh_asset:
+        if caminho not in PAGINAS and caminho not in ARQUIVOS_PUBLICOS and not eh_asset:
             self.send_error(404)
             return None
         return super().send_head()
