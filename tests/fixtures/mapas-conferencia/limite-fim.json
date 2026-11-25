@@ -1,0 +1,28 @@
+{
+  "ausencia": "SEM_DADOS",
+  "features": [],
+  "legenda": {
+    "ausencia": {
+      "AGREGACAO_NAO_SUPORTADA": "unidade não é percentual; não há regra de agregação territorial",
+      "CONTAGENS_INDISPONIVEIS": "contagens insuficientes para agregar",
+      "DADOS_INSUFICIENTES": "publicação sinalizou insuficiência de dados",
+      "DENOMINADOR_ZERO": "denominador zero; valor null",
+      "SEM_DADOS": "nenhum indicador publicado atende aos filtros",
+      "VALOR_INDISPONIVEL": "indicador publicado sem valor",
+      "VERSAO_TERRITORIAL_INDISPONIVEL": "não há versão de limites disponível"
+    },
+    "tipo": "valor publicado; agregações territoriais recalculadas pelas contagens",
+    "unidade": "a unidade original do indicador"
+  },
+  "paginacao": {
+    "page": 1,
+    "page_size": 100,
+    "total": 0
+  },
+  "type": "FeatureCollection",
+  "versao_territorial": {
+    "fonte": "Limites SINTÉTICOS de ensaio US24; sem valor oficial",
+    "id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+    "versao_fonte": "controle-2026-11-24"
+  }
+}

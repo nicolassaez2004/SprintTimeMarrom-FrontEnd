@@ -1,0 +1,349 @@
+{
+  "data": "2026-11-25",
+  "origem": "SINTETICA",
+  "navegador": "158.0.8127.37",
+  "resultados": [
+    {
+      "consulta": "paradas",
+      "caso": "P0",
+      "valor_api": 0,
+      "valor_desenhado": "0",
+      "cor_svg": "#deebf7",
+      "faixa_svg": "0",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P100",
+      "valor_api": 100,
+      "valor_desenhado": "100",
+      "cor_svg": "#08519c",
+      "faixa_svg": "3",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P25",
+      "valor_api": 25,
+      "valor_desenhado": "25",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P50",
+      "valor_api": 50,
+      "valor_desenhado": "50",
+      "cor_svg": "#3182bd",
+      "faixa_svg": "2",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P75",
+      "valor_api": 75,
+      "valor_desenhado": "75",
+      "cor_svg": "#08519c",
+      "faixa_svg": "3",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PA",
+      "valor_api": 40,
+      "valor_desenhado": "40",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PB",
+      "valor_api": 30,
+      "valor_desenhado": "30",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PN",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "trechos",
+      "caso": "PA–PB",
+      "valor_api": 20,
+      "valor_desenhado": "20",
+      "cor_svg": "#deebf7",
+      "faixa_svg": "0",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "trechos",
+      "caso": "PA–P75",
+      "valor_api": 80,
+      "valor_desenhado": "80",
+      "cor_svg": "#08519c",
+      "faixa_svg": "3",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "trechos",
+      "caso": "P0–P75",
+      "valor_api": 0,
+      "valor_desenhado": "0",
+      "cor_svg": "#deebf7",
+      "faixa_svg": "0",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "trechos",
+      "caso": "P100–PN",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "01",
+      "valor_api": 33.333333333333336,
+      "valor_desenhado": "33.333333333333336",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "02",
+      "valor_api": 21.428571428571427,
+      "valor_desenhado": "21.428571428571427",
+      "cor_svg": "#deebf7",
+      "faixa_svg": "0",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "03",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "04",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "01",
+      "valor_api": 27.586206896551722,
+      "valor_desenhado": "27.586206896551722",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "02",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "03",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "01",
+      "valor_api": 50,
+      "valor_desenhado": "50",
+      "cor_svg": "#3182bd",
+      "faixa_svg": "2",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "02",
+      "valor_api": 0,
+      "valor_desenhado": "0",
+      "cor_svg": "#deebf7",
+      "faixa_svg": "0",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "03",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "04",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-observada",
+      "caso": "P0",
+      "valor_api": 4,
+      "valor_desenhado": "4",
+      "cor_svg": "#3182bd",
+      "faixa_svg": "2",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "01",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "02",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "03",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "04",
+      "valor_api": null,
+      "valor_desenhado": "null",
+      "cor_svg": "#b7beb8",
+      "faixa_svg": "ausente",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "frequencia-programada",
+      "caso": "P0",
+      "valor_api": 8,
+      "valor_desenhado": "8",
+      "cor_svg": "#08519c",
+      "faixa_svg": "3",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "sentido-volta",
+      "caso": "P0",
+      "valor_api": 100,
+      "valor_desenhado": "100",
+      "cor_svg": "#08519c",
+      "faixa_svg": "3",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "codigo-fora-do-territorio",
+      "caso": "P25",
+      "valor_api": 25,
+      "valor_desenhado": "25",
+      "cor_svg": "#9ecae1",
+      "faixa_svg": "1",
+      "legenda_com_unidade": true,
+      "tabela_conferida": true
+    },
+    {
+      "consulta": "codigo-ausente",
+      "caso": "SEM_RESULTADO",
+      "tela": "ausência explícita, sem desenhos"
+    },
+    {
+      "consulta": "linha-ausente",
+      "caso": "SEM_RESULTADO",
+      "tela": "ausência explícita, sem desenhos"
+    },
+    {
+      "consulta": "limite-inicio",
+      "caso": "SEM_RESULTADO",
+      "tela": "ausência explícita, sem desenhos"
+    },
+    {
+      "consulta": "limite-fim",
+      "caso": "SEM_RESULTADO",
+      "tela": "ausência explícita, sem desenhos"
+    }
+  ],
+  "casos": 35,
+  "geografia": "Coordenadas comparadas com o caderno; eixos leste/norte conferidos nos desenhos SVG das paradas",
+  "regressao_csv": {
+    "arquivo": "indicadores_2026-11-24.csv",
+    "sha256": "0a7a278f437bb5a65822044e416fa0abd79593800b898715c2bccfeb5b043bc6",
+    "concluido": true
+  },
+  "erros_javascript": [],
+  "frequencia_operacional_us15": "PENDENTE_CONFIRMACAO",
+  "revisao": "PENDENTE",
+  "aceite": "PENDENTE",
+  "pode_mover_para_pronto": false
+}

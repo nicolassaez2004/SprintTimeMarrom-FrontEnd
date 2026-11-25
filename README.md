@@ -7,6 +7,13 @@ por parada, trecho, distrito ou subprefeitura e mantém filtros e versões no
 endereço. Legenda com unidades e limites ajustáveis; zero e ausência são
 distintos. [Uso, contrato e evidências](docs/US24-T03.md).
 
+### Conferência do mapa (US24-T04)
+
+[Caderno, resultados e como reproduzir](docs/US24-T04.md): 35 casos controlados
+comparam API, valor, localização, cor, legenda e filtros. A frequência usada
+no ensaio é sintética. Aceite pendente da frequência operacional US15 e da
+revisão por outra pessoa.
+
 ## CSV de indicadores (US10-T02-FE)
 
 No histórico por linha, **Baixar indicadores em CSV** usa a rota pronta com
