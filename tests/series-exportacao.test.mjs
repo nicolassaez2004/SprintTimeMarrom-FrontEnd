@@ -2,10 +2,32 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { lerSelecao } from '../js/series/modelo.mjs';
 import { nomeDoArquivo, parametrosDownload, PeriodoIndisponivel, prepararDownload, SemRegistros } from '../js/series/exportacao.mjs';
+import { criarArquivoSvg } from '../js/series/graficos.mjs';
 
 const filtros = { ...lerSelecao('?linha=3762-10'), inicio: '2026-11-20', fim: '2026-11-24' };
 const csv = new Uint8Array([239, 187, 191, ...new TextEncoder().encode('linha,valor\r\nSão José,0\r\n')]);
 const resposta = (body, extras = {}) => new Response(body, { headers: { 'Content-Type': 'text/csv; charset=utf-8', ...extras.headers }, ...extras });
+
+test('imagem é um snapshot do gráfico visível e permanece válida durante atualização posterior', async () => {
+  let valorVisivel = '10';
+  const svg = { cloneNode: () => ({ valor: valorVisivel, insertBefore() {} }) };
+  const arquivo = criarArquivoSvg(svg, {
+    documentRef: { createElementNS: () => ({}) },
+    serializer: { serializeToString: copia => `<svg xmlns="http://www.w3.org/2000/svg"><circle data-valor="${copia.valor}"/></svg>` },
+    parser: { parseFromString: () => ({ documentElement: { localName: 'svg', namespaceURI: 'http://www.w3.org/2000/svg' }, querySelector: () => null }) },
+  });
+  valorVisivel = '11'; // simula a atualização do painel enquanto o download já foi solicitado
+  assert.match(await arquivo.text(), /data-valor="10"/);
+  assert.equal(arquivo.type, 'image/svg+xml;charset=utf-8');
+});
+
+test('imagem inválida não produz arquivo para download', () => {
+  const svg = { cloneNode: () => ({ insertBefore() {} }) };
+  assert.throws(() => criarArquivoSvg(svg, {
+    documentRef: { createElementNS: () => ({}) }, serializer: { serializeToString: () => '<html>erro</html>' },
+    parser: { parseFromString: () => ({ documentElement: { localName: 'html', namespaceURI: null }, querySelector: () => null }) },
+  }), /imagem gerada está inválida/);
+});
 
 test('arquivo diário mantém filtros e dispensa paginação e geração no navegador', () => {
   const args = parametrosDownload(filtros, '2026-11-22');

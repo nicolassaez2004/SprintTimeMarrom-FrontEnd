@@ -16,7 +16,7 @@ export function figura(grupo, indice, largura) {
   if (!grupo.numericos.length) {
     const lista = avisos.length ? `<ul class="avisos-qualidade-grafico" aria-label="Janelas com dados incompletos">${avisos.map(a => `<li>${h(a.texto)}</li>`).join('')}</ul>` : '';
     const linhas = avisos.map((a, i) => `<text x="16" y="${24 + i * 22}">${h(a.texto)}</text>`).join('');
-    const svg = avisos.length ? `<svg class="grafico-serie" viewBox="0 0 900 ${32 + avisos.length * 22}" role="img" aria-label="Avisos de qualidade da coleta">${linhas}</svg><button class="button secondary exportar-grafico" type="button">Baixar imagem SVG</button>` : '';
+    const svg = avisos.length ? `<svg class="grafico-serie" viewBox="0 0 900 ${32 + avisos.length * 22}" role="img" aria-label="Avisos de qualidade da coleta">${linhas}</svg><button class="button secondary exportar-grafico" type="button">Baixar imagem SVG</button><p class="exportacao-grafico-status" role="status" aria-live="polite"></p>` : '';
     return `<figure class="panel figura-serie">${cabecalho}${svg}<div class="grafico-sem-valores" role="status"><strong>Nenhum valor numérico neste recorte</strong><p>Os resultados recebidos estão indisponíveis. A unidade é ${h(ref.unidade)}; não há valor zero implícito.</p></div>${lista}${legenda}${versoes}</figure>`;
   }
   const c = coordenadas(grupo, largura);
@@ -43,7 +43,24 @@ export function figura(grupo, indice, largura) {
     return `<g class="ponto-serie${aviso ? ' ponto-incompleto' : ''}" tabindex="0" role="img" aria-label="${h(`${dataHora(p.inicio)}: ${valorFormatado(p.valor, p.unidade)}.${rotulo}`)}"><title>${h(`${dataHora(p.inicio)} a ${dataHora(p.fim)}: ${valorFormatado(p.valor, p.unidade)} · ${contagensFormatadas(p.contagens)} · conjunto ${p.versao_conjunto}${rotulo}`)}</title>${aviso ? `<path class="marcador-incompleto" d="M ${x} ${y - 12} l 6 10 h -12 Z"/>` : ''}<circle data-valor="${p.valor}" cx="${x}" cy="${y}" r="4.5"/></g>`;
   }).join('');
   const listaAvisos = avisos.length ? `<ul class="avisos-qualidade-grafico" aria-label="Janelas com dados incompletos">${avisos.map(a => `<li>${h(a.texto)}</li>`).join('')}</ul>` : '';
-  return `<figure class="panel figura-serie">${cabecalho}<svg class="grafico-serie" viewBox="0 0 ${largura} ${altura}" role="img" aria-labelledby="${id}-titulo ${id}-legenda"><defs><pattern id="${id}-ausencia" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 2 L2 -2 M0 8 L8 0 M6 10 L10 6" stroke="#d3d8d0" stroke-width="1"/></pattern><pattern id="${id}-nulo" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 3 H6" stroke="#b9a08f" stroke-width="1"/></pattern></defs>${ausencias}${gradacoes.map(v => `<line class="grade-grafico" x1="${c.esquerda}" x2="${c.direita}" y1="${c.y(v)}" y2="${c.y(v)}"/><text x="${c.esquerda - 10}" y="${c.y(v) + 4}" text-anchor="end">${h(numero(v))}</text>`).join('')}${eixoX}${c.caminhos.map(d => `<path class="linha-serie" d="${d}"/>`).join('')}${pontos}${alertasSvg}</svg>${listaAvisos}<button class="button secondary exportar-grafico" type="button">Baixar imagem SVG</button><div class="legenda-grafico"><span><i class="amostra-legenda"></i> Resultado publicado</span><span><i class="ausencia-legenda"></i> Sem publicação</span><span><i class="nulo-legenda"></i> Publicado sem valor (null)</span><span class="legenda-incompleto">⚠ Janela incompleta</span></div>${grupo.sobrepostas ? '<p class="aviso-versoes">Há janelas ou versões sobrepostas. Os resultados aparecem separados, sem criar uma média nem conectá-los.</p>' : ''}${legenda}${versoes}</figure>`;
+  return `<figure class="panel figura-serie">${cabecalho}<svg class="grafico-serie" viewBox="0 0 ${largura} ${altura}" role="img" aria-labelledby="${id}-titulo ${id}-legenda"><defs><pattern id="${id}-ausencia" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M-2 2 L2 -2 M0 8 L8 0 M6 10 L10 6" stroke="#d3d8d0" stroke-width="1"/></pattern><pattern id="${id}-nulo" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 3 H6" stroke="#b9a08f" stroke-width="1"/></pattern></defs>${ausencias}${gradacoes.map(v => `<line class="grade-grafico" x1="${c.esquerda}" x2="${c.direita}" y1="${c.y(v)}" y2="${c.y(v)}"/><text x="${c.esquerda - 10}" y="${c.y(v) + 4}" text-anchor="end">${h(numero(v))}</text>`).join('')}${eixoX}${c.caminhos.map(d => `<path class="linha-serie" d="${d}"/>`).join('')}${pontos}${alertasSvg}</svg>${listaAvisos}<button class="button secondary exportar-grafico" type="button">Baixar imagem SVG</button><p class="exportacao-grafico-status" role="status" aria-live="polite"></p><div class="legenda-grafico"><span><i class="amostra-legenda"></i> Resultado publicado</span><span><i class="ausencia-legenda"></i> Sem publicação</span><span><i class="nulo-legenda"></i> Publicado sem valor (null)</span><span class="legenda-incompleto">⚠ Janela incompleta</span></div>${grupo.sobrepostas ? '<p class="aviso-versoes">Há janelas ou versões sobrepostas. Os resultados aparecem separados, sem criar uma média nem conectá-los.</p>' : ''}${legenda}${versoes}</figure>`;
+}
+
+// Produz um arquivo a partir do SVG já renderizado, sem reler a resposta da API.
+export function criarArquivoSvg(svg, { documentRef = document, serializer = new XMLSerializer(), parser = new DOMParser() } = {}) {
+  const copia = svg?.cloneNode(true);
+  if (!copia) throw new Error('O gráfico não está disponível para exportação.');
+  const estilo = documentRef.createElementNS('http://www.w3.org/2000/svg', 'style');
+  estilo.textContent = '.alerta-qualidade-svg{fill:#785621;font:11px Arial,sans-serif}.marcador-incompleto{fill:#9b5a23;stroke:#fff;stroke-width:1}.ponto-incompleto circle{stroke:#9b5a23;stroke-width:2}';
+  copia.insertBefore(estilo, copia.firstChild);
+  const conteudo = serializer.serializeToString(copia);
+  const validacao = parser.parseFromString(conteudo, 'image/svg+xml');
+  if (!conteudo.trim() || validacao.documentElement.localName !== 'svg'
+      || validacao.documentElement.namespaceURI !== 'http://www.w3.org/2000/svg'
+      || validacao.querySelector('parsererror')) throw new Error('A imagem gerada está inválida. Tente novamente.');
+  const arquivo = new Blob([conteudo], { type: 'image/svg+xml;charset=utf-8' });
+  if (!arquivo.size) throw new Error('A imagem gerada está vazia. Tente novamente.');
+  return arquivo;
 }
 
 export function instalarGraficos() {
@@ -60,20 +77,23 @@ export function instalarGraficos() {
   alvo.addEventListener('click', evento => {
     const botao = evento.target.closest('.exportar-grafico');
     if (!botao) return;
-    const svg = botao.closest('figure')?.querySelector('svg');
-    if (!svg) return;
-    const copia = svg.cloneNode(true);
-    const estilo = document.createElementNS('http://www.w3.org/2000/svg', 'style');
-    estilo.textContent = '.alerta-qualidade-svg{fill:#785621;font:11px Arial,sans-serif}.marcador-incompleto{fill:#9b5a23;stroke:#fff;stroke-width:1}.ponto-incompleto circle{stroke:#9b5a23;stroke-width:2}';
-    copia.insertBefore(estilo, copia.firstChild);
-    const arquivo = new Blob([new XMLSerializer().serializeToString(copia)], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(arquivo);
-    const link = document.createElement('a');
-    link.href = url;
-    const titulo = botao.closest('figure')?.querySelector('h2')?.textContent || 'grafico-indicadores';
-    link.download = `${titulo}.svg`.replace(/[^\p{L}\p{N}_.-]+/gu, '-');
-    link.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    const figura = botao.closest('figure');
+    const status = figura?.querySelector('.exportacao-grafico-status');
+    try {
+      // Serializar antes de qualquer operação de download fixa a imagem nos mesmos
+      // valores e filtros que estavam visíveis quando o usuário clicou.
+      const arquivo = criarArquivoSvg(figura?.querySelector('svg'));
+      const url = URL.createObjectURL(arquivo);
+      const link = document.createElement('a');
+      link.href = url;
+      const titulo = figura.querySelector('h2')?.textContent || 'grafico-indicadores';
+      link.download = `${titulo}.svg`.replace(/[^\p{L}\p{N}_.-]+/gu, '-');
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      if (status) status.textContent = 'Imagem gerada com os valores exibidos no momento do clique.';
+    } catch {
+      if (status) status.textContent = 'Não foi possível gerar uma imagem válida. Nenhum arquivo foi baixado.';
+    }
   });
   new ResizeObserver(entradas => {
     const largura = Math.round(entradas[0].contentRect.width);

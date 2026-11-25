@@ -1,0 +1,20 @@
+{
+  "tarefa": "US26-T03-FE",
+  "resultado": "verificado",
+  "escopo": "frontend; sem alterações no servidor",
+  "respostas": [
+    { "percentual_falhas": 0, "incompleto": false, "aviso": false },
+    { "percentual_falhas": 10, "incompleto": false, "aviso": false },
+    { "percentual_falhas": 10.1, "incompleto": true, "motivo": "SPTRANS_HTTP_503", "aviso": true },
+    { "qualidade_coleta": "ausente", "aviso": "nenhum aviso de incompleto gerado; dado ausente permanece sem inferir percentual" }
+  ],
+  "atualizacao": "Resposta posterior troca 10% sem aviso por 10,1% com SPTRANS_HTTP_503; o SVG atualizado contém o percentual e o motivo exibidos.",
+  "verificacoes": {
+    "series-avisos": { "comando": "node tests/series-avisos.test.mjs", "passaram": 4 },
+    "mapa-indicadores": { "comando": "node tests/mapa-indicadores.test.mjs", "passaram": 18 },
+    "series-exportacao": { "comando": "node tests/series-exportacao.test.mjs", "passaram": 14 },
+    "diff_check": "passou"
+  },
+  "total_testes_passaram": 36,
+  "limite": "Testes dos módulos de apresentação com respostas simuladas; sem sessão visual no navegador ou API real."
+}

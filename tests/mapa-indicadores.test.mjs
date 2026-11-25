@@ -137,3 +137,15 @@ test('US26: qualidade da coleta no mapa respeita o limite estrito de 10% e não 
   // Áreas sem medição (sem janela) não alteram a qualidade da janela exibida.
   assert.equal(qualidadeDoRecorte([feicao(q(0, false, 'COMPLETA')), { properties: { inicio: null } }]).aviso, false);
 });
+
+test('US26: nova resposta atualiza o aviso do recorte exibido no mapa', async () => {
+  const { qualidadeDoRecorte } = await import('../js/mapa-indicadores/modelo.mjs');
+  const feicao = qualidade => ({ properties: { inicio: '2026-11-25T11:00:00+00:00', qualidade_coleta: qualidade } });
+  const anterior = qualidadeDoRecorte([feicao({ percentual_falhas: 10, incompleto: false, motivo: null })]);
+  const atual = qualidadeDoRecorte([feicao({ percentual_falhas: 10.1, incompleto: true, motivo: 'SPTRANS_HTTP_503' })]);
+  assert.equal(anterior.aviso, false);
+  assert.match(anterior.texto, /10% de falhas/);
+  assert.equal(atual.aviso, true);
+  assert.match(atual.texto, /10,1%/);
+  assert.match(atual.texto, /acima de 10%/);
+});
