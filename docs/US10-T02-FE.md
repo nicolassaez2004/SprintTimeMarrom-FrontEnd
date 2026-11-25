@@ -62,3 +62,17 @@ da tela permanecem selecionados; nenhum login é necessário.
 
 Não houve alteração no backend, acesso à Aiven ou publicação. Os exemplos não
 comprovam consolidação operacional da SPTrans; precisam da revisão do cartão.
+
+## Revisão de 25/11/2026
+
+- **CSV vazio**: com `X-Total-Registros: 0` (arquivo só com o cabeçalho), a interface informa
+  que não há indicadores para os filtros naquele dia e **não** inicia download (`SemRegistros`).
+- O backend passou a expor `Content-Disposition` por CORS. O caminho com Blob e nome exato do
+  servidor fica ativo; o download nativo continua como alternativa.
+- Integração HTTP real (SQLite SINTÉTICO, backend da branch de revisão):
+  [REVIEW-US10-T02-FE-download.json](evidencias/REVIEW-US10-T02-FE-download.json). Dia
+  consolidado e faixa 08:00–08:30 com SHA-256 igual ao da API; sentido sem registros não é
+  baixado; dia não consolidado traz a previsão; API fora do ar gera mensagem de conexão.
+- Limite conhecido (contrato US10): sem `parada`, o arquivo diário inclui também linhas por
+  parada/trecho, que a tabela de séries não mostra. A exportação idêntica ao painel é a
+  `versao_dados` da US25-T01 (cartão US25-T01-FE).

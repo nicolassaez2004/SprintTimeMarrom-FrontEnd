@@ -115,3 +115,25 @@ test('429 e erro não viram mapa vazio; busca local tolera acentos', async () =>
   await assert.rejects(buscarMapa('https://api.example', filtros, 1, { fetchImpl: async () => new Response(null, { status: 503 }) }));
   assert.equal(normalizarBusca('  SÉ  '), 'se');
 });
+
+test('US26: qualidade da coleta no mapa respeita o limite estrito de 10% e não inventa zero', async () => {
+  const { textoQualidade, qualidadeDoRecorte } = await import('../js/mapa-indicadores/modelo.mjs');
+  const q = (pct, incompleto, situacao = 'COM_FALHAS', motivo = null) =>
+    ({ percentual_falhas: pct, incompleto, situacao, motivo, limite_incompleto_percentual: 10 });
+  assert.equal(textoQualidade(q(0, false, 'COMPLETA')).aviso, false);
+  assert.equal(textoQualidade(q(10, false)).aviso, false);
+  assert.match(textoQualidade(q(10, false)).texto, /10% de falhas/);
+  assert.equal(textoQualidade(q(10.1, true, 'INCOMPLETA')).aviso, true);
+  assert.match(textoQualidade(q(10.1, true, 'INCOMPLETA')).texto, /Dado incompleto: 10,1%/);
+  const nulo = textoQualidade(q(null, null, 'SEM_EXPECTATIVA', 'FORA_DO_MONITORAMENTO'));
+  assert.equal(nulo.aviso, false);
+  assert.match(nulo.texto, /indeterminada \(FORA_DO_MONITORAMENTO\)/);
+  assert.match(textoQualidade(undefined).texto, /não informada/);
+  const feicao = qualidade => ({ properties: { inicio: '2026-11-24T11:00:00+00:00', qualidade_coleta: qualidade } });
+  assert.equal(qualidadeDoRecorte([feicao(q(13.33, true, 'INCOMPLETA')), feicao(q(13.33, true, 'INCOMPLETA'))]).aviso, true);
+  const misto = qualidadeDoRecorte([feicao(q(5, false)), feicao(q(13.33, true, 'INCOMPLETA'))]);
+  assert.equal(misto.aviso, true);
+  assert.match(misto.texto, /difere entre os locais/);
+  // Áreas sem medição (sem janela) não alteram a qualidade da janela exibida.
+  assert.equal(qualidadeDoRecorte([feicao(q(0, false, 'COMPLETA')), { properties: { inicio: null } }]).aviso, false);
+});

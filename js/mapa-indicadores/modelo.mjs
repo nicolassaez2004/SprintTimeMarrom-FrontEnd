@@ -136,4 +136,23 @@ export function recortesDaPagina(corpo) {
   return [...grupos.values()].map(g => ({ ...g, features: [...g.features, ...semMedicao] }));
 }
 
+// US26: qualidade da coleta publicada com o indicador (qualidade_coleta); a coleta é global.
+export function textoQualidade(q) {
+  if (!objeto(q)) return { aviso: false, texto: 'Qualidade da coleta não informada para este resultado.' };
+  if (q.percentual_falhas === null) {
+    return { aviso: false, texto: `Qualidade da coleta indeterminada (${q.motivo ?? q.situacao}); o percentual de falhas não é zero nem conhecido.` };
+  }
+  const pct = `${numeroPublicado(q.percentual_falhas, 2)}%`, limite = `${numeroPublicado(q.limite_incompleto_percentual ?? 10, 2)}%`;
+  return q.incompleto
+    ? { aviso: true, texto: `Dado incompleto: ${pct} de falhas de coleta nesta janela, acima de ${limite}. Evite conclusões sobre o período.` }
+    : { aviso: false, texto: `Coleta nesta janela: ${pct} de falhas (aviso somente acima de ${limite}).` };
+}
+export function qualidadeDoRecorte(features) {
+  const medidas = features.filter(f => f.properties.inicio != null).map(f => f.properties.qualidade_coleta);
+  const distintas = new Map(medidas.map(q => [JSON.stringify(objeto(q) ? [q.percentual_falhas, q.incompleto, q.situacao, q.motivo] : null), q]));
+  if (distintas.size <= 1) return textoQualidade([...distintas.values()][0]);
+  return { aviso: medidas.some(q => q?.incompleto === true),
+    texto: 'A qualidade da coleta difere entre os locais desta janela; confira cada local na lista.' };
+}
+
 export const normalizarBusca = s => String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR').trim();
