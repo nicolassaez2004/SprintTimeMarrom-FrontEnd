@@ -62,3 +62,12 @@ test('os gráficos recebem as duas séries, cada uma com o seu tipo', () => {
   const html = readFileSync(new URL('../series.html', import.meta.url), 'utf8');
   assert.match(html, /<option value="ESPERA_ESTIMADA">Espera estimada e excesso de espera<\/option>/);
 });
+
+// Review 25/11/2026: excesso negativo pequeno não pode aparecer como 0 nem perder o sinal.
+test('excesso negativo pequeno mantém o sinal e zero continua zero', () => {
+  const com = valor => detalheEspera({ valor: 2.5, unidade: 'min', qualidade: {},
+    excesso: { valor, unidade: 'min', qualidade: {} } }).excesso;
+  assert.equal(com(-0.004), 'Excesso de espera: -0,004 min');
+  assert.equal(com(0), 'Excesso de espera: 0 min');
+  assert.equal(com(null), 'Excesso de espera: sem resultado');
+});
