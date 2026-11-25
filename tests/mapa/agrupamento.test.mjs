@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { agruparPosicoes, classificarGrupo } from '../../src/agrupamento.js';
+import { agruparPosicoes, classificarGrupo } from '../../js/mapa/agrupamento.mjs';
 
 const limites = { minX: 0, minY: 0, maxX: 960, maxY: 480 };
 

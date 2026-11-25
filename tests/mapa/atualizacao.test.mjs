@@ -8,7 +8,7 @@ import {
   criarEstadoPosicoes,
   descreverUltimaColeta,
   INTERVALO_CONSULTA_MS,
-} from '../../src/atualizacao.js';
+} from '../../js/mapa/atualizacao.mjs';
 
 test('mede a defasagem entre a coleta e a exibição do marcador', () => {
   const exibidoEm = Date.parse('2026-11-23T12:00:01.250Z');

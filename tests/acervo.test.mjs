@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buscarDocumentos, formatarDocumento, obterPdf } from '../js/acervo-api.mjs';
+import { buscarDocumentos, formatarDocumento, obterPdf } from '../js/acervo/cliente.mjs';
 
 const base = 'http://localhost:5000/';
 

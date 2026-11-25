@@ -1,9 +1,9 @@
 import { ArquivoIndisponivel, consultarCatalogo, consultarDicionario, verificarArquivo } from './cliente.mjs';
 import { tamanhoArquivo } from './modelo.mjs';
-import { escapar as h, dataValida, dataExtensa, dataCurta, diaSemana, horario, hojeSP, numero } from '../qualidade/modelo.mjs';
+import { API_BASE as base } from '../comum/config.mjs';
+import { escapar as h, dataValida, dataExtensa, dataCurta, diaSemana, horario, hojeSP, numero } from '../comum/formatacao.mjs';
 
 const el = id => document.getElementById(id);
-const base = document.querySelector('meta[name="api-base"]').content;
 let catalogo = null, consulta = null, consultaDicionario = null, download = null;
 let diaSelecionado = '';
 

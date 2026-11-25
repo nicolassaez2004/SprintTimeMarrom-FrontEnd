@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { consultarQualidade } from '../js/qualidade/cliente.mjs';
-import { validarPeriodo, validarRelatorio, recorteLacuna, percentual, escapar, horario, fimNoDia, hojeSP } from '../js/qualidade/modelo.mjs';
+import { validarPeriodo, validarRelatorio, recorteLacuna, fimNoDia } from '../js/qualidade/modelo.mjs';
+import { percentual, escapar, horario, hojeSP } from '../js/comum/formatacao.mjs';
 
 const dados = JSON.parse(readFileSync(new URL('./fixtures/qualidade-us13.json', import.meta.url), 'utf8'));
 

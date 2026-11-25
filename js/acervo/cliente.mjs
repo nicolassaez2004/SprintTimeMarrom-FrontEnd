@@ -1,14 +1,13 @@
+import { dataValida } from '../comum/formatacao.mjs';
+import { urlDaApi } from '../comum/http.mjs';
+
 const TIPOS = new Map([
   ['CONTRATO', 'Contrato'],
   ['INDICADOR_OFICIAL', 'Indicador oficial'],
 ]);
 
-function dataCivil(valor) {
-  if (typeof valor !== 'string' || !/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(valor) || valor.startsWith('0000')) return null;
-  const data = new Date(valor + 'T00:00:00Z');
-  if (!Number.isFinite(+data) || data.toISOString().slice(0, 10) !== valor) return null;
-  return valor;
-}
+// O ano 0000 aparece em datas vazias de exportações e não é uma data do acervo.
+const dataCivil = valor => dataValida(valor) && !valor.startsWith('0000') ? valor : null;
 
 export function formatarDocumento(item) {
   const texto = (valor, padrao) => typeof valor === 'string' && valor.trim() ? valor.trim() : padrao;
@@ -22,9 +21,7 @@ export function formatarDocumento(item) {
   };
 }
 
-function documentosUrl(base, sufixo = '') {
-  return new URL('api/documentos' + sufixo, base.endsWith('/') ? base : base + '/');
-}
+const documentosUrl = (base, sufixo = '') => urlDaApi('api/documentos' + sufixo, base);
 
 export async function buscarDocumentos(base, filtros, pagina = 1, { fetchImpl = fetch, signal } = {}) {
   const { tipo, data_inicio: inicio, data_fim: fim } = filtros;

@@ -6,7 +6,7 @@ function carregarMapa() {
 const abas = new Map([
   ['mapa', { painel: 'painel-mapa', carregar: carregarMapa }],
   ['qualidade', { painel: 'painel-qualidade', carregar: () => import('./qualidade/app.mjs') }],
-  ['acervo', { painel: 'painel-acervo', carregar: () => import('./acervo.mjs') }],
+  ['acervo', { painel: 'painel-acervo', carregar: () => import('./acervo/app.mjs') }],
 ]);
 const links = document.querySelectorAll('[data-aba]');
 let selecao = 0;

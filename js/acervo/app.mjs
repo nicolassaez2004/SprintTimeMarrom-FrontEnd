@@ -1,7 +1,7 @@
-import { buscarDocumentos, obterPdf } from './acervo-api.mjs';
+import { API_BASE as base } from '../comum/config.mjs';
+import { buscarDocumentos, obterPdf } from './cliente.mjs';
 
 const el = id => document.getElementById(id);
-const base = document.querySelector('meta[name="api-base"]').content;
 const formulario = el('filtros');
 const visor = el('visor');
 let filtros = {};

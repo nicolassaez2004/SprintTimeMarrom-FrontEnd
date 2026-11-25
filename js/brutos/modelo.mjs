@@ -1,4 +1,4 @@
-import { dataValida } from '../qualidade/modelo.mjs';
+import { dataValida } from '../comum/formatacao.mjs';
 
 export function baseDaApi(valor) {
   const url = new URL(valor);

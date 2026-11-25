@@ -34,7 +34,7 @@ class ServidorTest(unittest.TestCase):
         self.assertEqual(self.status("/data/municipio-sp-3550308.geojson"), 200)
 
     def test_arquivos_sao_revalidados_apos_atualizacao(self):
-        with urllib.request.urlopen(self.base + "/src/mapa.js") as resposta:
+        with urllib.request.urlopen(self.base + "/js/mapa/app.mjs") as resposta:
             self.assertEqual(resposta.headers["Cache-Control"], "no-cache")
 
     def test_arquivos_fora_da_lista_continuam_bloqueados(self):
