@@ -1,6 +1,6 @@
 import { prepararGraficos, coordenadas } from './grafico.mjs';
 import { TIPOS, TITULOS_SERIE, contagensFormatadas, dataHora, valorFormatado } from './modelo.mjs';
-import { escapar as h } from '../qualidade/modelo.mjs';
+import { escapar as h } from '../comum/formatacao.mjs';
 
 const numero = v => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 1 }).format(v);
 const dia = ms => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', day: '2-digit', month: '2-digit' }).format(ms);

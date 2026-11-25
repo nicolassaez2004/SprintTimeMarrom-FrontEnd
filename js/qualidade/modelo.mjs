@@ -1,3 +1,5 @@
+import { dataValida, hojeSP, horario, somarDias } from '../comum/formatacao.mjs';
+
 export const SITUACOES = {
   COMPLETA: { texto: 'Completa', classe: 'complete' },
   COM_FALHAS: { texto: 'Com falhas', classe: 'with-failures' },
@@ -6,36 +8,11 @@ export const SITUACOES = {
   FORA_DO_MONITORAMENTO: { texto: 'Não observado', classe: 'unobserved' },
   PENDENTE: { texto: 'Ainda não ocorreu', classe: 'pending' },
 };
-export const escapar = valor => String(valor ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-export const numero = valor => Number.isFinite(valor) ? new Intl.NumberFormat('pt-BR').format(valor) : '—';
-export const percentual = valor => Number.isFinite(valor) ? `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 2 }).format(valor)}%` : '—';
-export function dataValida(valor) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(valor)) return false;
-  const data = new Date(`${valor}T12:00:00Z`);
-  return Number.isFinite(+data) && data.toISOString().slice(0, 10) === valor;
-}
-export const somarDias = (valor, quantidade) => {
-  const data = new Date(`${valor}T12:00:00Z`);
-  data.setUTCDate(data.getUTCDate() + quantidade);
-  return data.toISOString().slice(0, 10);
-};
-export function hojeSP(agora = new Date()) {
-  const partes = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(agora);
-  const obter = tipo => partes.find(p => p.type === tipo).value;
-  return `${obter('year')}-${obter('month')}-${obter('day')}`;
-}
 export function validarPeriodo(inicio, fim, hoje = hojeSP()) {
   if (!dataValida(inicio) || !dataValida(fim)) throw new Error('Informe as duas datas válidas.');
   if (fim < inicio) throw new Error('A data final deve ser igual ou posterior à inicial.');
   if (fim > hoje) throw new Error('Selecione uma data final até hoje, no horário de São Paulo.');
   if ((Date.parse(`${fim}T00:00Z`) - Date.parse(`${inicio}T00:00Z`)) / 86400000 >= 31) throw new Error('Consulte no máximo 31 dias por vez.');
-}
-export const dataCurta = dia => new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo' }).format(new Date(`${dia}T12:00Z`));
-export const diaSemana = dia => new Intl.DateTimeFormat('pt-BR', { weekday: 'short', timeZone: 'America/Sao_Paulo' }).format(new Date(`${dia}T12:00Z`));
-export const dataExtensa = dia => new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Sao_Paulo' }).format(new Date(`${dia}T12:00Z`));
-export function horario(instante, comData = false) {
-  if (!instante) return 'Não registrado';
-  return new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', ...(comData ? { day: '2-digit', month: '2-digit' } : {}) }).format(new Date(instante));
 }
 export const fimNoDia = (instante, dia) => Date.parse(instante) === Date.parse(dia.janelas.at(-1).fim) ? '24:00' : horario(instante);
 export function causa(codigo) {

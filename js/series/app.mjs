@@ -1,6 +1,7 @@
 import { buscarSeries } from './cliente.mjs';
 import { CAMPOS, TIPOS, buscaDaSelecao, contagensFormatadas, dataHora, lerSelecao, validarFiltros, valorFormatado } from './modelo.mjs';
-import { escapar as h } from '../qualidade/modelo.mjs';
+import { API_BASE as base } from '../comum/config.mjs';
+import { escapar as h } from '../comum/formatacao.mjs';
 import { instalarGraficos } from './graficos.mjs';
 import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from './atualizacao.mjs';
 import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
@@ -10,7 +11,6 @@ instalarGraficos();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');
-const base = document.querySelector('meta[name="api-base"]').content;
 let controle = null, pagina = 1, bloqueadoAte = 0, timer = null, timerAtualizacao = null;
 const campos = () => Object.fromEntries(CAMPOS.map(c => [c, form.elements[c].value]));
 

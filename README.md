@@ -25,7 +25,7 @@ O arquivo é recebido do backend; não há geração no navegador.
 
 Com o backend atualizado em `http://localhost:5000`, iniciar este frontend com
 `python servidor.py` e abrir **Dados brutos** na navegação principal ou
-`http://127.0.0.1:5173/brutos.html`. O endereço do backend desta página está na meta `api-base` de `brutos.html`.
+`http://127.0.0.1:5173/brutos.html`. O endereço do backend de todas as páginas está em `js/comum/config.mjs`.
 
 Testes: `node --test tests/brutos.test.mjs tests/acervo.test.mjs tests/qualidade.test.mjs tests/mapa/atualizacao.test.mjs`
 (27 passaram). [Entrega, contrato, capturas e limites da verificação](docs/US09-T02-FE.md).
@@ -39,8 +39,8 @@ Não contém credenciais nem substitui falhas por dados de demonstração.
 2. Abra `servidor.py` do frontend e clique em **Executar Arquivo Python**. Mantenha os dois processos abertos.
 3. O navegador abre em **http://127.0.0.1:5173/**. O mapa é a tela inicial. Use as abas para abrir **Acervo oficial** ou **Qualidade da coleta**.
 
-O meta `api-base` em `index.html` aponta por padrão para
-`http://127.0.0.1:5000/`. Em outra instalação, informar o endereço HTTP público
+`API_BASE` em `js/comum/config.mjs` aponta por padrão para
+`http://127.0.0.1:5000/` e vale para todas as páginas. Em outra instalação, informar o endereço HTTP público
 do backend e configurar a origem correspondente no CORS do Flask.
 Não informar URL do MySQL, senha ou token no frontend.
 
@@ -77,7 +77,7 @@ como dados reais. A main do frontend só possuía README antes desta tarefa.
 
 ## US22-T02 — Mapa público ao vivo
 
-Abra a aba **Mapa ao vivo** na página inicial. A URL da API fica em `src/config.js`. O padrão de desenvolvimento é `http://127.0.0.1:5000`.
+Abra a aba **Mapa ao vivo** na página inicial. A URL da API fica em `js/comum/config.mjs`. O padrão de desenvolvimento é `http://127.0.0.1:5000`.
 
 Consome `GET /posicoes/atuais?modo=ultima_coleta` e aplica os filtros de
 letreiro e cor sobre os dados recebidos. Usa Leaflet 1.9.4 e tiles do
@@ -102,3 +102,17 @@ Verificações sintéticas, sem depender do Aiven/SPTrans: `node --test
  tests/mapa/atualizacao.test.mjs tests/qualidade.test.mjs`. Cobrem a medição da
 defasagem, coleta antiga/horário inválido, resposta fora de ordem/cancelamento
 e falha temporária. O teste não comprova disponibilidade real da fonte externa.
+
+## Organização do código
+
+Cada página tem uma pasta em `js/` com a mesma divisão de responsabilidades
+(equivalente a `src/pages` e `src/api` do diagrama de componentes):
+
+| Pasta | Conteúdo |
+| --- | --- |
+| `js/comum/` | `config.mjs` (endereço do backend), `http.mjs` (consulta com tempo limite e erros legíveis), `formatacao.mjs` (datas e números no horário de São Paulo) |
+| `js/<página>/app.mjs` | Tela: eventos, estados de carregamento/erro e renderização |
+| `js/<página>/cliente.mjs` | Chamadas HTTP ao backend |
+| `js/<página>/modelo.mjs` | Validação do contrato da API e regras de exibição |
+
+Páginas: `mapa`, `qualidade`, `acervo`, `brutos` e `series`; estilos em `css/`.

@@ -16,7 +16,6 @@ ASSETS = {
     "assets": {".svg", ".png", ".jpg", ".webp", ".ico"},
     "css": {".css"},
     "js": {".js", ".mjs"},
-    "src": {".js", ".css"},
     "data": {".geojson", ".json"},  # linhas-sptrans.json alimenta o filtro do mapa
 }
 

@@ -1,6 +1,6 @@
-import { MAPA_CONFIG } from './config.js';
-import { agruparPosicoes, classificarGrupo } from './agrupamento.js';
-import { corDoTexto, letreiroDoVeiculo, listarCores, listarLinhas } from './linhas.js';
+import { API_BASE } from '../comum/config.mjs';
+import { agruparPosicoes, classificarGrupo } from './agrupamento.mjs';
+import { corDoTexto, letreiroDoVeiculo, listarCores, listarLinhas } from './linhas.mjs';
 import {
   calcularDefasagemSegundos,
   descreverUltimaColeta,
@@ -9,10 +9,10 @@ import {
   criarBuscaPosicoes,
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
-} from './atualizacao.js';
+} from './atualizacao.mjs';
 
 (() => {
-  const API_BASE_URL = MAPA_CONFIG.apiBaseUrl.replace(/\/$/, '');
+  const API_BASE_URL = API_BASE.replace(/\/$/, '');
   const REFRESH_MS = INTERVALO_CONSULTA_MS;
   const ESPERA_INICIAL_MS = 5_000;
   const mapElement = document.querySelector('#map');

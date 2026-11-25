@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-import { corDoTexto, letreiroDoVeiculo, listarLinhas } from '../../src/linhas.js';
+import { corDoTexto, letreiroDoVeiculo, listarLinhas } from '../../js/mapa/linhas.mjs';
 
 const catalogo = JSON.parse(readFileSync(new URL('../../data/linhas-sptrans.json', import.meta.url)));
 

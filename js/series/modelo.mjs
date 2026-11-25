@@ -1,4 +1,4 @@
-import { dataValida } from '../qualidade/modelo.mjs';
+import { dataValida } from '../comum/formatacao.mjs';
 
 export const TIPOS = Object.freeze({
   PONTUALIDADE_VIAGENS: 'Pontualidade das saídas',
