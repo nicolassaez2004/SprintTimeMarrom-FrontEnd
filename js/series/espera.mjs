@@ -1,12 +1,12 @@
 // US18-T03A-FE: espera estimada e excesso de espera lado a lado, sem confundi-los nem
 // transformar ausência em zero. Cada valor vem da sua própria série em GET /series.
 import { motivoLegivel } from './regularidade.mjs';
+import { numeroPublicado } from './modelo.mjs';
 
 export const ESPERA = 'ESPERA_ESTIMADA';
 export const EXCESSO = 'EXCESSO_ESPERA';
 
-const numero = (valor, sinal = false) => new Intl.NumberFormat('pt-BR', {
-  maximumFractionDigits: 2, signDisplay: sinal ? 'exceptZero' : 'auto' }).format(valor);
+const numero = (valor, sinal = false) => numeroPublicado(valor, 2, sinal);
 
 /** Busca a espera e, na mesma página e janelas, o excesso; uma falha invalida as duas. */
 export async function buscarComExcesso(buscar, base, filtros, pagina, opcoes) {

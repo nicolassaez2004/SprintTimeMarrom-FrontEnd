@@ -26,7 +26,7 @@ test('a resposta conhecida é aceita e de outra parada é recusada', () => {
 
 test('tela reproduz CV, unidade e agrupamento da resposta', () => {
   const p = ponto('12:00');
-  assert.equal(valorFormatado(p.valor, p.unidade), '0,288 CV (adimensional)');
+  assert.equal(valorFormatado(p.valor, p.unidade), '0,28782 CV (adimensional)'); // 6 casas, como a API
   assert.deepEqual(detalheRegularidade(p), {
     agrupamento: 'Agrupamento: não (CV até 0,5)', motivo: null, intervalos: 'Intervalos entre passagens: 3' });
   assert.equal(detalheRegularidade({ ...p, valor: 0.6, qualidade: { ...p.qualidade, agrupamento: true } }).agrupamento,
@@ -50,4 +50,12 @@ test('o painel tem o campo de parada e o novo indicador', () => {
   const html = readFileSync(new URL('../series.html', import.meta.url), 'utf8');
   assert.match(html, /<option value="REGULARIDADE_INTERVALOS">Regularidade dos intervalos<\/option>/);
   assert.match(html, /id="parada" name="parada"/);
+});
+
+// Review 25/11/2026: o valor exibido tem de sustentar o agrupamento decidido pela API (CV > 0,5).
+test('perto do limite 0,5 o valor exibido distingue agrupamento de não agrupamento', () => {
+  assert.equal(valorFormatado(0.5004, 'CV (adimensional)'), '0,5004 CV (adimensional)');
+  assert.equal(valorFormatado(0.4996, 'CV (adimensional)'), '0,4996 CV (adimensional)');
+  assert.equal(valorFormatado(0.5, 'CV (adimensional)'), '0,5 CV (adimensional)');
+  assert.equal(valorFormatado(0, 'CV (adimensional)'), '0 CV (adimensional)'); // zero real ≠ sem resultado
 });

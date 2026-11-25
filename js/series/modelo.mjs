@@ -127,9 +127,17 @@ export function validarResposta(corpo, filtros, pagina) {
   return corpo;
 }
 
-// CV (US17) com três casas: perto do limite 0,5 duas casas esconderiam o agrupamento.
+// Número publicado sem mudar o seu significado: um valor diferente de zero nunca aparece
+// como 0 nem perde o sinal (ex.: excesso −0,004 min); `sinal` força o "+" dos positivos.
+export function numeroPublicado(valor, casas = 2, sinal = false) {
+  const minimo = valor !== 0 && Math.abs(valor) < 0.5 * 10 ** -casas;
+  return new Intl.NumberFormat('pt-BR', { ...(minimo ? { maximumSignificantDigits: 2 } : { maximumFractionDigits: casas }),
+    signDisplay: sinal ? 'exceptZero' : 'auto' }).format(valor);
+}
+// CV (US17) com as 6 casas publicadas pela API, que decide o agrupamento sobre esse valor:
+// com menos casas, 0,5004 (agrupamento) e 0,4996 (sem agrupamento) apareceriam ambos como 0,5.
 export const valorFormatado = (valor, unidade) => valor === null ? 'Sem resultado' :
-  `${new Intl.NumberFormat('pt-BR', { maximumFractionDigits: unidade.startsWith('CV') ? 3 : 2 }).format(valor)} ${unidade}`;
+  `${numeroPublicado(valor, unidade.startsWith('CV') ? 6 : 2)} ${unidade}`;
 // Contagens publicadas (ex.: pontuais de realizadas); null permanece não informado.
 export const contagensFormatadas = c => c.denominador === null ? 'Contagens não informadas'
   : `${c.numerador ?? '—'} de ${c.denominador}${c.denominador === 0 ? ' · sem observações suficientes' : ''}`;
