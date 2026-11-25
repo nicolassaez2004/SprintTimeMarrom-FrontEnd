@@ -1,0 +1,73 @@
+{
+  "data": "2026-11-25",
+  "origem": "SINTETICA",
+  "api": "Backend real em SQLite descartavel",
+  "navegador": "158.0.8127.37",
+  "verificacoes": [
+    "download finalizado no navegador",
+    "nome da resposta preservado",
+    "bytes e BOM preservados",
+    "filtros da seleção",
+    "404 não consolidado sem sucesso",
+    "503 sem download",
+    "desktop",
+    "celular sem transbordamento"
+  ],
+  "nome_recebido": "indicadores_2026-11-24.csv",
+  "sha256_recebido": "0a7a278f437bb5a65822044e416fa0abd79593800b898715c2bccfeb5b043bc6",
+  "sha256_api": "0a7a278f437bb5a65822044e416fa0abd79593800b898715c2bccfeb5b043bc6",
+  "consultas": [
+    {
+      "metodo": "HEAD",
+      "filtros": {
+        "formato": "csv",
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "data": "2026-11-24"
+      }
+    },
+    {
+      "metodo": "GET",
+      "filtros": {
+        "formato": "csv",
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "data": "2026-11-24"
+      }
+    },
+    {
+      "metodo": "HEAD",
+      "filtros": {
+        "formato": "csv",
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "data": "2026-11-25"
+      }
+    },
+    {
+      "metodo": "GET",
+      "filtros": {
+        "formato": "csv",
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "data": "2026-11-25"
+      }
+    },
+    {
+      "metodo": "HEAD",
+      "filtros": {
+        "formato": "csv",
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "data": "2026-11-24"
+      }
+    }
+  ],
+  "erros_javascript": [],
+  "aceite": "PENDENTE_REVISAO"
+}

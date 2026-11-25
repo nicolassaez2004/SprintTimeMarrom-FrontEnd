@@ -1,5 +1,11 @@
 # SprintTimeMarrom
 
+## CSV de indicadores (US10-T02-FE)
+
+No histórico por linha, **Baixar indicadores em CSV** usa a rota pronta com
+os filtros selecionados. Escolha um dia do período; arquivos não consolidados
+aparecem como indisponíveis. [Uso, limites e evidências](docs/US10-T02-FE.md).
+
 ## Histórico por linha (US23-T02A / US23-T02B)
 
 Abra `series.html` pelo menu **Histórico por linha**. Os filtros consultam o
