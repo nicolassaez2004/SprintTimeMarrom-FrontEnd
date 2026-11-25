@@ -7,6 +7,7 @@ import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from
 import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
 import { ESPERA, buscarComExcesso, detalheEspera } from './espera.mjs';
 import { instalarExportacao } from './exportacao.mjs';
+import { avisosQualidade } from './avisos.mjs';
 
 instalarGraficos();
 instalarExportacao();
@@ -30,13 +31,15 @@ function contagensDoPonto(p) {
 
 // US18-T03A-FE: espera e excesso em linhas separadas, cada um com unidade e motivo.
 function celulaResultado(p) {
+  const qualidade = avisosQualidade([p])[0];
+  const aviso = qualidade ? `<span class="aviso-qualidade-linha" role="status"><strong>Dados incompletos: ${h(qualidade.percentual)}% de falhas.</strong> Motivo: ${h(qualidade.motivo)}</span>` : '';
   if (p.tipo === ESPERA) {
     const d = detalheEspera(p);
-    return `<strong class="${p.valor === null ? 'sem-valor' : ''}">${h(d.espera)}</strong>${d.motivoEspera ? `<small>${h(d.motivoEspera)}</small>` : ''}`
+    return `${aviso}<strong class="${p.valor === null ? 'sem-valor' : ''}">${h(d.espera)}</strong>${d.motivoEspera ? `<small>${h(d.motivoEspera)}</small>` : ''}`
       + `<strong class="${p.excesso.valor === null ? 'sem-valor' : ''}">${h(d.excesso)}</strong>${d.motivoExcesso ? `<small>${h(d.motivoExcesso)}</small>` : ''}`
       + `${d.programada ? `<small>${h(d.programada)}</small>` : ''}<small>Intervalos entre passagens: ${h(p.contagens.numerador ?? 'não considerados')}</small>`;
   }
-  return `<strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}${contagensDoPonto(p)}`;
+  return `${aviso}<strong class="${p.valor === null ? 'sem-valor' : ''}">${h(valorFormatado(p.valor, p.unidade))}</strong>${p.valor === null ? `<small>Unidade: ${h(p.unidade)} · ausência preservada</small>` : ''}${contagensDoPonto(p)}`;
 }
 
 function renderizar(resposta, filtros, estado = null) {
