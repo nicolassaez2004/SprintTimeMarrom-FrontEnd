@@ -1,0 +1,483 @@
+{
+  "data": "2026-11-25",
+  "origem": "SINTETICA",
+  "modo": "CAPTURAS_DA_API_DE_ENSAIO",
+  "consultas": [
+    {
+      "consulta": "paradas",
+      "rota": "mapas/parada-rede.json",
+      "sha256_json_canonico": "b78a54547f0e0585b8906a24b4ab8b102724522298221bb29534d3aca531608a"
+    },
+    {
+      "consulta": "trechos",
+      "rota": "mapas/trecho-rede.json",
+      "sha256_json_canonico": "74fe359f43c39d2ec494e828696afa881de8960fc9e66c966fb2c4ec0ed7d1c4"
+    },
+    {
+      "consulta": "distritos-paradas",
+      "rota": "mapas/distrito-parada.json",
+      "sha256_json_canonico": "321620fcecfeba7dfd4883a1380875cb41059d3aeb4a46aa54bdbad6aa94a071"
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "rota": "mapas/subprefeitura-parada.json",
+      "sha256_json_canonico": "813bb763f90b9d5f59e4514c88c05b6d5d31875f0c7fbb2a7ca1d50327985955"
+    },
+    {
+      "consulta": "distritos-trechos",
+      "rota": "mapas/distrito-trecho.json",
+      "sha256_json_canonico": "f3fd1529d282e393108a629a738f2b83f4b20e717054f7174317ff5e0da9d786"
+    },
+    {
+      "consulta": "frequencia-observada",
+      "rota": "mapas/frequencia-parada.json",
+      "sha256_json_canonico": "3ffed332ecfdf87538eef782bf16cb8183c0cb8fbb73263a49abb359bdbbc386"
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "rota": "mapas/frequencia-distrito.json",
+      "sha256_json_canonico": "874d2290784cfb7dcb15a346cb21e571abba1e1bd1f5cf22b320803ad3e64560"
+    },
+    {
+      "consulta": "frequencia-programada",
+      "rota": "mapas-conferencia/frequencia-programada.json",
+      "sha256_json_canonico": "748faf04e5e7e73a99cb27f728285f59098d3c8890a762aeb1de6bc9788971ee"
+    },
+    {
+      "consulta": "sentido-volta",
+      "rota": "mapas-conferencia/sentido-volta.json",
+      "sha256_json_canonico": "6ae1b87dfbffe054770b13c05c711144bbe02354433cb35b6923e7b2ed3aca4b"
+    },
+    {
+      "consulta": "codigo-fora-do-territorio",
+      "rota": "mapas-conferencia/codigo-p25.json",
+      "sha256_json_canonico": "aa61cc9a6cf07c0678a283170d53bec6fcc43a0188b13059e2e78403d8156fe9"
+    },
+    {
+      "consulta": "codigo-ausente",
+      "rota": "mapas-conferencia/codigo-ausente.json",
+      "sha256_json_canonico": "ebf54169f0371257cab6022ad9bf978bfb120f03ff815d1c0c70e1ef64611e9e"
+    },
+    {
+      "consulta": "linha-ausente",
+      "rota": "mapas-conferencia/linha-ausente.json",
+      "sha256_json_canonico": "ebf54169f0371257cab6022ad9bf978bfb120f03ff815d1c0c70e1ef64611e9e"
+    },
+    {
+      "consulta": "limite-inicio",
+      "rota": "mapas-conferencia/limite-inicio.json",
+      "sha256_json_canonico": "ebf54169f0371257cab6022ad9bf978bfb120f03ff815d1c0c70e1ef64611e9e"
+    },
+    {
+      "consulta": "limite-fim",
+      "rota": "mapas-conferencia/limite-fim.json",
+      "sha256_json_canonico": "ebf54169f0371257cab6022ad9bf978bfb120f03ff815d1c0c70e1ef64611e9e"
+    }
+  ],
+  "resultados": [
+    {
+      "consulta": "paradas",
+      "caso": "P0",
+      "referencia": "0/10*100 = 0",
+      "valor_esperado": 0,
+      "valor_api": 0,
+      "faixa_esperada": 0,
+      "cor_esperada": "#deebf7",
+      "cor_renderizacao": "#deebf7",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P100",
+      "referencia": "1/1*100 = 100",
+      "valor_esperado": 100,
+      "valor_api": 100,
+      "faixa_esperada": 3,
+      "cor_esperada": "#08519c",
+      "cor_renderizacao": "#08519c",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P25",
+      "referencia": "1/4*100 = 25; limite inferior incluído na segunda faixa",
+      "valor_esperado": 25,
+      "valor_api": 25,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P50",
+      "referencia": "1/2*100 = 50; limite inferior incluído na terceira faixa",
+      "valor_esperado": 50,
+      "valor_api": 50,
+      "faixa_esperada": 2,
+      "cor_esperada": "#3182bd",
+      "cor_renderizacao": "#3182bd",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "P75",
+      "referencia": "3/4*100 = 75; limite inferior incluído na quarta faixa",
+      "valor_esperado": 75,
+      "valor_api": 75,
+      "faixa_esperada": 3,
+      "cor_esperada": "#08519c",
+      "cor_renderizacao": "#08519c",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PA",
+      "referencia": "2/5*100 = 40",
+      "valor_esperado": 40,
+      "valor_api": 40,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PB",
+      "referencia": "3/10*100 = 30",
+      "valor_esperado": 30,
+      "valor_api": 30,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "paradas",
+      "caso": "PN",
+      "referencia": "0/0 não é zero",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "DENOMINADOR_ZERO",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "trechos",
+      "caso": "PA–PB",
+      "referencia": "1/5*100 = 20",
+      "valor_esperado": 20,
+      "valor_api": 20,
+      "faixa_esperada": 0,
+      "cor_esperada": "#deebf7",
+      "cor_renderizacao": "#deebf7",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "trechos",
+      "caso": "PA–P75",
+      "referencia": "4/5*100 = 80; geometria inteira, cerca de metade em cada distrito; vínculo 01 por maior extensão/desempate crescente",
+      "valor_esperado": 80,
+      "valor_api": 80,
+      "faixa_esperada": 3,
+      "cor_esperada": "#08519c",
+      "cor_renderizacao": "#08519c",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "trechos",
+      "caso": "P0–P75",
+      "referencia": "0/5*100 = 0",
+      "valor_esperado": 0,
+      "valor_api": 0,
+      "faixa_esperada": 0,
+      "cor_esperada": "#deebf7",
+      "cor_renderizacao": "#deebf7",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "trechos",
+      "caso": "P100–PN",
+      "referencia": "denominador zero",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "DENOMINADOR_ZERO",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "01",
+      "referencia": "PA+PB: (2+3)/(5+10)*100; não média 35%",
+      "valor_esperado": 33.333333333333336,
+      "valor_api": 33.333333333333336,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "02",
+      "referencia": "P0+P75: (0+3)/(10+4)*100; não média 37.5%",
+      "valor_esperado": 21.428571428571427,
+      "valor_api": 21.428571428571427,
+      "faixa_esperada": 0,
+      "cor_esperada": "#deebf7",
+      "cor_renderizacao": "#deebf7",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "03",
+      "referencia": "P100+PN: componente insuficiente impede agregado, sem substituir por 100%",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "DADOS_INSUFICIENTES",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-paradas",
+      "caso": "04",
+      "referencia": "nenhum registro no território",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "01",
+      "referencia": "PA+PB+P0+P75: (2+3+0+3)/(5+10+10+4)*100; P25/P50 estão fora",
+      "valor_esperado": 27.586206896551722,
+      "valor_api": 27.586206896551722,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "02",
+      "referencia": "P100+PN insuficiente",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "DADOS_INSUFICIENTES",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "subprefeituras-paradas",
+      "caso": "03",
+      "referencia": "sem registros",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "01",
+      "referencia": "T0+T1: (1+4)/(5+5)*100; vínculo único da API, sem ponderar novamente pela fração",
+      "valor_esperado": 50,
+      "valor_api": 50,
+      "faixa_esperada": 2,
+      "cor_esperada": "#3182bd",
+      "cor_renderizacao": "#3182bd",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "02",
+      "referencia": "T2: 0/5*100",
+      "valor_esperado": 0,
+      "valor_api": 0,
+      "faixa_esperada": 0,
+      "cor_esperada": "#deebf7",
+      "cor_renderizacao": "#deebf7",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "03",
+      "referencia": "TN insuficiente",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "DADOS_INSUFICIENTES",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "distritos-trechos",
+      "caso": "04",
+      "referencia": "sem trechos publicados",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-observada",
+      "caso": "P0",
+      "referencia": "1 passagem / 0.25 h = 4 passagens/h; valor persistido controlado",
+      "valor_esperado": 4,
+      "valor_api": 4,
+      "faixa_esperada": 2,
+      "cor_esperada": "#3182bd",
+      "cor_renderizacao": "#3182bd",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "01",
+      "referencia": "sem registros de frequência",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "02",
+      "referencia": "passagens/h não tem regra territorial neste contrato",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "AGREGACAO_NAO_SUPORTADA",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "03",
+      "referencia": "sem registros de frequência",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-territorial",
+      "caso": "04",
+      "referencia": "sem registros de frequência",
+      "valor_esperado": null,
+      "valor_api": null,
+      "faixa_esperada": null,
+      "cor_esperada": "#b7beb8",
+      "cor_renderizacao": "#b7beb8",
+      "ausencia": "SEM_DADOS",
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "frequencia-programada",
+      "caso": "P0",
+      "referencia": "2 passagens / 0.25 h = 8 passagens/h; limite superior na quarta faixa",
+      "valor_esperado": 8,
+      "valor_api": 8,
+      "faixa_esperada": 3,
+      "cor_esperada": "#08519c",
+      "cor_renderizacao": "#08519c",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "sentido-volta",
+      "caso": "P0",
+      "referencia": "sentido 1: 1/1*100, separado do zero no sentido 0",
+      "valor_esperado": 100,
+      "valor_api": 100,
+      "faixa_esperada": 3,
+      "cor_esperada": "#08519c",
+      "cor_renderizacao": "#08519c",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "codigo-fora-do-territorio",
+      "caso": "P25",
+      "referencia": "filtro exato preserva parada fora dos limites",
+      "valor_esperado": 25,
+      "valor_api": 25,
+      "faixa_esperada": 1,
+      "cor_esperada": "#9ecae1",
+      "cor_renderizacao": "#9ecae1",
+      "ausencia": null,
+      "resultado": "CONFERE_NO_ENSAIO"
+    },
+    {
+      "consulta": "codigo-ausente",
+      "caso": "SEM_RESULTADO",
+      "resultado": "CONFERE_NO_ENSAIO",
+      "referencia": "Código sem registro não cria valor zero"
+    },
+    {
+      "consulta": "linha-ausente",
+      "caso": "SEM_RESULTADO",
+      "resultado": "CONFERE_NO_ENSAIO",
+      "referencia": "Linha sem registro não conserva outra linha no mapa"
+    },
+    {
+      "consulta": "limite-inicio",
+      "caso": "SEM_RESULTADO",
+      "resultado": "CONFERE_NO_ENSAIO",
+      "referencia": "Janela terminada às 08:15 não sobrepõe início às 08:15"
+    },
+    {
+      "consulta": "limite-fim",
+      "caso": "SEM_RESULTADO",
+      "resultado": "CONFERE_NO_ENSAIO",
+      "referencia": "Janela iniciada às 08:00 não sobrepõe fim às 08:00"
+    }
+  ],
+  "total_conferido": 35,
+  "divergencias_no_ensaio": 0,
+  "frequencia_controlada": "4 observada e 8 programada, passagens/h, persistidas para ensaio; não executa o cálculo US15",
+  "frequencia_operacional_us15": "PENDENTE_CONFIRMACAO: este caderno valida somente referências sintéticas, sem comprovar a publicação operacional da US15",
+  "referencia_institucional": "PENDENTE",
+  "revisao_por_outra_pessoa": "PENDENTE",
+  "aceite": "PENDENTE",
+  "pode_mover_para_pronto": false
+}

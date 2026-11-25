@@ -1,5 +1,25 @@
 # SprintTimeMarrom
 
+## Mapa de indicadores (US24-T03)
+
+Abra **Mapa de indicadores** no menu. A página pública consulta a API pronta
+por parada, trecho, distrito ou subprefeitura e mantém filtros e versões no
+endereço. Legenda com unidades e limites ajustáveis; zero e ausência são
+distintos. [Uso, contrato e evidências](docs/US24-T03.md).
+
+### Conferência do mapa (US24-T04)
+
+[Caderno, resultados e como reproduzir](docs/US24-T04.md): 35 casos controlados
+comparam API, valor, localização, cor, legenda e filtros. A frequência usada
+no ensaio é sintética. Aceite pendente da frequência operacional US15 e da
+revisão por outra pessoa.
+
+## CSV de indicadores (US10-T02-FE)
+
+No histórico por linha, **Baixar indicadores em CSV** usa a rota pronta com
+os filtros selecionados. Escolha um dia do período; arquivos não consolidados
+aparecem como indisponíveis. [Uso, limites e evidências](docs/US10-T02-FE.md).
+
 ## Histórico por linha (US23-T02A / US23-T02B)
 
 Abra `series.html` pelo menu **Histórico por linha**. Os filtros consultam o
@@ -115,4 +135,4 @@ Cada página tem uma pasta em `js/` com a mesma divisão de responsabilidades
 | `js/<página>/cliente.mjs` | Chamadas HTTP ao backend |
 | `js/<página>/modelo.mjs` | Validação do contrato da API e regras de exibição |
 
-Páginas: `mapa`, `qualidade`, `acervo`, `brutos` e `series`; estilos em `css/`.
+Páginas: `mapa`, `qualidade`, `acervo`, `brutos`, `series` e `mapa-indicadores`; estilos em `css/`.

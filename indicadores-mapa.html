@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#765440">
+  <meta name="description" content="Mapa público de indicadores do transporte por parada, trecho, distrito e subprefeitura.">
+  <title>Mapa de indicadores · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="css/mapa-indicadores.css">
+  <script type="module" src="js/mapa-indicadores/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para os indicadores</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="Observa SP, início"><span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span><span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span></a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="./#mapa">Ônibus ao vivo</a>
+      <a class="nav-link" href="./#qualidade">Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo">Acervo oficial</a>
+      <a class="nav-link" href="brutos.html">Dados brutos</a>
+      <a class="nav-link" href="series.html">Histórico por linha</a>
+      <a class="nav-link active" href="indicadores-mapa.html" aria-current="page">Mapa de indicadores</a>
+    </nav>
+    <div class="sidebar-note"><span class="note-label">UM OLHAR SOBRE O TERRITÓRIO</span><p>Compare valores publicados e identifique onde ainda faltam resultados.</p><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> Mapa de indicadores</span><span class="public-pill">Acesso público</span></header>
+    <main id="conteudo" tabindex="-1">
+      <div class="page-heading"><div><p class="eyebrow">OPERAÇÃO E TERRITÓRIO</p><h1>Mapa de indicadores</h1><p>Explore paradas, trechos, distritos e subprefeituras em um mesmo recorte.</p></div><span class="timezone">Horário de São Paulo<br><strong>America/Sao_Paulo</strong></span></div>
+      <form id="filtros-mapa" class="mapa-filtros" aria-label="Filtros do mapa de indicadores">
+        <label for="escopo">Visualizar<select id="escopo" name="escopo"><option value="parada">Paradas</option><option value="trecho">Trechos</option><option value="distrito">Distritos</option><option value="subprefeitura">Subprefeituras</option></select></label>
+        <label id="base-agregacao" for="base" hidden>Agregar a partir de<select id="base" name="base"><option value="parada">Paradas</option><option value="trecho">Trechos</option></select></label>
+        <label for="tipo">Indicador<select id="tipo" name="tipo"><option value="FREQUENCIA_OBSERVADA">Frequência observada</option><option value="FREQUENCIA_PROGRAMADA">Frequência programada</option><option value="PONTUALIDADE_VIAGENS">Pontualidade das saídas</option><option value="CUMPRIMENTO_VIAGENS">Cumprimento das viagens</option><option value="REGULARIDADE_INTERVALOS">Regularidade dos intervalos</option><option value="ESPERA_ESTIMADA">Espera estimada</option><option value="EXCESSO_ESPERA">Excesso de espera</option></select></label>
+        <label for="sentido">Sentido<select id="sentido" name="sentido"><option value="0">Ida</option><option value="1">Volta</option></select></label>
+        <label for="linha">Linha <span>· opcional</span><input id="linha" name="linha" maxlength="64" placeholder="Ex.: 3762-10"></label>
+        <label for="inicio">Início<input id="inicio" name="inicio" type="datetime-local" required></label>
+        <label for="fim">Fim<input id="fim" name="fim" type="datetime-local" required></label>
+        <label for="codigo">Código do local <span>· opcional</span><input id="codigo" name="codigo" maxlength="64" placeholder="Parada, trecho ou território"></label>
+        <label for="versao_gtfs_id">Rede publicada<select id="versao_gtfs_id" name="versao_gtfs_id" required><option value="">Selecione uma rede</option></select></label>
+        <div class="acoes-redes"><button id="buscar-redes" class="button secondary" type="button">Buscar redes no período</button><button id="mais-redes" class="button secondary" type="button" hidden>Mais versões</button></div>
+        <p id="estado-redes" class="ajuda-campo" role="status">Uma versão da rede fixa a localização das paradas e trechos.</p>
+        <input id="versao_territorial_id" name="versao_territorial_id" type="hidden">
+        <div class="acoes-mapa"><button class="button primary" type="submit">Consultar mapa</button><button class="button secondary" type="reset">Limpar filtros</button><span>Filtros e faixas ficam no endereço da página.</span></div>
+      </form>
+      <p id="carregando-mapa" class="loading" role="status" hidden>Consultando os indicadores e suas geometrias…</p>
+      <section id="erro-mapa" class="message error" role="alert" hidden><div><h2>Não foi possível consultar o mapa</h2><p id="erro-mapa-texto"></p></div><button id="tentar-mapa" class="button secondary" type="button">Tentar novamente</button></section>
+      <p id="vazio-mapa" class="panel mensagem-vazia" role="status" hidden></p>
+      <div id="resultado-mapa" hidden>
+        <p id="cenario-mapa" class="message warning" hidden><strong>Cenário de teste.</strong> Valores e limites sintéticos; não representam a operação real.</p>
+        <section class="contexto-mapa" aria-label="Contexto dos valores"><div><p class="eyebrow">JANELA EXIBIDA</p><h2 id="periodo-mapa"></h2><p id="fonte-mapa"></p></div><span class="unidade-mapa">Unidade: <strong id="unidade-mapa">Não informada</strong></span></section>
+        <details class="referencias-mapa"><summary>Referência dos dados</summary><p>Rede: <span id="referencia-rede"></span></p><p>Limites territoriais: <span id="referencia-territorio"></span></p></details>
+        <div id="conteudo-mapa">
+          <label class="recorte-label" for="recorte-mapa">Janela e versão dos resultados desta página<select id="recorte-mapa"></select></label>
+          <p class="ajuda-campo">Resultados de janelas ou conjuntos diferentes são exibidos separadamente. O período solicitado pode conter mais de uma janela.</p>
+          <p id="aviso-unidade" class="message warning" role="status" hidden>Esta unidade ainda não tem regra de agregação territorial na API. Consulte paradas ou trechos; a ausência não é zero.</p>
+          <p id="aviso-territorio" class="message warning" role="status" hidden>Não há versão de limites disponível. Os vínculos territoriais ainda não podem ser apresentados.</p>
+          <div class="mapa-grade">
+            <section class="painel-geografico" aria-label="Mapa dos valores publicados">
+              <div class="barra-geografica"><span id="desenhando-mapa" role="status" hidden>Desenhando o mapa…</span><button id="ajustar-mapa" class="button secondary" type="button">Ver todos os locais</button></div>
+              <div id="mapa-indicadores" aria-label="Mapa interativo de indicadores"></div>
+              <div id="erro-base-mapa" class="message error" role="alert" hidden><p>A base do mapa está indisponível. Os valores e as faixas continuam na lista abaixo.</p><button id="tentar-base-mapa" class="button secondary" type="button">Carregar mapa</button></div>
+            </section>
+            <aside class="panel painel-legenda" aria-labelledby="titulo-legenda"><p class="eyebrow">VALORES PUBLICADOS</p><h2 id="titulo-legenda">Legenda</h2><ul id="legenda-faixas"></ul><p>As faixas descrevem valores baixos e altos; não representam aprovação ou qualidade do serviço.</p><form id="cores-mapa"><fieldset><legend>Ajustar faixas</legend><label for="corte-0">Primeiro limite<input id="corte-0" type="number" step="any" required></label><label for="corte-1">Segundo limite<input id="corte-1" type="number" step="any" required></label><label for="corte-2">Terceiro limite<input id="corte-2" type="number" step="any" required></label><button class="button secondary" type="submit">Aplicar faixas</button></fieldset><p id="erro-cores" role="status"></p></form></aside>
+          </div>
+          <section class="panel locais-panel" aria-labelledby="titulo-locais"><div class="section-top"><div><h2 id="titulo-locais">Localizar e conferir os valores</h2><p id="contagem-locais"></p></div><label for="busca-local">Localizar na lista<input id="busca-local" type="search" placeholder="Nome ou código"></label></div><div class="locais-scroll"><table class="tabela-locais"><caption class="sr-only">Locais, valores da API e faixa de cor correspondente</caption><thead><tr><th scope="col">Local</th><th scope="col">Valor e faixa</th><th scope="col">No mapa</th></tr></thead><tbody id="lista-locais"></tbody></table></div><p id="lista-vazia" hidden>Nenhum local desta página corresponde à busca.</p><p id="localizacao-status" role="status"></p></section>
+          <nav id="paginacao-mapa" class="paginacao-mapa" aria-label="Páginas do mapa" hidden><button id="anterior-mapa" class="button secondary" type="button">Anterior</button><span id="pagina-mapa"></span><button id="proximo-mapa" class="button secondary" type="button">Próxima</button></nav>
+        </div>
+      </div>
+      <section class="metodo-mapa"><h2>Como ler este mapa</h2><p>As cores usam as faixas indicadas na legenda, na unidade devolvida pela consulta. Zero é um valor; o cinza com contorno tracejado indica ausência de resultado.</p><p>Distritos e subprefeituras usam a base escolhida e as contagens agregadas pela API. Trechos conservam a geometria completa mesmo quando cruzam limites. Somente os locais retornados na página e na janela selecionada são desenhados.</p></section>
+      <footer><span>Observa SP · Time Marrom</span><span>Painel público de indicadores</span></footer>
+    </main>
+  </div>
+  <noscript><p class="message">Ative o JavaScript para consultar o mapa e a lista de indicadores.</p></noscript>
+</body>
+</html>

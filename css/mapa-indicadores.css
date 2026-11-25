@@ -1,0 +1,65 @@
+body { font-size: 16px; }
+.sidebar .nav-link { font-size: 14px; }
+.sidebar-note p { font-size: 14px; }
+.topbar, .public-pill, .timezone { font-size: 14px; }
+.message { font-size: 14px; }
+.page-heading h1 { font-size: clamp(28px, 3.4vw, 38px); }
+.page-heading p:last-child { font-size: 16px; }
+.eyebrow { font-size: 12px; }
+.mapa-filtros { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 18px; padding: 22px; background: white; border: 1px solid var(--border); border-radius: 9px; margin-bottom: 24px; }
+.mapa-filtros label, .recorte-label, .locais-panel label { display: grid; gap: 7px; font-size: 14px; font-weight: 600; }
+.mapa-filtros label span { font-weight: 400; color: var(--muted); }
+#filtros-mapa input, #filtros-mapa select, #cores-mapa input, #recorte-mapa, #busca-local { width: 100%; min-width: 0; max-width: 100%; min-height: 44px; padding: 9px 11px; border: 1px solid #cdd5cb; border-radius: 6px; font-size: 16px; background-color: white; }
+#filtros-mapa select, #recorte-mapa { appearance: none; padding-right: 30px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='m1 1 5 5 5-5' fill='none' stroke='%23765440' stroke-width='2'/%3E%3C/svg%3E"); background-position: right 11px center; background-repeat: no-repeat; }
+.mapa-filtros .button, .mapa-grade .button, .locais-panel .button, .paginacao-mapa .button { min-height: 44px; font-size: 14px; }
+.acoes-redes, .acoes-mapa { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; }
+.acoes-mapa { align-items: center; grid-column: 1/-1; }
+.acoes-mapa span { font-size: 14px; color: var(--muted); margin-left: auto; }
+.ajuda-campo { color: var(--muted); font-size: 14px; line-height: 1.7; margin: 10px 0 20px; }
+#estado-redes { grid-column: 1/-1; margin: 0; }
+.contexto-mapa { display: flex; gap: 20px; align-items: center; justify-content: space-between; margin: 26px 0 14px; }
+.contexto-mapa h2 { font-size: 20px; line-height: 1.5; }
+#fonte-mapa { color: var(--muted); margin-top: 9px; font-size: 14px; line-height: 1.7; }
+.unidade-mapa { flex-shrink: 0; border: 1px solid var(--border); border-radius: 6px; padding: 10px 13px; background: white; font-size: 14px; }
+.referencias-mapa { margin: 0 0 22px; font-size: 14px; overflow-wrap: anywhere; }
+.referencias-mapa summary { cursor: pointer; }
+.referencias-mapa p { margin-top: 8px; }
+.mapa-grade { display: grid; grid-template-columns: minmax(0,1fr) 250px; gap: 20px; margin: 20px 0; align-items: start; }
+.painel-geografico { border: 1px solid var(--border); border-radius: 9px; overflow: hidden; background: white; }
+.barra-geografica { padding: 12px; display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 14px; }
+.barra-geografica button { margin-left: auto; }
+#mapa-indicadores { height: min(66vh,640px); min-height: 430px; background: #eff2ee; z-index: 0; }
+.painel-legenda { padding: 20px; }
+.painel-legenda h2 { font-size: 20px; }
+#legenda-faixas { list-style: none; margin: 20px 0; padding: 0; display: grid; gap: 14px; }
+#legenda-faixas li { display: flex; align-items: center; gap: 10px; font-size: 14px; }
+#legenda-faixas i, .amostra-cor { display: inline-block; flex-shrink: 0; width: 25px; height: 16px; border: 1px solid #596e75; background: var(--cor); border-radius: 3px; }
+.sem-resultado { border-style: dashed !important; background: repeating-linear-gradient(135deg,var(--cor),var(--cor) 4px,#eef0ed 4px,#eef0ed 6px) !important; }
+.painel-legenda > p, #erro-cores { font-size: 14px; color: var(--muted); line-height: 1.7; }
+#cores-mapa fieldset { margin: 22px 0 0; padding: 18px 0 0; border: 0; border-top: 1px solid var(--border); }
+#cores-mapa legend { float: left; margin-bottom: 12px; font-size: 16px; font-weight: 600; }
+#cores-mapa label { display: grid; clear: both; font-size: 14px; gap: 5px; margin: 12px 0; }
+#erro-cores { margin-top: 12px; color: var(--amber); }
+.locais-panel { margin-top: 24px; }
+.locais-panel h2 { font-size: 20px; }
+.locais-panel p { font-size: 14px; line-height: 1.8; margin-top: 10px; }
+.locais-panel .section-top { gap: 22px; flex-wrap: wrap; }
+.locais-scroll { overflow: auto; margin-top: 22px; }
+.tabela-locais { min-width: 560px; font-size: 14px; }
+.tabela-locais th { font-size: 14px; }
+.tabela-locais td { padding: 20px 12px; }
+.tabela-locais td:first-child { padding-left: 0; }
+.tabela-locais small { display: block; max-width: 360px; overflow-wrap: anywhere; font-size: 13px; line-height: 1.6; color: var(--muted); margin-top: 6px; }
+.amostra-cor { margin-right: 9px; vertical-align: middle; }
+.paginacao-mapa { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 24px 0; font-size: 14px; }
+.metodo-mapa { margin: 32px 0; padding-top: 25px; border-top: 1px solid var(--border); }
+.metodo-mapa p { margin-top: 12px; color: var(--muted); font-size: 14px; line-height: 1.8; }
+.mensagem-vazia { margin: 24px 0; font-size: 16px; }
+.popup-indicador { min-width: 190px; max-width: 290px; font-size: 14px; line-height: 1.6; }
+.popup-indicador p { margin: 7px 0; }
+.popup-indicador small { display: block; overflow-wrap: anywhere; }
+#mapa-indicadores [data-feicao]:focus-visible { outline: none; stroke: #191f19; stroke-width: 4; }
+footer { font-size: 14px; }
+@media(max-width:1150px) { .mapa-filtros { grid-template-columns: repeat(2,minmax(0,1fr)); } .mapa-grade { grid-template-columns: 1fr; } .painel-legenda { display: grid; grid-template-columns: 1fr 1fr; column-gap: 26px; } .painel-legenda > * { grid-column: 1; } .painel-legenda #cores-mapa { grid-column: 2; grid-row: 1/5; } #cores-mapa fieldset { margin-top: 0; padding-top: 0; border: 0; } }
+@media(max-width:800px) { .sidebar nav a[href='./#mapa'] { display: flex; } .sidebar .nav-link { font-size: 13px; } .brand small { display: none; } .contexto-mapa { flex-direction: column; align-items: start; } .acoes-mapa span { flex-basis: 100%; margin: 0; } }
+@media(max-width:600px) { .mapa-filtros { grid-template-columns: 1fr; padding: 18px; } .painel-legenda { display: block; } #cores-mapa fieldset { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); } .tabela-locais { min-width: 0; } .tabela-locais thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); } .tabela-locais, .tabela-locais tbody, .tabela-locais tr, .tabela-locais td { display: block; width: 100%; } .tabela-locais tr { border-bottom: 1px solid var(--border); padding: 18px 0; } .tabela-locais td { padding: 5px 0; border: 0; } #mapa-indicadores { min-height: 380px; height: 55vh; } .paginacao-mapa { flex-wrap: wrap; } }

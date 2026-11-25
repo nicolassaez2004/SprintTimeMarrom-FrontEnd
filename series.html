@@ -25,6 +25,7 @@
       <a class="nav-link" href="./#acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
       <a class="nav-link" href="brutos.html"><span aria-hidden="true">↓</span> Dados brutos</a>
       <a class="nav-link active" href="series.html" aria-current="page"><span aria-hidden="true">◷</span> Histórico por linha</a>
+      <a class="nav-link" href="indicadores-mapa.html">Mapa de indicadores</a>
     </nav>
     <div class="sidebar-note"><span class="note-label">ACOMPANHE NO TEMPO</span><p>Uma linha, seus resultados e os intervalos em que ainda faltam dados.</p><span>Desenvolvido pelo Time Marrom</span></div>
   </aside>
@@ -55,7 +56,11 @@
           <nav id="paginacao-series" class="paginacao-series" aria-label="Páginas do histórico" hidden><button id="anterior-series" class="button secondary" type="button">Anterior</button><span id="pagina-series"></span><button id="proxima-series" class="button secondary" type="button">Próxima</button></nav>
         </section>
         <details class="panel lacunas-panel"><summary>Intervalos sem resultado nesta página <span id="total-lacunas"></span></summary><p>Os intervalos abaixo vêm da consulta. Valores ausentes são preservados, sem preencher com zero.</p><p id="aviso-lacunas" class="message warning" hidden>Há mais intervalos sem resultado do que esta página pode listar. Reduza o período para conferir todos.</p><ul id="lacunas-series"></ul><p id="nenhuma-lacuna" hidden>Nenhum intervalo sem resultado informado nesta página.</p></details>
-        <p class="nota-faixa">Os filtros permanecem selecionados ao navegar entre páginas e ficam disponíveis para a futura exportação.</p>
+        <section id="exportacao-indicadores" class="panel csv-panel" aria-labelledby="titulo-csv" hidden>
+          <div><h2 id="titulo-csv">Baixar indicadores em CSV</h2><p>O arquivo é diário. Escolha um dia do período selecionado; linha, sentido, indicador e parada são mantidos. Para espera, o arquivo inclui também o excesso de espera.</p><p>Nas faixas horárias, o CSV inclui janelas que se sobrepõem ao horário escolhido, conforme a consulta de download.</p></div>
+          <div class="csv-acoes"><label for="dia-csv">Dia do arquivo<input id="dia-csv" type="date" required></label><button id="baixar-csv" class="button primary" type="button">Baixar CSV deste dia</button></div>
+          <p id="status-csv" role="status" aria-live="polite"></p>
+        </section>
       </div>
       <footer><span>Observa SP · Time Marrom</span><span>Fonte: indicadores operacionais publicados</span></footer>
     </main>

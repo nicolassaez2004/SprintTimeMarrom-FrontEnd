@@ -6,8 +6,10 @@ import { instalarGraficos } from './graficos.mjs';
 import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from './atualizacao.mjs';
 import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
 import { ESPERA, buscarComExcesso, detalheEspera } from './espera.mjs';
+import { instalarExportacao } from './exportacao.mjs';
 
 instalarGraficos();
+instalarExportacao();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');

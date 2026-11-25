@@ -1,0 +1,86 @@
+{
+  "origem": "SINTETICA",
+  "data": "2026-11-25",
+  "fonte": "Entradas controladas do scripts/ensaio_mapa_us24.py; contagens e cálculos manuais registrados antes da comparação. Sem referência institucional.",
+  "coordenadas": "WGS84, longitude/latitude; tolerância 0.000001 grau. Rede construída em EPSG:31983, origem (-46.63,-23.55), deslocamentos em metros.",
+  "filtros": {"escopo":"parada","base":"parada","linha":"8000-10","sentido":"0","tipo":"PONTUALIDADE_VIAGENS","inicio":"2026-11-24T08:00","fim":"2026-11-24T08:15","versao_gtfs_id":"00000000-0000-0000-0000-000000000024","versao_territorial_id":"4d2bb2b0-65b4-550b-94bf-ac0144db5798","codigo":""},
+  "consultas": [
+    {
+      "id":"paradas", "fixture":"mapas/parada-rede.json", "filtros":{}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[
+        {"id":"P0","valor":0,"contagens":[0,10],"calculo":"0/10*100 = 0","faixa":0,"cor":"#deebf7","coordenadas":[-46.632451,-23.550155],"deslocamento_m":[-250,-20]},
+        {"id":"P100","valor":100,"contagens":[1,1],"calculo":"1/1*100 = 100","faixa":3,"cor":"#08519c","coordenadas":[-46.629513,-23.550186],"deslocamento_m":[50,-20]},
+        {"id":"P25","valor":25,"contagens":[1,4],"calculo":"1/4*100 = 25; limite inferior incluído na segunda faixa","faixa":1,"cor":"#9ecae1","coordenadas":[-46.636856,-23.549928],"deslocamento_m":[-700,0],"fora_territorio":true},
+        {"id":"P50","valor":50,"contagens":[1,2],"calculo":"1/2*100 = 50; limite inferior incluído na terceira faixa","faixa":2,"cor":"#3182bd","coordenadas":[-46.637243,-23.549563],"deslocamento_m":[-740,40],"fora_territorio":true},
+        {"id":"P75","valor":75,"contagens":[3,4],"calculo":"3/4*100 = 75; limite inferior incluído na quarta faixa","faixa":3,"cor":"#08519c","coordenadas":[-46.630487,-23.549814],"deslocamento_m":[-50,20]},
+        {"id":"PA","valor":40,"contagens":[2,5],"calculo":"2/5*100 = 40","faixa":1,"cor":"#9ecae1","coordenadas":[-46.635389,-23.550124],"deslocamento_m":[-550,-20]},
+        {"id":"PB","valor":30,"contagens":[3,10],"calculo":"3/10*100 = 30","faixa":1,"cor":"#9ecae1","coordenadas":[-46.633915,-23.549778],"deslocamento_m":[-400,20]},
+        {"id":"PN","valor":null,"contagens":[0,0],"calculo":"0/0 não é zero","motivo":"DENOMINADOR_ZERO","faixa":null,"cor":"#b7beb8","coordenadas":[-46.628039,-23.549840],"deslocamento_m":[200,20]}
+      ]
+    },
+    {
+      "id":"trechos", "fixture":"mapas/trecho-rede.json", "filtros":{"escopo":"trecho"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[
+        {"id":"PA–PB","origem":"PA","destino":"PB","valor":20,"contagens":[1,5],"calculo":"1/5*100 = 20","faixa":0,"cor":"#deebf7"},
+        {"id":"PA–P75","origem":"PA","destino":"P75","valor":80,"contagens":[4,5],"calculo":"4/5*100 = 80; geometria inteira, cerca de metade em cada distrito; vínculo 01 por maior extensão/desempate crescente","faixa":3,"cor":"#08519c","cruza_limite":true,"fracao_distrito":0.5},
+        {"id":"P0–P75","origem":"P0","destino":"P75","valor":0,"contagens":[0,5],"calculo":"0/5*100 = 0","faixa":0,"cor":"#deebf7"},
+        {"id":"P100–PN","origem":"P100","destino":"PN","valor":null,"contagens":[0,0],"calculo":"denominador zero","motivo":"DENOMINADOR_ZERO","faixa":null,"cor":"#b7beb8"}
+      ]
+    },
+    {
+      "id":"distritos-paradas", "fixture":"mapas/distrito-parada.json", "filtros":{"escopo":"distrito"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[
+        {"id":"01","valor":33.333333333333336,"contagens":[5,15],"calculo":"PA+PB: (2+3)/(5+10)*100; não média 35%","faixa":1,"cor":"#9ecae1","limites_x_m":[-600,-300]},
+        {"id":"02","valor":21.428571428571427,"contagens":[3,14],"calculo":"P0+P75: (0+3)/(10+4)*100; não média 37.5%","faixa":0,"cor":"#deebf7","limites_x_m":[-300,0]},
+        {"id":"03","valor":null,"calculo":"P100+PN: componente insuficiente impede agregado, sem substituir por 100%","motivo":"DADOS_INSUFICIENTES","faixa":null,"cor":"#b7beb8","limites_x_m":[0,300]},
+        {"id":"04","valor":null,"calculo":"nenhum registro no território","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8","limites_x_m":[300,600]}
+      ]
+    },
+    {
+      "id":"subprefeituras-paradas", "fixture":"mapas/subprefeitura-parada.json", "filtros":{"escopo":"subprefeitura"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[
+        {"id":"01","valor":27.586206896551722,"contagens":[8,29],"calculo":"PA+PB+P0+P75: (2+3+0+3)/(5+10+10+4)*100; P25/P50 estão fora","faixa":1,"cor":"#9ecae1","limites_x_m":[-600,0]},
+        {"id":"02","valor":null,"calculo":"P100+PN insuficiente","motivo":"DADOS_INSUFICIENTES","faixa":null,"cor":"#b7beb8","limites_x_m":[0,300]},
+        {"id":"03","valor":null,"calculo":"sem registros","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8","limites_x_m":[300,600]}
+      ]
+    },
+    {
+      "id":"distritos-trechos", "fixture":"mapas/distrito-trecho.json", "filtros":{"escopo":"distrito","base":"trecho"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[
+        {"id":"01","valor":50,"contagens":[5,10],"calculo":"T0+T1: (1+4)/(5+5)*100; vínculo único da API, sem ponderar novamente pela fração","faixa":2,"cor":"#3182bd","limites_x_m":[-600,-300]},
+        {"id":"02","valor":0,"contagens":[0,5],"calculo":"T2: 0/5*100","faixa":0,"cor":"#deebf7","limites_x_m":[-300,0]},
+        {"id":"03","valor":null,"calculo":"TN insuficiente","motivo":"DADOS_INSUFICIENTES","faixa":null,"cor":"#b7beb8","limites_x_m":[0,300]},
+        {"id":"04","valor":null,"calculo":"sem trechos publicados","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8","limites_x_m":[300,600]}
+      ]
+    },
+    {
+      "id":"frequencia-observada", "fixture":"mapas/frequencia-parada.json", "filtros":{"tipo":"FREQUENCIA_OBSERVADA"}, "cortes":[2,4,8], "unidade":"passagens/h",
+      "casos":[{"id":"P0","valor":4,"calculo":"1 passagem / 0.25 h = 4 passagens/h; valor persistido controlado","faixa":2,"cor":"#3182bd","coordenadas":[-46.632451,-23.550155]}]
+    },
+    {
+      "id":"frequencia-territorial", "fixture":"mapas/frequencia-distrito.json", "filtros":{"escopo":"distrito","tipo":"FREQUENCIA_OBSERVADA"}, "cortes":[2,4,8], "unidade":"passagens/h",
+      "casos":[
+        {"id":"01","valor":null,"calculo":"sem registros de frequência","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8"},
+        {"id":"02","valor":null,"calculo":"passagens/h não tem regra territorial neste contrato","motivo":"AGREGACAO_NAO_SUPORTADA","faixa":null,"cor":"#b7beb8"},
+        {"id":"03","valor":null,"calculo":"sem registros de frequência","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8"},
+        {"id":"04","valor":null,"calculo":"sem registros de frequência","motivo":"SEM_DADOS","faixa":null,"cor":"#b7beb8"}
+      ]
+    },
+    {
+      "id":"frequencia-programada", "fixture":"mapas-conferencia/frequencia-programada.json", "filtros":{"tipo":"FREQUENCIA_PROGRAMADA"}, "cortes":[2,4,8], "unidade":"passagens/h",
+      "casos":[{"id":"P0","valor":8,"calculo":"2 passagens / 0.25 h = 8 passagens/h; limite superior na quarta faixa","faixa":3,"cor":"#08519c","coordenadas":[-46.632451,-23.550155]}]
+    },
+    {
+      "id":"sentido-volta", "fixture":"mapas-conferencia/sentido-volta.json", "filtros":{"sentido":"1"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[{"id":"P0","valor":100,"contagens":[1,1],"calculo":"sentido 1: 1/1*100, separado do zero no sentido 0","faixa":3,"cor":"#08519c","coordenadas":[-46.632451,-23.550155]}]
+    },
+    {
+      "id":"codigo-fora-do-territorio", "fixture":"mapas-conferencia/codigo-p25.json", "filtros":{"codigo":"P25"}, "cortes":[25,50,75], "unidade":"%",
+      "casos":[{"id":"P25","valor":25,"calculo":"filtro exato preserva parada fora dos limites","faixa":1,"cor":"#9ecae1","fora_territorio":true,"coordenadas":[-46.636856,-23.549928]}]
+    },
+    {"id":"codigo-ausente","fixture":"mapas-conferencia/codigo-ausente.json","filtros":{"codigo":"INEXISTENTE"},"cortes":[25,50,75],"unidade":"%","casos":[],"vazio":"Código sem registro não cria valor zero"},
+    {"id":"linha-ausente","fixture":"mapas-conferencia/linha-ausente.json","filtros":{"linha":"9999-99"},"cortes":[25,50,75],"unidade":"%","casos":[],"vazio":"Linha sem registro não conserva outra linha no mapa"},
+    {"id":"limite-inicio","fixture":"mapas-conferencia/limite-inicio.json","filtros":{"inicio":"2026-11-24T08:15","fim":"2026-11-24T08:30"},"cortes":[25,50,75],"unidade":"%","casos":[],"vazio":"Janela terminada às 08:15 não sobrepõe início às 08:15"},
+    {"id":"limite-fim","fixture":"mapas-conferencia/limite-fim.json","filtros":{"inicio":"2026-11-24T07:45","fim":"2026-11-24T08:00"},"cortes":[25,50,75],"unidade":"%","casos":[],"vazio":"Janela iniciada às 08:00 não sobrepõe fim às 08:00"}
+  ]
+}
