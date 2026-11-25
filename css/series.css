@@ -42,6 +42,13 @@
 
 /* Gráficos */
 .figura-serie { margin: 0 0 20px; }
+.aviso-qualidade-linha { display: block; margin: 7px 0; padding: 8px 10px; border: 1px solid #e7c987; border-radius: 5px; background: #fff8e9; color: #785621; line-height: 1.5; }
+.avisos-qualidade-grafico { margin: 10px 0; padding: 10px 14px 10px 32px; border: 1px solid #e7c987; border-radius: 6px; background: #fff8e9; color: #785621; font-size: 11px; line-height: 1.7; }
+.alerta-qualidade-svg { fill: #785621; font: 11px "Segoe UI", Arial, sans-serif; }
+.marcador-incompleto { fill: #9b5a23; stroke: white; stroke-width: 1; }
+.ponto-incompleto circle { stroke: #9b5a23; stroke-width: 2; }
+.exportar-grafico { margin: 10px 0 0; font-size: 11px; }
+.legenda-incompleto { color: #785621; }
 .cabecalho-grafico { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; margin-bottom: 20px; }
 .unidade-grafico { flex-shrink: 0; font-size: 10px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 4px 9px; }
 .unidade-grafico strong { color: var(--text); font-weight: 600; }

@@ -1,0 +1,18 @@
+{
+  "tarefa": "US26-T02-FE",
+  "resultado": "implementado",
+  "qualidade_consumida": "qualidade_coleta da API; sem recálculo no navegador",
+  "caso_verificado": {
+    "percentual_falhas": 13.33,
+    "incompleto": true,
+    "motivo": "SPTRANS_HTTP_503",
+    "superficie": ["tabela", "gráfico SVG", "popup do mapa", "lista impressa do mapa"]
+  },
+  "testes": {
+    "node": "node --test tests/*.test.mjs tests/mapa/*.test.mjs",
+    "node_arquivos_passaram": 14,
+    "servidor": "python -m pytest -q tests/test_servidor.py",
+    "servidor_passaram": 3
+  },
+  "limite": "Verificação visual com dados reais requer API, Leaflet e serviço de tiles disponíveis."
+}

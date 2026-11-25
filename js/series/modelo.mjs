@@ -116,6 +116,13 @@ export function validarResposta(corpo, filtros, pagina) {
         || !(item.valor === null || (typeof item.valor === 'number' && Number.isFinite(item.valor)))
         || item.status !== (item.valor === null ? 'SEM_RESULTADO' : 'DISPONIVEL')
         || !objeto(item.qualidade) || !contagensValidas(item.contagens)) invalida();
+    if (Object.hasOwn(item, 'qualidade_coleta') && (!objeto(item.qualidade_coleta)
+        || !(item.qualidade_coleta.incompleto === null || typeof item.qualidade_coleta.incompleto === 'boolean')
+        || !(item.qualidade_coleta.percentual_falhas === null
+          || (typeof item.qualidade_coleta.percentual_falhas === 'number'
+            && Number.isFinite(item.qualidade_coleta.percentual_falhas)
+            && item.qualidade_coleta.percentual_falhas >= 0 && item.qualidade_coleta.percentual_falhas <= 100))
+        || !(item.qualidade_coleta.motivo === null || typeof item.qualidade_coleta.motivo === 'string'))) invalida();
     if ((consulta.inicio && Date.parse(item.inicio) < Date.parse(consulta.inicio))
         || (consulta.fim && Date.parse(item.fim) > Date.parse(consulta.fim))) invalida();
   }

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#765440">
+  <meta name="description" content="Mapa público de indicadores operacionais e qualidade da coleta.">
+  <title>Mapa de indicadores · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/mapa-indicadores.css">
+  <script type="module" src="js/mapa/indicadores-app.mjs"></script>
+</head>
+<body>
+  <main class="indicadores-mapa-page">
+    <a class="back-link" href="series.html">← Histórico por linha</a>
+    <header class="page-heading">
+      <div><p class="eyebrow">INDICADORES DA OPERAÇÃO</p><h1>Mapa de indicadores</h1><p>Consulte indicadores espaciais e confira os avisos de qualidade informados pela API.</p></div>
+    </header>
+    <form id="filtros-mapa-indicadores" class="filtros-mapa-indicadores">
+      <label>Linha<input name="linha" required maxlength="64" placeholder="Ex.: 8000-10"></label>
+      <label>Indicador<select name="tipo"><option value="PONTUALIDADE_VIAGENS">Pontualidade</option><option value="CUMPRIMENTO_VIAGENS">Cumprimento</option></select></label>
+      <label>Escopo<select name="escopo"><option value="parada">Paradas</option><option value="trecho">Trechos</option><option value="distrito">Distritos</option><option value="subprefeitura">Subprefeituras</option></select></label>
+      <label id="base-wrap" hidden>Agregação territorial<select name="base"><option value="parada">Por parada</option><option value="trecho">Por trecho</option></select></label>
+      <label>Data inicial<input name="inicio" type="date" required></label>
+      <label>Data final<input name="fim" type="date" required></label>
+      <div class="acoes-mapa"><button class="button primary" type="submit">Consultar mapa</button><label>Versão GTFS<select name="versao_gtfs_id" required><option value="">Primeiro consulte os indicadores</option></select></label></div>
+    </form>
+    <p class="mapa-ajuda">A consulta lista as versões GTFS presentes nos indicadores deste recorte. Se houver mais de uma, escolha a versão a mapear. A qualidade é recebida da API e não é recalculada no navegador.</p>
+    <p id="mapa-status" class="message warning" role="status" hidden></p>
+    <div class="mapa-acoes"><button class="button secondary" id="imprimir-mapa" type="button">Imprimir / salvar mapa</button><span>O aviso e a lista de unidades incompletas também aparecem na impressão.</span></div>
+    <section class="mapa-indicadores-frame" aria-label="Mapa de indicadores por geometria"><div id="mapa-indicadores" role="application" aria-label="Mapa geográfico de indicadores"></div></section>
+    <ul id="avisos-mapa" class="avisos-mapa" aria-label="Unidades com dados incompletos" hidden></ul>
+    <p class="legenda-mapa"><span class="ponto-legenda incompleto"></span> Dados incompletos conforme API · <span class="ponto-legenda disponivel"></span> Sem aviso de incompletude</p>
+    <footer>Observa SP · Horários de São Paulo · Fonte: indicadores operacionais publicados</footer>
+  </main>
+</body>
+</html>
