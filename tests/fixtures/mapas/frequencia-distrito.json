@@ -1,0 +1,226 @@
+{
+  "ausencia": null,
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -46.632954937413736,
+              -23.551323543508605
+            ],
+            [
+              -46.63001670407925,
+              -23.551354371174813
+            ],
+            [
+              -46.62998329716891,
+              -23.548645628578242
+            ],
+            [
+              -46.63292147034998,
+              -23.548614804876546
+            ],
+            [
+              -46.632954937413736,
+              -23.551323543508605
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "ausencia": "AGREGACAO_NAO_SUPORTADA",
+        "base_agregacao": "parada",
+        "codigo": "02",
+        "contagens": {
+          "denominador": null,
+          "numerador": null
+        },
+        "escopo": "distrito",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "nome": "Distrito controle 02",
+        "qualidade": {
+          "registros_agregados": 1
+        },
+        "registros_agregados": 1,
+        "sentido": "0",
+        "tipo": "FREQUENCIA_OBSERVADA",
+        "unidade": "passagens/h",
+        "valor": null,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -46.635893165746396,
+              -23.551292660376056
+            ],
+            [
+              -46.632954937413736,
+              -23.551323543508605
+            ],
+            [
+              -46.63292147034998,
+              -23.548614804876546
+            ],
+            [
+              -46.63585963852968,
+              -23.54858392571565
+            ],
+            [
+              -46.635893165746396,
+              -23.551292660376056
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "ausencia": "SEM_DADOS",
+        "base_agregacao": "parada",
+        "codigo": "01",
+        "contagens": {
+          "denominador": null,
+          "numerador": null
+        },
+        "escopo": "distrito",
+        "nome": "Distrito controle 01",
+        "registros_agregados": 0,
+        "sentido": null,
+        "tipo": null,
+        "unidade": null,
+        "valor": null,
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -46.63001670407925,
+              -23.551354371174813
+            ],
+            [
+              -46.62707846575194,
+              -23.551385143374297
+            ],
+            [
+              -46.62704511899546,
+              -23.548676396820344
+            ],
+            [
+              -46.62998329716891,
+              -23.548645628578242
+            ],
+            [
+              -46.63001670407925,
+              -23.551354371174813
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "ausencia": "SEM_DADOS",
+        "base_agregacao": "parada",
+        "codigo": "03",
+        "contagens": {
+          "denominador": null,
+          "numerador": null
+        },
+        "escopo": "distrito",
+        "nome": "Distrito controle 03",
+        "registros_agregados": 0,
+        "sentido": null,
+        "tipo": null,
+        "unidade": null,
+        "valor": null,
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              -46.62707846575194,
+              -23.551385143374297
+            ],
+            [
+              -46.62414022244077,
+              -23.551415860106683
+            ],
+            [
+              -46.62410693583862,
+              -23.548707109602475
+            ],
+            [
+              -46.62704511899546,
+              -23.548676396820344
+            ],
+            [
+              -46.62707846575194,
+              -23.551385143374297
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "properties": {
+        "ausencia": "SEM_DADOS",
+        "base_agregacao": "parada",
+        "codigo": "04",
+        "contagens": {
+          "denominador": null,
+          "numerador": null
+        },
+        "escopo": "distrito",
+        "nome": "Distrito controle 04",
+        "registros_agregados": 0,
+        "sentido": null,
+        "tipo": null,
+        "unidade": null,
+        "valor": null,
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      },
+      "type": "Feature"
+    }
+  ],
+  "legenda": {
+    "ausencia": {
+      "AGREGACAO_NAO_SUPORTADA": "unidade não é percentual; não há regra de agregação territorial",
+      "CONTAGENS_INDISPONIVEIS": "contagens insuficientes para agregar",
+      "DADOS_INSUFICIENTES": "publicação sinalizou insuficiência de dados",
+      "DENOMINADOR_ZERO": "denominador zero; valor null",
+      "SEM_DADOS": "nenhum indicador publicado atende aos filtros",
+      "VALOR_INDISPONIVEL": "indicador publicado sem valor",
+      "VERSAO_TERRITORIAL_INDISPONIVEL": "não há versão de limites disponível"
+    },
+    "tipo": "valor publicado; agregações territoriais recalculadas pelas contagens",
+    "unidade": "a unidade original do indicador"
+  },
+  "paginacao": {
+    "page": 1,
+    "page_size": 100,
+    "total": 4
+  },
+  "type": "FeatureCollection",
+  "versao_territorial": {
+    "fonte": "Limites SINTÉTICOS de ensaio US24; sem valor oficial",
+    "id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+    "versao_fonte": "controle-2026-11-24"
+  }
+}

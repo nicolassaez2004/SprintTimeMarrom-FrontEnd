@@ -1,0 +1,341 @@
+{
+  "data": "2026-11-25",
+  "origem": "SINTETICA",
+  "api": "Backend d4fd3aa via HTTP real, SQLite descartável",
+  "navegador": "158.0.8127.37",
+  "verificacoes": [
+    "descoberta da rede publicada",
+    "zero numérico, ausência cinza, valor alto e limites da legenda",
+    "unidade, período SP, fonte e origem sintética",
+    "cor dos trechos aplicada ao traço e geometria inteira",
+    "troca distrito/subprefeitura e base parada/trecho",
+    "busca e localização de território sem dados",
+    "frequência em passagens/h e agregação territorial não suportada indicada",
+    "sentido não mistura viagens",
+    "filtro vazio sem mapa antigo ou zeros inventados",
+    "carregando, 503 sem resíduos e nova tentativa",
+    "celular 390 px sem transbordamento",
+    "filtros preservados ao recarregar"
+  ],
+  "consultas": [
+    {
+      "rota": "/indicadores",
+      "filtros": {
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "trecho",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "distrito",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+        "base": "parada"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "distrito",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+        "base": "trecho"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "subprefeitura",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+        "base": "trecho"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "subprefeitura",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+        "base": "parada"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "FREQUENCIA_OBSERVADA",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "distrito",
+        "sentido": "0",
+        "tipo": "FREQUENCIA_OBSERVADA",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+        "base": "parada"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "FREQUENCIA_OBSERVADA",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "codigo": "INEXISTENTE",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "codigo": "P0",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "codigo": "P0",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "codigo": "P0",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "1",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "codigo": "P0",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    },
+    {
+      "rota": "/indicadores",
+      "filtros": {
+        "linha": "8000-10",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      }
+    },
+    {
+      "rota": "/mapas/indicadores",
+      "filtros": {
+        "escopo": "parada",
+        "sentido": "0",
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "inicio": "2026-11-24T11:00:00.000Z",
+        "fim": "2026-11-24T11:15:00.000Z",
+        "page": "1",
+        "page_size": "100",
+        "linha": "8000-10",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024",
+        "versao_territorial_id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798"
+      }
+    }
+  ],
+  "erros_javascript": [],
+  "aceite": "PENDENTE_REVISAO"
+}

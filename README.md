@@ -1,5 +1,12 @@
 # SprintTimeMarrom
 
+## Mapa de indicadores (US24-T03)
+
+Abra **Mapa de indicadores** no menu. A página pública consulta a API pronta
+por parada, trecho, distrito ou subprefeitura e mantém filtros e versões no
+endereço. Legenda com unidades e limites ajustáveis; zero e ausência são
+distintos. [Uso, contrato e evidências](docs/US24-T03.md).
+
 ## CSV de indicadores (US10-T02-FE)
 
 No histórico por linha, **Baixar indicadores em CSV** usa a rota pronta com
@@ -121,4 +128,4 @@ Cada página tem uma pasta em `js/` com a mesma divisão de responsabilidades
 | `js/<página>/cliente.mjs` | Chamadas HTTP ao backend |
 | `js/<página>/modelo.mjs` | Validação do contrato da API e regras de exibição |
 
-Páginas: `mapa`, `qualidade`, `acervo`, `brutos` e `series`; estilos em `css/`.
+Páginas: `mapa`, `qualidade`, `acervo`, `brutos`, `series` e `mapa-indicadores`; estilos em `css/`.

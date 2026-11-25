@@ -1,0 +1,349 @@
+{
+  "ausencia": null,
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          -46.63245073,
+          -23.5501549
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 10,
+          "numerador": 0
+        },
+        "distrito_id": "c74b8523-ac50-5898-a9d7-bda8dd024271",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle P0",
+        "parada": "P0",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "4af9e14c-e424-5a7d-b595-565af3183693",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 0.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.62951253,
+          -23.55018572
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 1,
+          "numerador": 1
+        },
+        "distrito_id": "4c2214fd-7eec-5534-ba1f-3a38949a6026",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle P100",
+        "parada": "P100",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "c062ff4a-11e0-5071-a643-0b9ef6f342bc",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 100.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.6368558,
+          -23.54992799
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 4,
+          "numerador": 1
+        },
+        "distrito_id": null,
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle P25",
+        "parada": "P25",
+        "ponto_na_fronteira": null,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": null,
+        "territorio_ausente": true,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 25.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.63724308,
+          -23.5495627
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 2,
+          "numerador": 1
+        },
+        "distrito_id": null,
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle P50",
+        "parada": "P50",
+        "ponto_na_fronteira": null,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": null,
+        "territorio_ausente": true,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 50.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.63048747,
+          -23.54981428
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 4,
+          "numerador": 3
+        },
+        "distrito_id": "c74b8523-ac50-5898-a9d7-bda8dd024271",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle P75",
+        "parada": "P75",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "4af9e14c-e424-5a7d-b595-565af3183693",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 75.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.63538894,
+          -23.55012403
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 5,
+          "numerador": 2
+        },
+        "distrito_id": "954d6d33-f627-5d49-b9da-13aa5972f80c",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle PA",
+        "parada": "PA",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "4af9e14c-e424-5a7d-b595-565af3183693",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 40.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.63391537,
+          -23.5497783
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": null,
+        "contagens": {
+          "denominador": 10,
+          "numerador": 3
+        },
+        "distrito_id": "954d6d33-f627-5d49-b9da-13aa5972f80c",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle PB",
+        "parada": "PB",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": false,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "4af9e14c-e424-5a7d-b595-565af3183693",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": 30.0,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          -46.62803897,
+          -23.54983994
+        ],
+        "type": "Point"
+      },
+      "properties": {
+        "ausencia": "DENOMINADOR_ZERO",
+        "contagens": {
+          "denominador": 0,
+          "numerador": 0
+        },
+        "distrito_id": "4c2214fd-7eec-5534-ba1f-3a38949a6026",
+        "escopo": "parada",
+        "fim": "2026-11-24T11:15:00+00:00",
+        "inicio": "2026-11-24T11:00:00+00:00",
+        "linha": "8000-10",
+        "nome": "Parada controle PN",
+        "parada": "PN",
+        "ponto_na_fronteira": false,
+        "qualidade": {
+          "dados_insuficientes": true,
+          "origem": "SINTETICA",
+          "versao_reconstrucao": "recon-controle"
+        },
+        "sentido": "0",
+        "subprefeitura_id": "c062ff4a-11e0-5071-a643-0b9ef6f342bc",
+        "territorio_ausente": false,
+        "tipo": "PONTUALIDADE_VIAGENS",
+        "unidade": "%",
+        "valor": null,
+        "versao_calculo": "regra-controle",
+        "versao_conjunto": "ensaio-us24-1",
+        "versao_correspondencia": "correspondencia-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000024"
+      },
+      "type": "Feature"
+    }
+  ],
+  "legenda": {
+    "ausencia": {
+      "AGREGACAO_NAO_SUPORTADA": "unidade não é percentual; não há regra de agregação territorial",
+      "CONTAGENS_INDISPONIVEIS": "contagens insuficientes para agregar",
+      "DADOS_INSUFICIENTES": "publicação sinalizou insuficiência de dados",
+      "DENOMINADOR_ZERO": "denominador zero; valor null",
+      "SEM_DADOS": "nenhum indicador publicado atende aos filtros",
+      "VALOR_INDISPONIVEL": "indicador publicado sem valor",
+      "VERSAO_TERRITORIAL_INDISPONIVEL": "não há versão de limites disponível"
+    },
+    "tipo": "valor publicado; agregações territoriais recalculadas pelas contagens",
+    "unidade": "a unidade original do indicador"
+  },
+  "paginacao": {
+    "page": 1,
+    "page_size": 100,
+    "total": 8
+  },
+  "type": "FeatureCollection",
+  "versao_territorial": {
+    "fonte": "Limites SINTÉTICOS de ensaio US24; sem valor oficial",
+    "id": "4d2bb2b0-65b4-550b-94bf-ac0144db5798",
+    "versao_fonte": "controle-2026-11-24"
+  }
+}
