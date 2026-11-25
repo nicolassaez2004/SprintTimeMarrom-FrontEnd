@@ -4,6 +4,8 @@ import { dataValida, hojeSP } from '../comum/formatacao.mjs';
 import { dataHora, meiaNoiteSP, validarFiltros } from './modelo.mjs';
 
 export class PeriodoIndisponivel extends Error {}
+// CSV válido, mas só com o cabeçalho: não é erro nem arquivo útil para baixar.
+export class SemRegistros extends PeriodoIndisponivel {}
 
 function diaSeguinte(dia) {
   const proximo = new Date(`${dia}T12:00:00Z`);
@@ -62,6 +64,9 @@ async function conferirResposta(resposta) {
   }
   if (resposta.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'text/csv') {
     throw new Error('O serviço não entregou um arquivo CSV. Tente novamente.');
+  }
+  if (resposta.headers.get('X-Total-Registros') === '0') {
+    throw new SemRegistros('Não há indicadores publicados para estes filtros neste dia. Nenhum arquivo foi baixado.');
   }
   return nomeDoArquivo(resposta.headers.get('Content-Disposition'));
 }

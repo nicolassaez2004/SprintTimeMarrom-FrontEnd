@@ -1,0 +1,48 @@
+[
+ {
+  "nome": "dia consolidado, linha toda",
+  "modo": "arquivo",
+  "arquivo": "indicadores_2026-11-24.csv",
+  "linhas": 12,
+  "sha256_igual_api": true,
+  "bom": true,
+  "inicios": [
+   "2026-11-24T10:45:00+00:00",
+   "2026-11-24T11:00:00+00:00",
+   "2026-11-24T11:15:00+00:00",
+   "2026-11-24T11:30:00+00:00",
+   "2026-11-24T11:45:00+00:00",
+   "2026-11-24T12:00:00+00:00"
+  ]
+ },
+ {
+  "nome": "faixa 08:00-08:30",
+  "modo": "arquivo",
+  "arquivo": "indicadores_2026-11-24.csv",
+  "linhas": 4,
+  "sha256_igual_api": true,
+  "bom": true,
+  "inicios": [
+   "2026-11-24T11:00:00+00:00",
+   "2026-11-24T11:15:00+00:00"
+  ]
+ },
+ {
+  "nome": "sentido volta (sem registros)",
+  "erro": "SemRegistros",
+  "mensagem": "Não há indicadores publicados para estes filtros neste dia. Nenhum arquivo foi baixado.",
+  "informativo": true,
+  "sem_registros": true
+ },
+ {
+  "nome": "dia não consolidado",
+  "erro": "PeriodoIndisponivel",
+  "mensagem": "O arquivo deste dia ainda está indisponível. Previsão: 27/11/2026, 06:00.",
+  "informativo": true,
+  "sem_registros": false
+ },
+ {
+  "nome": "API fora do ar",
+  "erro": "Não foi possível conectar ao serviço de downloads."
+ }
+]

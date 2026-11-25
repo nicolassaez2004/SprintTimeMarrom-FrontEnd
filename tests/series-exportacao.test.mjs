@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { lerSelecao } from '../js/series/modelo.mjs';
-import { nomeDoArquivo, parametrosDownload, PeriodoIndisponivel, prepararDownload } from '../js/series/exportacao.mjs';
+import { nomeDoArquivo, parametrosDownload, PeriodoIndisponivel, prepararDownload, SemRegistros } from '../js/series/exportacao.mjs';
 
 const filtros = { ...lerSelecao('?linha=3762-10'), inicio: '2026-11-20', fim: '2026-11-24' };
 const csv = new Uint8Array([239, 187, 191, ...new TextEncoder().encode('linha,valor\r\nSão José,0\r\n')]);
@@ -91,4 +91,18 @@ test('cancelamento de filtros não entrega um arquivo antigo', async () => {
       return resposta(csv, { headers: { 'Content-Type': 'text/csv', 'Content-Disposition': 'attachment; filename="x.csv"' } });
     },
   }), erro => erro.name === 'AbortError');
+});
+
+test('CSV só com cabeçalho informa ausência de registros e não inicia download', async () => {
+  for (const exposto of [true, false]) {
+    const chamadas = [];
+    await assert.rejects(prepararDownload('https://api.example/', filtros, '2026-11-22', {
+      fetchImpl: async (_, opcoes) => {
+        chamadas.push(opcoes.method);
+        return resposta(opcoes.method === 'HEAD' ? null : csv.slice(0, 15), { headers: { 'Content-Type': 'text/csv', 'X-Total-Registros': '0',
+          ...(exposto ? { 'Content-Disposition': 'attachment; filename="indicadores_2026-11-22.csv"' } : {}) } });
+      },
+    }), erro => erro instanceof SemRegistros && /Nenhum arquivo foi baixado/.test(erro.message));
+    assert.deepEqual(chamadas, ['HEAD']);
+  }
 });

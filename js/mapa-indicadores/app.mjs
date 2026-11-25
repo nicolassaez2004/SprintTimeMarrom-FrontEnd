@@ -4,7 +4,8 @@ import { dataHora, valorFormatado } from '../series/modelo.mjs';
 import { buscarMapa, buscarRedes } from './cliente.mjs';
 import { criarMapa } from './mapa.mjs';
 import { CAMPOS_MAPA, CORES, COR_AUSENCIA, classeDaFeicao, codigoFeicao, cortesPadrao,
-  legendaFaixas, nomeFeicao, normalizarBusca, parametrosMapa, recortesDaPagina, selecaoInicial, territorial, validarCortes } from './modelo.mjs';
+  legendaFaixas, nomeFeicao, normalizarBusca, parametrosMapa, qualidadeDoRecorte, recortesDaPagina, selecaoInicial, territorial,
+  textoQualidade, validarCortes } from './modelo.mjs';
 
 const el = id => document.getElementById(id);
 const form = el('filtros-mapa'), mapa = criarMapa(el('mapa-indicadores'));
@@ -31,7 +32,7 @@ function limparApresentacao() {
   visual += 1; mapa.limpar(); corpo = null; ativos = []; recortes = [];
   el('resultado-mapa').hidden = true; el('erro-mapa').hidden = true; el('vazio-mapa').hidden = true;
   el('unidade-mapa').textContent = 'Não informada'; el('periodo-mapa').textContent = '';
-  el('busca-local').value = ''; el('localizacao-status').textContent = '';
+  el('busca-local').value = ''; el('localizacao-status').textContent = ''; el('qualidade-mapa').hidden = true;
 }
 
 function renderizarLista() {
@@ -40,7 +41,7 @@ function renderizarLista() {
   el('lista-locais').innerHTML = selecionados.map(({ f, i }) => {
     const p = f.properties, classe = classeDaFeicao(f, cortes);
     const motivo = p.ausencia ? (corpo.legenda.ausencia[p.ausencia] ?? p.ausencia) : '';
-    return `<tr><td><strong>${h(nomeFeicao(f))}</strong><small>${h(codigoFeicao(f))}</small>${p.territorio_ausente ? '<small>Sem vínculo territorial</small>' : ''}</td><td><span class="amostra-cor ${classe.indice === null ? 'sem-resultado' : ''}" style="--cor:${classe.cor}"></span><strong>${h(valorFormatado(p.valor, p.unidade ?? ''))}</strong><small>${h(classe.rotulo)}</small>${motivo ? `<small>${h(motivo)}</small>` : ''}</td><td><button class="button secondary" type="button" data-localizar="${i}" aria-label="Localizar ${h(nomeFeicao(f))}">Localizar</button></td></tr>`;
+    return `<tr><td><strong>${h(nomeFeicao(f))}</strong><small>${h(codigoFeicao(f))}</small>${p.territorio_ausente ? '<small>Sem vínculo territorial</small>' : ''}</td><td><span class="amostra-cor ${classe.indice === null ? 'sem-resultado' : ''}" style="--cor:${classe.cor}"></span><strong>${h(valorFormatado(p.valor, p.unidade ?? ''))}</strong><small>${h(classe.rotulo)}</small>${motivo ? `<small>${h(motivo)}</small>` : ''}${p.inicio && textoQualidade(p.qualidade_coleta).aviso ? '<small class="coleta-incompleta">Coleta incompleta</small>' : ''}</td><td><button class="button secondary" type="button" data-localizar="${i}" aria-label="Localizar ${h(nomeFeicao(f))}">Localizar</button></td></tr>`;
   }).join('');
   el('lista-vazia').hidden = selecionados.length !== 0;
   el('contagem-locais').textContent = `${selecionados.length} de ${ativos.length} locais neste recorte`;
@@ -57,6 +58,10 @@ function renderizarRecorte() {
     + `<li><i class="sem-resultado" style="--cor:${COR_AUSENCIA}"></i><span>Sem resultado · não é zero</span></li>`;
   el('aviso-unidade').hidden = !ativos.some(f => f.properties.ausencia === 'AGREGACAO_NAO_SUPORTADA');
   el('aviso-territorio').hidden = corpo.ausencia !== 'VERSAO_TERRITORIAL_INDISPONIVEL';
+  const coleta = escolhido.inicio ? qualidadeDoRecorte(ativos) : null;
+  el('qualidade-mapa').hidden = !coleta;
+  el('qualidade-mapa').className = `message ${coleta?.aviso ? 'warning' : 'info'}`;
+  el('qualidade-mapa').textContent = coleta?.texto ?? '';
   renderizarLista(); salvarEndereco();
   const atual = ++visual;
   el('erro-base-mapa').hidden = true; el('desenhando-mapa').hidden = false;
