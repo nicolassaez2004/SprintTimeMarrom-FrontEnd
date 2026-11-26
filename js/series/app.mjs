@@ -6,11 +6,13 @@ import { instalarGraficos } from './graficos.mjs';
 import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from './atualizacao.mjs';
 import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
 import { ESPERA, buscarComExcesso, detalheEspera } from './espera.mjs';
-import { instalarExportacao } from './exportacao.mjs';
+import { instalarExportacao, instalarExportacaoPainel } from './exportacao.mjs';
 import { avisosQualidade } from './avisos.mjs';
+import { fixarPainel } from './painel-exportacao.mjs';
 
 instalarGraficos();
 instalarExportacao();
+instalarExportacaoPainel();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');
@@ -43,6 +45,7 @@ function celulaResultado(p) {
 }
 
 function renderizar(resposta, filtros, estado = null) {
+  const snapshot = fixarPainel(resposta, filtros, pagina);
   const { dados, paginacao, historico, lacunas } = resposta;
   el('cenario-sintetico').hidden = !dados.some(p => p.qualidade.origem === 'SINTETICA');
   const sentido = filtros.sentido === '0' ? 'Ida' : 'Volta';
@@ -66,7 +69,9 @@ function renderizar(resposta, filtros, estado = null) {
   el('estado-consolidacao').textContent = textos.consolidacao;
   el('aviso-atualizacao').hidden = true;
   el('resultado-series').hidden = false;
-  document.dispatchEvent(new CustomEvent('series:resultado', { detail: { resposta: resposta.graficos ?? resposta, filtros: { ...filtros } } }));
+  document.dispatchEvent(new CustomEvent('series:resultado', { detail: {
+    resposta: snapshot.resposta.graficos ?? snapshot.resposta, filtros: { ...snapshot.filtros }, snapshot,
+  } }));
 }
 
 // US23-T03: nova consulta silenciosa na hora prevista da próxima atualização.
