@@ -2,6 +2,7 @@ import { API_BASE } from '../comum/config.mjs';
 import { requisitar, urlDaApi } from '../comum/http.mjs';
 import { dataValida, hojeSP } from '../comum/formatacao.mjs';
 import { dataHora, meiaNoiteSP, validarFiltros } from './modelo.mjs';
+import { csvDoPainel } from './painel-exportacao.mjs';
 
 export class PeriodoIndisponivel extends Error {}
 // CSV válido, mas só com o cabeçalho: não é erro nem arquivo útil para baixar.
@@ -93,6 +94,45 @@ export async function prepararDownload(base, filtros, dia, opcoes = {}) {
   }, { ...config, method: 'GET' });
 }
 
+// Mesmo mecanismo de download do exportador existente, também usado pelo CSV do painel.
+export function baixarArquivo(arquivo, nome) {
+  const url = URL.createObjectURL(arquivo);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = nome;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+export function instalarExportacaoPainel() {
+  const painel = document.getElementById('exportacao-painel');
+  const botao = document.getElementById('baixar-painel-csv');
+  const status = document.getElementById('status-painel-csv');
+  const versao = document.getElementById('versao-painel');
+  let snapshot = null;
+  document.addEventListener('series:limpar', () => {
+    snapshot = null; painel.hidden = true; status.textContent = '';
+  });
+  document.addEventListener('series:resultado', evento => {
+    snapshot = evento.detail.snapshot;
+    painel.hidden = !snapshot.resposta.dados.length;
+    versao.textContent = snapshot.versaoDados
+      ? `Versão dos dados: ${snapshot.versaoDados}`
+      : `${snapshot.versoesConjunto.length} conjunto(s) versionado(s) nesta página`;
+    status.textContent = '';
+  });
+  botao.addEventListener('click', () => {
+    try {
+      const conteudo = csvDoPainel(snapshot);
+      const arquivo = new Blob([conteudo], { type: 'text/csv;charset=utf-8' });
+      baixarArquivo(arquivo, `observa-sp-painel-${snapshot.filtros.linha}-pagina-${snapshot.pagina}.csv`);
+      status.textContent = `${snapshot.resposta.dados.length} linhas exibidas exportadas, com filtros, data, fonte e versões.`;
+    } catch (erro) { status.textContent = erro.message; }
+  });
+}
+
 export function instalarExportacao() {
   const el = id => document.getElementById(id);
   const painel = el('exportacao-indicadores'), dia = el('dia-csv'), botao = el('baixar-csv'), status = el('status-csv');
@@ -121,14 +161,14 @@ export function instalarExportacao() {
     try {
       const resultado = await prepararDownload(API_BASE, filtros, dia.value, { signal: atual.signal });
       if (controle !== atual || atual.signal.aborted) return;
-      const link = document.createElement('a');
-      const objeto = resultado.modo === 'arquivo' ? URL.createObjectURL(resultado.arquivo) : null;
-      link.href = objeto ?? resultado.url;
-      if (objeto) link.download = resultado.nome;
-      // A resposta attachment inicia o download sem depender de pop-up após o HEAD.
-      document.body.append(link); link.click(); link.remove();
-      if (objeto) setTimeout(() => URL.revokeObjectURL(objeto), 60000);
-      status.textContent = objeto ? `Arquivo recebido: ${resultado.nome}. Salvamento solicitado; confira os downloads do navegador.`
+      if (resultado.modo === 'arquivo') baixarArquivo(resultado.arquivo, resultado.nome);
+      else {
+        const link = document.createElement('a');
+        link.href = resultado.url;
+        // A resposta attachment inicia o download sem depender de pop-up após o HEAD.
+        document.body.append(link); link.click(); link.remove();
+      }
+      status.textContent = resultado.modo === 'arquivo' ? `Arquivo recebido: ${resultado.nome}. Salvamento solicitado; confira os downloads do navegador.`
         : 'Arquivo disponível. Download solicitado; confira os downloads do navegador.';
     } catch (erro) {
       if (controle !== atual || atual.signal.aborted) return;

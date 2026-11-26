@@ -1,5 +1,13 @@
 /* Filtros: mesmo cartão e mesmos campos de .filters, organizados em grade. */
 .csv-panel { margin-top: 24px; }
+.exportacao-painel { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; border-left: 4px solid var(--brown); background: linear-gradient(135deg, #fff 25%, #f8f5f1 100%); box-shadow: 0 10px 26px #473b2f0d; }
+.exportacao-painel[hidden] { display: none; }
+.exportacao-painel-etiqueta { display: inline-block; margin-bottom: 8px; color: var(--brown); font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+.exportacao-painel h2 { font-size: 19px; letter-spacing: -.02em; }
+.exportacao-painel p, .exportacao-painel small { color: var(--muted); font-size: 12px; line-height: 1.6; }
+.exportacao-painel > div { flex: 1 1 280px; }
+.exportacao-painel > p { flex-basis: 100%; margin: 0; }
+.exportacao-painel .button { min-height: 44px; box-shadow: 0 4px 10px #76544024; }
 .csv-panel h2 { font-size: 20px; }
 .csv-panel p, .csv-panel label { font-size: 14px; line-height: 1.7; }
 .csv-panel p { margin-top: 10px; color: var(--muted); }

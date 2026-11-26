@@ -52,6 +52,11 @@
         <section class="resumo-series" aria-label="Contexto da consulta"><div><p class="eyebrow">RESULTADOS PUBLICADOS</p><h2 id="titulo-resultado"></h2><p id="resumo-filtros"></p></div><div><span>Histórico disponível para este indicador</span><strong id="limites-historico"></strong><small id="inicio-coleta"></small><small id="estado-atualizacao"></small><small id="estado-consolidacao"></small></div></section>
         <p id="aviso-atualizacao" class="message warning" role="status" hidden></p>
         <p id="sem-resultados" class="series-vazio" role="status" hidden>Nenhum resultado publicado para estes filtros. Ausência de resultado não significa valor zero.</p>
+        <section id="exportacao-painel" class="panel exportacao-painel" aria-label="Exportar painel exibido" hidden>
+          <div><span class="exportacao-painel-etiqueta">RECORTE EXIBIDO</span><h2>Exportar esta página do painel</h2><p>Leve os valores da tela em CSV, com filtros, data, fonte e versões. Use o botão de cada gráfico para baixar a imagem SVG.</p><small id="versao-painel"></small></div>
+          <button id="baixar-painel-csv" class="button primary" type="button"><span aria-hidden="true">↓</span> Baixar CSV do painel</button>
+          <p id="status-painel-csv" role="status" aria-live="polite"></p>
+        </section>
         <section id="graficos-series" aria-label="Gráficos do histórico" hidden></section>
         <section class="panel tabela-panel" aria-labelledby="titulo-tabela"><div class="section-top"><div><h2 id="titulo-tabela">Resultados da consulta</h2><p id="total-resultados" class="muted"></p></div><span class="small-tag">Horário de São Paulo</span></div><div class="series-scroll" tabindex="0" role="region" aria-label="Resultados publicados por intervalo"><table><caption class="sr-only">Valores, unidades e versões devolvidos pela API</caption><thead><tr><th scope="col">Intervalo</th><th scope="col">Resultado</th><th scope="col">Procedência</th></tr></thead><tbody id="valores-series"></tbody></table></div>
           <nav id="paginacao-series" class="paginacao-series" aria-label="Páginas do histórico" hidden><button id="anterior-series" class="button secondary" type="button">Anterior</button><span id="pagina-series"></span><button id="proxima-series" class="button secondary" type="button">Próxima</button></nav>
