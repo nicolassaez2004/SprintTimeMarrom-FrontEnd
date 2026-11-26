@@ -7,7 +7,7 @@ import { esperaAteProxima, lerAtualizacao, rotuloPonto, textosAtualizacao } from
 import { REGULARIDADE, detalheRegularidade } from './regularidade.mjs';
 import { ESPERA, buscarComExcesso, detalheEspera } from './espera.mjs';
 import { instalarExportacao, instalarExportacaoPainel } from './exportacao.mjs';
-import { avisosQualidade } from './avisos.mjs';
+import { avisosQualidade, estadoQualidade, textoIndeterminado } from './avisos.mjs';
 import { fixarPainel } from './painel-exportacao.mjs';
 
 instalarGraficos();
@@ -34,7 +34,9 @@ function contagensDoPonto(p) {
 // US18-T03A-FE: espera e excesso em linhas separadas, cada um com unidade e motivo.
 function celulaResultado(p) {
   const qualidade = avisosQualidade([p])[0];
-  const aviso = qualidade ? `<span class="aviso-qualidade-linha" role="status"><strong>Dados incompletos: ${h(qualidade.percentual)}% de falhas.</strong> Motivo: ${h(qualidade.motivo)}</span>` : '';
+  const aviso = qualidade ? `<span class="aviso-qualidade-linha" role="status"><strong>Dados incompletos: ${h(qualidade.percentual)}.</strong> Motivo: ${h(qualidade.motivo)}</span>`
+    : ['indeterminada', 'nao_informada'].includes(estadoQualidade(p.qualidade_coleta))
+      ? `<span class="aviso-qualidade-linha qualidade-indeterminada">Qualidade da coleta indeterminada (não é 0% de falhas): ${h(textoIndeterminado(p.qualidade_coleta))}</span>` : '';
   if (p.tipo === ESPERA) {
     const d = detalheEspera(p);
     return `${aviso}<strong class="${p.valor === null ? 'sem-valor' : ''}">${h(d.espera)}</strong>${d.motivoEspera ? `<small>${h(d.motivoEspera)}</small>` : ''}`

@@ -2,11 +2,13 @@ import { API_BASE } from '../comum/config.mjs';
 import { requisitar, urlDaApi } from '../comum/http.mjs';
 import { dataValida, hojeSP } from '../comum/formatacao.mjs';
 import { dataHora, meiaNoiteSP, validarFiltros } from './modelo.mjs';
-import { csvDoPainel } from './painel-exportacao.mjs';
+import { parametrosExportacao, registrosEsperados, textoVersao } from './painel-exportacao.mjs';
 
 export class PeriodoIndisponivel extends Error {}
 // CSV válido, mas só com o cabeçalho: não é erro nem arquivo útil para baixar.
 export class SemRegistros extends PeriodoIndisponivel {}
+// US25-T01: a versão exibida não pode mais ser recomposta (404/410); nunca trocar por outra.
+export class VersaoIndisponivel extends Error {}
 
 function diaSeguinte(dia) {
   const proximo = new Date(`${dia}T12:00:00Z`);
@@ -106,30 +108,84 @@ export function baixarArquivo(arquivo, nome) {
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
+// US25-T03: CSV do painel = exportação da versão fixada no clique (US25-T01), com os mesmos
+// filtros de /series. Só entrega o arquivo se versão, tipo e total conferem com o painel.
+export async function baixarVersaoPainel(base, snapshot, opcoes = {}) {
+  const url = urlDaApi('downloads/indicadores', base);
+  url.search = parametrosExportacao(snapshot).toString();
+  const id = snapshot.versaoDados.id;
+  return requisitar(url, async r => {
+    if (r.status === 429) {
+      const prazo = Number(r.headers.get('Retry-After'));
+      throw new Error(`Limite de consultas atingido. Aguarde ${prazo > 0 && Number.isFinite(prazo) ? Math.ceil(prazo) : 60} segundos. Nenhum arquivo foi baixado.`);
+    }
+    if (!r.ok) {
+      let corpo;
+      try { corpo = await r.json(); } catch { /* Erro sem JSON continua sendo falha. */ }
+      if (r.status === 410 || corpo?.erro?.codigo === 'VERSAO_INEXISTENTE') {
+        throw new VersaoIndisponivel(`A versão exibida (${id.slice(0, 8)}) não pode mais ser exportada. Recarregue o painel para exportar a versão atual. Nenhum arquivo foi baixado.`);
+      }
+      if (r.status === 400 && corpo?.erro?.mensagem) throw new Error(`${corpo.erro.mensagem} Nenhum arquivo foi baixado.`);
+      throw new Error('Não foi possível gerar o CSV desta versão. Nenhum arquivo foi baixado.');
+    }
+    if (r.headers.get('Content-Type')?.split(';')[0].trim().toLowerCase() !== 'text/csv') {
+      throw new Error('O serviço não entregou um arquivo CSV. Nenhum arquivo foi baixado.');
+    }
+    const versao = r.headers.get('X-Versao-Dados');
+    if (versao !== null && versao.toLowerCase() !== id.toLowerCase()) {
+      throw new Error('O serviço entregou outra versão dos dados. Nenhum arquivo foi baixado.');
+    }
+    const total = r.headers.get('X-Total-Registros');
+    if (total !== null && Number(total) !== registrosEsperados(snapshot)) {
+      throw new Error('O arquivo recebido não tem a mesma quantidade de resultados do painel. Nenhum arquivo foi baixado.');
+    }
+    const nome = nomeDoArquivo(r.headers.get('Content-Disposition')) ?? `indicadores_v${id.slice(0, 8)}.csv`;
+    const arquivo = await r.blob();
+    if (opcoes.signal?.aborted) throw new DOMException('Download cancelado', 'AbortError');
+    if (arquivo.size === 0) throw new Error('O arquivo recebido está vazio. Nenhum arquivo foi baixado.');
+    return { nome, arquivo, total: total === null ? null : Number(total), versao: id };
+  // A recomposição de até 31 dias pode passar dos 20 s padrão das consultas.
+  }, { timeoutMs: 120000, ...opcoes, method: 'GET', cache: 'no-store', headers: { Accept: 'text/csv, application/json' },
+    mensagens: { conexao: 'Não foi possível conectar ao serviço de downloads. Nenhum arquivo foi baixado.' } });
+}
+
 export function instalarExportacaoPainel() {
   const painel = document.getElementById('exportacao-painel');
   const botao = document.getElementById('baixar-painel-csv');
   const status = document.getElementById('status-painel-csv');
   const versao = document.getElementById('versao-painel');
-  let snapshot = null;
+  let snapshot = null, controle = null;
+  const cancelar = () => { controle?.abort(); controle = null; };
   document.addEventListener('series:limpar', () => {
-    snapshot = null; painel.hidden = true; status.textContent = '';
+    cancelar(); snapshot = null; painel.hidden = true; status.textContent = ''; botao.disabled = false;
   });
   document.addEventListener('series:resultado', evento => {
+    // Uma atualização em segundo plano troca o painel, mas não a exportação já pedida.
     snapshot = evento.detail.snapshot;
     painel.hidden = !snapshot.resposta.dados.length;
-    versao.textContent = snapshot.versaoDados
-      ? `Versão dos dados: ${snapshot.versaoDados}`
-      : `${snapshot.versoesConjunto.length} conjunto(s) versionado(s) nesta página`;
-    status.textContent = '';
+    versao.textContent = snapshot.versaoDados ? textoVersao(snapshot.versaoDados) : snapshot.erroVersao;
+    if (controle) return;
+    botao.disabled = !snapshot.versaoDados;
+    status.textContent = snapshot.versaoDados ? '' : 'Exportação em CSV indisponível para esta resposta.';
   });
-  botao.addEventListener('click', () => {
+  botao.addEventListener('click', async () => {
+    if (!snapshot?.versaoDados || controle) return;
+    const alvo = snapshot, atual = new AbortController();
+    controle = atual; botao.disabled = true;
+    status.textContent = `Gerando o CSV da versão ${alvo.versaoDados.id.slice(0, 8)}…`;
     try {
-      const conteudo = csvDoPainel(snapshot);
-      const arquivo = new Blob([conteudo], { type: 'text/csv;charset=utf-8' });
-      baixarArquivo(arquivo, `observa-sp-painel-${snapshot.filtros.linha}-pagina-${snapshot.pagina}.csv`);
-      status.textContent = `${snapshot.resposta.dados.length} linhas exibidas exportadas, com filtros, data, fonte e versões.`;
-    } catch (erro) { status.textContent = erro.message; }
+      const resultado = await baixarVersaoPainel(API_BASE, alvo, { signal: atual.signal });
+      if (controle !== atual || atual.signal.aborted) return;
+      baixarArquivo(resultado.arquivo, resultado.nome);
+      const mudou = snapshot?.versaoDados?.id !== alvo.versaoDados.id;
+      status.textContent = `Arquivo ${resultado.nome}: ${resultado.total ?? 'todos os'} resultados desta seleção (todas as páginas), versão ${alvo.versaoDados.id.slice(0, 8)}, com unidades, contagens, qualidade, fonte e licença.`
+        + (mudou ? ' O painel foi atualizado durante a exportação; o arquivo corresponde à versão exibida no momento do clique.' : '');
+    } catch (erro) {
+      if (controle !== atual || atual.signal.aborted) return;
+      status.textContent = erro.message;
+    } finally {
+      if (controle === atual) { controle = null; botao.disabled = !snapshot?.versaoDados; }
+    }
   });
 }
 

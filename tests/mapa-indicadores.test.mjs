@@ -127,7 +127,7 @@ test('US26: qualidade da coleta no mapa respeita o limite estrito de 10% e não 
   assert.match(textoQualidade(q(10.1, true, 'INCOMPLETA')).texto, /Dado incompleto: 10,1%/);
   const nulo = textoQualidade(q(null, null, 'SEM_EXPECTATIVA', 'FORA_DO_MONITORAMENTO'));
   assert.equal(nulo.aviso, false);
-  assert.match(nulo.texto, /indeterminada \(FORA_DO_MONITORAMENTO\)/);
+  assert.match(nulo.texto, /indeterminada \(SEM_EXPECTATIVA · .*\(FORA_DO_MONITORAMENTO\)\)/);
   assert.match(textoQualidade(undefined).texto, /não informada/);
   const feicao = qualidade => ({ properties: { inicio: '2026-11-24T11:00:00+00:00', qualidade_coleta: qualidade } });
   assert.equal(qualidadeDoRecorte([feicao(q(13.33, true, 'INCOMPLETA')), feicao(q(13.33, true, 'INCOMPLETA'))]).aviso, true);
@@ -141,11 +141,32 @@ test('US26: qualidade da coleta no mapa respeita o limite estrito de 10% e não 
 test('US26: nova resposta atualiza o aviso do recorte exibido no mapa', async () => {
   const { qualidadeDoRecorte } = await import('../js/mapa-indicadores/modelo.mjs');
   const feicao = qualidade => ({ properties: { inicio: '2026-11-25T11:00:00+00:00', qualidade_coleta: qualidade } });
-  const anterior = qualidadeDoRecorte([feicao({ percentual_falhas: 10, incompleto: false, motivo: null })]);
-  const atual = qualidadeDoRecorte([feicao({ percentual_falhas: 10.1, incompleto: true, motivo: 'SPTRANS_HTTP_503' })]);
+  const anterior = qualidadeDoRecorte([feicao({ percentual_falhas: 10, incompleto: false, motivo: null, limite_incompleto_percentual: 10 })]);
+  const atual = qualidadeDoRecorte([feicao({ percentual_falhas: 10.1, incompleto: true, motivo: 'FALHAS_ACIMA_DO_LIMITE', causas: ['SPTRANS_HTTP_503'], limite_incompleto_percentual: 10 })]);
   assert.equal(anterior.aviso, false);
   assert.match(anterior.texto, /10% de falhas/);
   assert.equal(atual.aviso, true);
   assert.match(atual.texto, /10,1%/);
   assert.match(atual.texto, /acima de 10%/);
+});
+
+test('US26: no mapa, motivo e causas reais da API acompanham o aviso e a geometria recebe destaque', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { textoQualidade } = await import('../js/mapa-indicadores/modelo.mjs');
+  const { estiloFeicao } = await import('../js/mapa-indicadores/mapa.mjs');
+  // qualidade_coleta real (API em SQLite descartável, dados SINTÉTICOS).
+  const B = JSON.parse(readFileSync(new URL('./fixtures/backend-sqlite-sintetico/series-versao-B.json', import.meta.url)));
+  const q = inicio => B.dados.find(p => p.inicio === inicio).qualidade_coleta;
+  const incompleta = textoQualidade(q('2026-11-24T12:00:00+00:00'));
+  assert.equal(incompleta.aviso, true);
+  assert.match(incompleta.texto, /13,33% de falhas de coleta nesta janela, acima de 10%\. Motivo: .*FALHAS_ACIMA_DO_LIMITE.*causas: SPTRANS_HTTP_503/);
+  assert.equal(textoQualidade(q('2026-11-24T12:15:00+00:00')).aviso, false);
+  assert.match(textoQualidade(q('2026-11-24T12:30:00+00:00')).texto, /100% de falhas.*NENHUM_CICLO_COM_DADOS/);
+  const nulo = textoQualidade(q('2026-11-24T03:00:00+00:00'));
+  assert.equal(nulo.indeterminada, true);
+  assert.doesNotMatch(nulo.texto, /0% de falhas/);
+  const feicao = qualidade => ({ type: 'Feature', geometry: { type: 'Point', coordinates: [-46.6, -23.5] },
+    properties: { inicio: '2026-11-24T12:00:00+00:00', valor: 80, unidade: '%', qualidade_coleta: qualidade } });
+  assert.equal(estiloFeicao(feicao(q('2026-11-24T12:00:00+00:00')), [25, 50, 75]).className, 'feicao-incompleta');
+  assert.equal(estiloFeicao(feicao(q('2026-11-24T12:15:00+00:00')), [25, 50, 75]).className, '');
 });

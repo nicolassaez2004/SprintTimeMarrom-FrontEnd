@@ -1,0 +1,13 @@
+{
+ "status": 410,
+ "content_type": "application/json",
+ "corpo": {
+  "erro": {
+   "codigo": "VERSAO_INDISPONIVEL",
+   "mensagem": "O conjunto preservado desta versão não está mais disponível ou não confere com o recibo.",
+   "motivo": "ARQUIVO_AUSENTE_OU_INVALIDO",
+   "publicacao": "4d975c91-ff1e-41cd-854b-50b6fa357243",
+   "versao_dados": "4d975c91-ff1e-41cd-854b-50b6fa357243"
+  }
+ }
+}

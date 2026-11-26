@@ -1,0 +1,35 @@
+{
+ "A_versao_tela": "Versão dos dados: 688dae2b-3f0f-40b7-b2b0-cf42c1deabce (atualização de 15 min, publicada em 24/11/2026, 09:31)",
+ "A_linhas_tabela": 2,
+ "A_avisos_tabela": [
+  "Dados incompletos: 13,33% de falhas.\nMotivo: falhas de coleta acima do limite (FALHAS_ACIMA_DO_LIMITE); causas: SPTRANS_HTTP_503"
+ ],
+ "status_durante": "Gerando o CSV da versão 688dae2b…",
+ "pedido_csv": [
+  "http://127.0.0.1:5000/downloads/indicadores?linha=3762-10&sentido=0&tipo=PONTUALIDADE_VIAGENS&inicio=2026-11-24T03%3A00%3A00%2B00%3A00&fim=2026-11-25T03%3A00%3A00%2B00%3A00&formato=csv&versao_dados=688dae2b-3f0f-40b7-b2b0-cf42c1deabce"
+ ],
+ "segundos_ate_atualizar": 61,
+ "B_versao_tela": "Versão dos dados: 1ae079d0-1fc6-43a5-8bcc-1af807f4c330 (consolidação do dia, publicada em 25/11/2026, 04:00)",
+ "B_linhas_tabela": 50,
+ "status_final": "Arquivo indicadores_2026-11-24_2026-11-25_v688dae2b.csv: 2 resultados desta seleção (todas as páginas), versão 688dae2b, com unidades, contagens, qualidade, fonte e licença. O painel foi atualizado durante a exportação; o arquivo corresponde à versão exibida no momento do clique.",
+ "downloads_capturados": [
+  {
+   "tipo": "image/svg+xml;charset=utf-8",
+   "inicio": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 900 503\" width=\"900\" height=\"503\"><rect width=\"900\" height=\"503\" fill=\"#fff\"/><text x=\"24\" y=\"30\" fill=\"#26"
+  },
+  {
+   "tipo": "text/csv;charset=utf-8",
+   "inicio": "linha,nome_linha,sentido,tipo,valor,unidade,inicio,fim,parada,trecho,versao_gtfs_id,versao_conjunto,versao_correspondencia,versao_calculo,contagem_numerador,con"
+  }
+ ],
+ "avisos_grafico_B": [
+  "24/11/2026, 09:00 · 13,33% de falhas · falhas de coleta acima do limite (FALHAS_ACIMA_DO_LIMITE); causas: SPTRANS_HTTP_503",
+  "24/11/2026, 09:30 · 100% de falhas · nenhum ciclo de coleta com dados (NENHUM_CICLO_COM_DADOS); causas: SEM_CICLO_REGISTRADO",
+  "24/11/2026, 09:45 · 100% de falhas · nenhum ciclo de coleta com dados (NENHUM_CICLO_COM_DADOS); causas: SEM_CICLO_REGISTRADO",
+  "24/11/2026, 10:00 · 100% de falhas · nenhum ciclo de coleta com dados (NENHUM_CICLO_COM_DADOS); causas: SEM_CICLO_REGISTRADO"
+ ],
+ "status_falha": "A versão exibida (1ae079d0) não pode mais ser exportada. Recarregue o painel para exportar a versão atual. Nenhum arquivo foi baixado.",
+ "downloads_apos_falha": 0,
+ "overflow_horizontal_390": false,
+ "origem": "SINTETICA: Flask local + SQLite descartável, Firefox headless (Selenium)"
+}
