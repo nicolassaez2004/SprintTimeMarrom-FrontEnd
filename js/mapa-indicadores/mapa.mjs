@@ -23,7 +23,9 @@ export function estiloFeicao(f, cortes) {
   const classe = classeDaFeicao(f, cortes);
   return { color: f.geometry.type === 'LineString' ? classe.cor : classe.indice === null ? '#67756a' : '#315a72', fillColor: classe.cor,
     fillOpacity: 0.8, opacity: 1, weight: f.geometry.type === 'LineString' ? 6 : 2,
-    dashArray: classe.indice === null ? '5 5' : null, radius: 8 };
+    dashArray: classe.indice === null ? '5 5' : null, radius: 8,
+    // US26: contorno de alerta em toda geometria cuja janela a API marcou como incompleta.
+    className: f.properties.inicio && textoQualidade(f.properties.qualidade_coleta).aviso ? 'feicao-incompleta' : '' };
 }
 
 export function criarMapa(elemento) {
@@ -52,7 +54,7 @@ export function criarMapa(elemento) {
         const p = f.properties, indice = indices.get(f), classe = classeDaFeicao(f, cortes);
         const ausencia = p.ausencia ? (legendaApi.ausencia[p.ausencia] ?? p.ausencia) : null;
         const periodo = p.inicio ? `${dataHora(p.inicio)} a ${dataHora(p.fim)}` : 'Sem janela publicada para esta área';
-        layer.bindPopup(`<div class="popup-indicador"><strong>${h(nomeFeicao(f))}</strong><p>${h(valorFormatado(p.valor, p.unidade ?? ''))}</p><p>${h(classe.rotulo)}</p>${ausencia ? `<p>${h(ausencia)}</p>` : ''}<p>${h(periodo)}</p>${p.inicio ? `<p>${h(textoQualidade(p.qualidade_coleta).texto)}</p>` : ''}<p>Fonte: indicadores publicados pelo Observa SP</p>${p.territorio_ausente ? '<p>Sem vínculo territorial informado</p>' : ''}${p.cruza_limite ? '<p>Trecho cruza limites; vínculo territorial informado pela API.</p>' : ''}${p.versao_conjunto ? `<small>Conjunto: ${h(p.versao_conjunto)}</small>` : ''}</div>`);
+        layer.bindPopup(`<div class="popup-indicador"><strong>${h(nomeFeicao(f))}</strong><p>${h(valorFormatado(p.valor, p.unidade ?? ''))}</p><p>${h(classe.rotulo)}</p>${ausencia ? `<p>${h(ausencia)}</p>` : ''}<p>${h(periodo)}</p>${p.inicio ? `<p class="${textoQualidade(p.qualidade_coleta).aviso ? 'popup-aviso' : ''}">${h(textoQualidade(p.qualidade_coleta).texto)}</p>` : ''}<p>Fonte: indicadores publicados pelo Observa SP</p>${p.territorio_ausente ? '<p>Sem vínculo territorial informado</p>' : ''}${p.cruza_limite ? '<p>Trecho cruza limites; vínculo territorial informado pela API.</p>' : ''}${p.versao_conjunto ? `<small>Conjunto: ${h(p.versao_conjunto)}</small>` : ''}</div>`);
         layer.bindTooltip(nomeFeicao(f));
         layer.on('add', () => {
           const desenho = layer.getElement();

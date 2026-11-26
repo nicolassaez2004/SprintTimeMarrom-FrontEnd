@@ -1,21 +1,27 @@
 # US26-T03-FE — Testes dos avisos de qualidade
 
-Verifica respostas simuladas para 0%, 10%, 10,1% e qualidade ausente no histórico
-e no mapa. A interface respeita `incompleto` e o motivo enviados pela API, sem
-recalcular o limite. Uma resposta posterior substitui o aviso anterior no
-gráfico deixa de avisar em 10% e passa a mostrar 10,1% e o motivo novo; o SVG
-exportado contém os mesmos valores do gráfico atualizado.
+`tests/series-avisos.test.mjs` e o teste US26 de `tests/mapa-indicadores.test.mjs` usam
+respostas de `/series` capturadas do backend real (SQLite descartável, dados sintéticos;
+`tests/fixtures/backend-sqlite-sintetico/`).
 
-Verificação executada na pasta `SprintTimeMarrom-FrontEnd`:
+| Cenário | Origem | Resultado |
+|---|---|---|
+| 0% com coleta válida | controlada | sem aviso |
+| 10% | API | sem aviso |
+| 10,1% | controlada | aviso, percentual e motivo |
+| 13,33% (`SPTRANS_HTTP_503`) | API | aviso com causa |
+| Ausência total de coleta (`SEM_DADOS`) | API | aviso de 100% |
+| Percentual NULL (`SEM_EXPECTATIVA`) | API | indeterminado, nunca 0% |
+| Nova resposta | API/controlada | aviso antigo some da tela e da imagem |
+
+Também cobertos: zero observado x ausência, imagem com avisos/período/versão, quebra de
+texto em 390 px, destaque da geometria no mapa. No navegador foram conferidas a troca de
+resposta (versão A → B pela atualização automática, avisos refeitos) e o estado de erro da
+exportação (ver [reviews/US25-T03-US26-FE-review.md](reviews/US25-T03-US26-FE-review.md)).
+Troca manual de filtros e estado de carregamento **não** tiveram ensaio específico no
+navegador: no código, cada mudança limpa o resultado (`series:limpar`) antes de exibir a nova
+resposta.
 
 ```text
-node tests/series-avisos.test.mjs
-node tests/mapa-indicadores.test.mjs
-node tests/series-exportacao.test.mjs
-git diff --check
+node --test
 ```
-
-Resultado: 36 verificações passaram (4 séries, 18 mapa e 14 exportação); sem
-erros de whitespace. Não foi alterado o código do servidor. A atualização foi
-simulada com respostas conhecidas nos módulos de apresentação; não foi feita
-uma sessão visual no navegador nem chamada à API real.

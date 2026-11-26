@@ -35,13 +35,20 @@ function limparApresentacao() {
   el('busca-local').value = ''; el('localizacao-status').textContent = ''; el('qualidade-mapa').hidden = true;
 }
 
+// US26: cada local com janela publicada mostra o estado recebido da API (incompleta ou indeterminada).
+function marcaQualidade(q) {
+  const texto = textoQualidade(q);
+  if (texto.aviso) return `<small class="coleta-incompleta">⚠ ${h(texto.texto)}</small>`;
+  return texto.indeterminada ? `<small class="coleta-indeterminada">${h(texto.texto)}</small>` : '';
+}
+
 function renderizarLista() {
   const busca = normalizarBusca(el('busca-local').value);
   const selecionados = ativos.map((f, i) => ({ f, i })).filter(({ f }) => normalizarBusca(`${nomeFeicao(f)} ${codigoFeicao(f)}`).includes(busca));
   el('lista-locais').innerHTML = selecionados.map(({ f, i }) => {
     const p = f.properties, classe = classeDaFeicao(f, cortes);
     const motivo = p.ausencia ? (corpo.legenda.ausencia[p.ausencia] ?? p.ausencia) : '';
-    return `<tr><td><strong>${h(nomeFeicao(f))}</strong><small>${h(codigoFeicao(f))}</small>${p.territorio_ausente ? '<small>Sem vínculo territorial</small>' : ''}</td><td><span class="amostra-cor ${classe.indice === null ? 'sem-resultado' : ''}" style="--cor:${classe.cor}"></span><strong>${h(valorFormatado(p.valor, p.unidade ?? ''))}</strong><small>${h(classe.rotulo)}</small>${motivo ? `<small>${h(motivo)}</small>` : ''}${p.inicio && textoQualidade(p.qualidade_coleta).aviso ? '<small class="coleta-incompleta">Coleta incompleta</small>' : ''}</td><td><button class="button secondary" type="button" data-localizar="${i}" aria-label="Localizar ${h(nomeFeicao(f))}">Localizar</button></td></tr>`;
+    return `<tr><td><strong>${h(nomeFeicao(f))}</strong><small>${h(codigoFeicao(f))}</small>${p.territorio_ausente ? '<small>Sem vínculo territorial</small>' : ''}</td><td><span class="amostra-cor ${classe.indice === null ? 'sem-resultado' : ''}" style="--cor:${classe.cor}"></span><strong>${h(valorFormatado(p.valor, p.unidade ?? ''))}</strong><small>${h(classe.rotulo)}</small>${motivo ? `<small>${h(motivo)}</small>` : ''}${p.inicio ? marcaQualidade(p.qualidade_coleta) : ''}</td><td><button class="button secondary" type="button" data-localizar="${i}" aria-label="Localizar ${h(nomeFeicao(f))}">Localizar</button></td></tr>`;
   }).join('');
   el('lista-vazia').hidden = selecionados.length !== 0;
   el('contagem-locais').textContent = `${selecionados.length} de ${ativos.length} locais neste recorte`;
@@ -183,6 +190,7 @@ el('lista-locais').addEventListener('click', e => {
 });
 el('ajustar-mapa').addEventListener('click', mapa.ajustar);
 el('tentar-base-mapa').addEventListener('click', () => { if (corpo) renderizarRecorte(); });
+el('imprimir-mapa').addEventListener('click', () => window.print());
 el('anterior-mapa').addEventListener('click', () => { pagina = Math.max(1, pagina - 1); void consultar(); });
 el('proximo-mapa').addEventListener('click', () => { pagina += 1; void consultar(); });
 window.addEventListener('popstate', () => { restaurar(); void consultar(); });

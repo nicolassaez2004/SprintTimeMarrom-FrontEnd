@@ -1,5 +1,6 @@
 import { dataValida, hojeSP } from '../comum/formatacao.mjs';
 import { dataHora, numeroPublicado } from '../series/modelo.mjs';
+import { estadoQualidade, motivoQualidade, percentualFalhas, textoIndeterminado } from '../series/avisos.mjs';
 
 export const TIPOS_MAPA = Object.freeze({
   FREQUENCIA_OBSERVADA: 'Frequência observada', FREQUENCIA_PROGRAMADA: 'Frequência programada',
@@ -138,14 +139,15 @@ export function recortesDaPagina(corpo) {
 
 // US26: qualidade da coleta publicada com o indicador (qualidade_coleta); a coleta é global.
 export function textoQualidade(q) {
-  if (!objeto(q)) return { aviso: false, texto: 'Qualidade da coleta não informada para este resultado.' };
-  if (q.percentual_falhas === null) {
-    return { aviso: false, texto: `Qualidade da coleta indeterminada (${q.motivo ?? q.situacao}); o percentual de falhas não é zero nem conhecido.` };
+  const estado = estadoQualidade(q);
+  if (estado === 'nao_informada') return { aviso: false, indeterminada: true, texto: 'Qualidade da coleta não informada para este resultado.' };
+  if (estado === 'indeterminada') {
+    return { aviso: false, indeterminada: true, texto: `Qualidade da coleta indeterminada (${textoIndeterminado(q)}); o percentual de falhas não é zero nem conhecido.` };
   }
-  const pct = `${numeroPublicado(q.percentual_falhas, 2)}%`, limite = `${numeroPublicado(q.limite_incompleto_percentual ?? 10, 2)}%`;
-  return q.incompleto
-    ? { aviso: true, texto: `Dado incompleto: ${pct} de falhas de coleta nesta janela, acima de ${limite}. Evite conclusões sobre o período.` }
-    : { aviso: false, texto: `Coleta nesta janela: ${pct} de falhas (aviso somente acima de ${limite}).` };
+  const limite = Number.isFinite(q.limite_incompleto_percentual) ? `de ${numeroPublicado(q.limite_incompleto_percentual, 2)}%` : 'do limite publicado';
+  return estado === 'incompleta'
+    ? { aviso: true, texto: `Dado incompleto: ${percentualFalhas(q)} de coleta nesta janela, acima ${limite}. Motivo: ${motivoQualidade(q)}. Evite conclusões sobre o período.` }
+    : { aviso: false, texto: `Coleta nesta janela: ${percentualFalhas(q)} (aviso somente acima ${limite}).` };
 }
 export function qualidadeDoRecorte(features) {
   const medidas = features.filter(f => f.properties.inicio != null).map(f => f.properties.qualidade_coleta);

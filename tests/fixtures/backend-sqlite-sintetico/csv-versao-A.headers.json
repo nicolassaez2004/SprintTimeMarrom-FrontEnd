@@ -1,0 +1,20 @@
+{
+ "status": 200,
+ "query": {
+  "linha": "3762-10",
+  "sentido": "0",
+  "tipo": "PONTUALIDADE_VIAGENS",
+  "inicio": "2026-11-24T03:00:00+00:00",
+  "fim": "2026-11-25T03:00:00+00:00",
+  "formato": "csv",
+  "versao_dados": "4d975c91-ff1e-41cd-854b-50b6fa357243"
+ },
+ "Content-Type": "text/csv; charset=utf-8",
+ "Content-Disposition": "attachment; filename=\"indicadores_2026-11-24_2026-11-25_v4d975c91.csv\"",
+ "X-Versao-Dados": "4d975c91-ff1e-41cd-854b-50b6fa357243",
+ "X-Versao-Publicada-Em": "2026-11-24T12:31:00+00:00",
+ "X-Total-Registros": "2",
+ "X-Fonte": "Observa SP; indicadores calculados a partir de dados públicos da SPTrans (API Olho Vivo e GTFS/programação oficial)",
+ "X-Licenca": "CC BY 4.0",
+ "Access-Control-Expose-Headers": "Content-Disposition, ETag, Retry-After, X-Disponibilizado-Em, X-Fonte, X-Fonte-URL, X-Licenca, X-Licenca-URL, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-Total-Registros, X-Versao-Dados, X-Versao-Publicada-Em"
+}
