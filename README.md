@@ -1,5 +1,13 @@
 # SprintTimeMarrom
 
+## Integração com o backend (review das Sprints 1 e 2)
+
+Com a API de demonstração do backend em execução
+(`python -m scripts.demo_sprints_1_2 --pasta <dir> --servir`), confira o contrato
+real com os mesmos clientes e validadores das páginas:
+`node scripts/conferir_integracao_api.mjs`. Roteiro do PO e parecer por história:
+`docs/reviews/sprints-1-2.md` no repositório do backend.
+
 ## Mapa de indicadores (US24-T03)
 
 Abra **Mapa de indicadores** no menu. A página pública consulta a API pronta
@@ -111,7 +119,7 @@ opaca no entorno. Fonte: [API de Malhas Municipais do IBGE](https://servicodados
 
 ## US22-T03 — Atualização e defasagem
 
-O mapa consulta novamente a API a cada 30 s sem recarregar a página. Uma nova
+O mapa consulta novamente a API a cada 10 s sem recarregar a página (`INTERVALO_CONSULTA_MS`). Uma nova
 consulta aborta a anterior; respostas antigas são ignoradas mesmo se o servidor
 terminar de enviá-las após o cancelamento. O tempo entre `coletado_em` e a
 renderização do marcador é medido no navegador. Posições com até 60 s ficam em
