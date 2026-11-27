@@ -1,0 +1,514 @@
+{
+ "aviso": "Ensaio controlado do backend: base sintética, plano e revisão FICTÍCIOS; não é publicação real.",
+ "publicado": {
+  "status": 200,
+  "corpo": {
+   "fontes": [
+    {
+     "hash_base": "7e70d157d52258d413ea24b0510db78cd985c464418026777f5e8481de994e58",
+     "mes": "2018-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "46ec8b6372397a0a495f08de43dfaec1dc178b6fb694ef49e764c816ceb9778c",
+     "mes": "2019-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "fbc9f60bb6b5cdf950fb3793623b29057e50ca0eec4a45a7b274080989ec80b3",
+     "mes": "2020-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "17219e642b785ab0b85892de2c3856c126ef911a4a162386bf362d86ed24fecb",
+     "mes": "2021-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "8faaa50d2876ee78d30a09c3d103c2360e3d883154fd2a1e9b3f0d2a6241c6c9",
+     "mes": "2022-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "e491af3dd1f5d0a38b792b3135c35f4b2d076daa5287ae7f763cf656a49b969f",
+     "mes": "2023-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "0dc8d6abb7f10cffa9bade71b832f909a85a8701c96fa9aad30fef70ef17b5c1",
+     "mes": "2024-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    },
+    {
+     "hash_base": "9fa4bd0c4578e1850fc04ce6675cf9aedb2fcaa3fe30a7fa55e35e0863678c26",
+     "mes": "2025-01",
+     "politica": {
+      "teste": true
+     },
+     "selecao": {
+      "clima_regra_vinculo": "us06-t03-v2",
+      "clima_versao_fonte": "clima-controle",
+      "fonte_clima": "INMET",
+      "infra_conjunto": "45fac94d9e24db35217fbe458e6ada88eb1bee964e8539405d3d9c011aa40be3",
+      "infra_versoes": [
+       "infra-us21"
+      ],
+      "metrica_desempenho": "MEDIA",
+      "trafego_versao_fonte": "trafego-controle",
+      "trafego_versoes": {
+       "agregado": "us08-t02-controle",
+       "calculo": "us08-controle",
+       "correspondencia": "match-controle",
+       "estimativa": "estimativa-controle",
+       "gtfs": "00000000-0000-0000-0000-000000000019",
+       "reconstrucao": "recon-controle"
+      },
+      "versao_gtfs_id": "rede"
+     },
+     "versao_base": "us21-base-mensal-1.0"
+    }
+   ],
+   "mes": "2025-01",
+   "metodo": {
+    "desfecho": "AUMENTO_ATRASO_TRECHO_MENSAL",
+    "estimador": "OLS_ASSOCIACIONAL",
+    "interpretacao": "Associação condicional observacional, não causal.",
+    "metrica": "MEDIA",
+    "pesos": "IGUAIS_POR_TRECHO_MES",
+    "unidade": "s"
+   },
+   "registrado_em": "2026-11-27T22:31:41.888347+00:00",
+   "resultado": {
+    "hash_plano": "4730313de9ec4612739c06b5e8d369f165170aeb7cc90dbb27e96a104a74f166",
+    "hashes_bases": [
+     "7e70d157d52258d413ea24b0510db78cd985c464418026777f5e8481de994e58",
+     "46ec8b6372397a0a495f08de43dfaec1dc178b6fb694ef49e764c816ceb9778c",
+     "fbc9f60bb6b5cdf950fb3793623b29057e50ca0eec4a45a7b274080989ec80b3",
+     "17219e642b785ab0b85892de2c3856c126ef911a4a162386bf362d86ed24fecb",
+     "8faaa50d2876ee78d30a09c3d103c2360e3d883154fd2a1e9b3f0d2a6241c6c9",
+     "e491af3dd1f5d0a38b792b3135c35f4b2d076daa5287ae7f763cf656a49b969f",
+     "0dc8d6abb7f10cffa9bade71b832f909a85a8701c96fa9aad30fef70ef17b5c1",
+     "9fa4bd0c4578e1850fc04ce6675cf9aedb2fcaa3fe30a7fa55e35e0863678c26"
+    ],
+    "modelos": {
+     "principal": {
+      "categorias_referencia": {
+       "infra_classificacao": "VIA",
+       "linha_sentido": [
+        "L",
+        "0"
+       ],
+       "mes_calendario": "01"
+      },
+      "coeficientes": {
+       "chuva_10mm": {
+        "coeficiente": 2.1776487727557807,
+        "erro_padrao": 0.2816752568363522,
+        "ic95": [
+         1.5115926293669162,
+         2.8437049161446453
+        ],
+        "p_valor": 0.00011331614727200855
+       },
+       "intercepto": {
+        "coeficiente": 14.482600460926093,
+        "erro_padrao": 0.6037225094194486,
+        "ic95": [
+         13.055023573920412,
+         15.910177347931775
+        ],
+        "p_valor": 5.5638155245834066e-08
+       }
+      },
+      "excluidas_por_dados_ausentes": 0,
+      "graus_liberdade": 7,
+      "grupos_espaciais": 20,
+      "grupos_temporais": 8,
+      "limitacoes": [
+       "Associação observacional não demonstra causalidade.",
+       "Dependência residual entre blocos e influência de grupos ainda exigem diagnóstico e revisão.",
+       "A aproximação t e a correção de amostra finita não garantem cobertura nominal com poucos grupos.",
+       "Velocidade dos ônibus é proxy de tráfego e pode compartilhar medições com o desempenho."
+      ],
+      "observacoes": 160,
+      "parametros_estimados": 2,
+      "situacao": "CALCULADO",
+      "tamanhos_grupos_espaciais": {
+       "0": 8,
+       "1": 8,
+       "10": 8,
+       "11": 8,
+       "12": 8,
+       "13": 8,
+       "14": 8,
+       "15": 8,
+       "16": 8,
+       "17": 8,
+       "18": 8,
+       "19": 8,
+       "2": 8,
+       "3": 8,
+       "4": 8,
+       "5": 8,
+       "6": 8,
+       "7": 8,
+       "8": 8,
+       "9": 8
+      },
+      "tamanhos_grupos_temporais": {
+       "2018": 20,
+       "2019": 20,
+       "2020": 20,
+       "2021": 20,
+       "2022": 20,
+       "2023": 20,
+       "2024": 20,
+       "2025": 20
+      },
+      "valor_critico": 2.364624251592784
+     },
+     "secundario": {
+      "categorias_referencia": {
+       "infra_classificacao": "VIA",
+       "linha_sentido": [
+        "L",
+        "0"
+       ],
+       "mes_calendario": "01"
+      },
+      "coeficientes": {
+       "chuva_10mm": {
+        "coeficiente": 2.000000000000003,
+        "erro_padrao": 0.3196679335404959,
+        "ic95": [
+         1.2441054518935961,
+         2.75589454810641
+        ],
+        "p_valor": 0.0004214953693827086
+       },
+       "intercepto": {
+        "coeficiente": 3.9999999999999556,
+        "erro_padrao": 0.5693928425357061,
+        "ic95": [
+         2.6535998758566737,
+         5.346400124143237
+        ],
+        "p_valor": 0.00020690853579194215
+       },
+       "velocidade_kmh": {
+        "coeficiente": 0.5000000000000011,
+        "erro_padrao": 0.029472745011433713,
+        "ic95": [
+         0.43030803238495474,
+         0.5696919676150475
+        ],
+        "p_valor": 6.059716009627614e-07
+       }
+      },
+      "excluidas_por_dados_ausentes": 0,
+      "graus_liberdade": 7,
+      "grupos_espaciais": 20,
+      "grupos_temporais": 8,
+      "limitacoes": [
+       "Associação observacional não demonstra causalidade.",
+       "Dependência residual entre blocos e influência de grupos ainda exigem diagnóstico e revisão.",
+       "A aproximação t e a correção de amostra finita não garantem cobertura nominal com poucos grupos.",
+       "Velocidade dos ônibus é proxy de tráfego e pode compartilhar medições com o desempenho."
+      ],
+      "observacoes": 160,
+      "parametros_estimados": 3,
+      "situacao": "CALCULADO",
+      "tamanhos_grupos_espaciais": {
+       "0": 8,
+       "1": 8,
+       "10": 8,
+       "11": 8,
+       "12": 8,
+       "13": 8,
+       "14": 8,
+       "15": 8,
+       "16": 8,
+       "17": 8,
+       "18": 8,
+       "19": 8,
+       "2": 8,
+       "3": 8,
+       "4": 8,
+       "5": 8,
+       "6": 8,
+       "7": 8,
+       "8": 8,
+       "9": 8
+      },
+      "tamanhos_grupos_temporais": {
+       "2018": 20,
+       "2019": 20,
+       "2020": 20,
+       "2021": 20,
+       "2022": 20,
+       "2023": 20,
+       "2024": 20,
+       "2025": 20
+      },
+      "valor_critico": 2.364624251592784
+     }
+    },
+    "parametros": {
+     "bloco_temporal_meses": 12,
+     "correcao_amostra_pequena": true,
+     "hash_mapa_espacial": "1610e83112ad67b783ff73e644725bedf52036a336af2f87c0d55bb01be0d032",
+     "metodo_incerteza": "COVARIANCIA_CLUSTER_DUAS_VIAS",
+     "min_grupos_espaciais": 5,
+     "min_grupos_temporais": 5,
+     "min_observacoes": 30,
+     "nivel_confianca": 0.95,
+     "origem_blocos_temporais": "ano * 12 + mes - 1, divisão inteira pela duração",
+     "referencia_critica": "t com min(G_espacial,G_temporal)-1 graus de liberdade",
+     "referencia_mapa_espacial": "urn:teste"
+    },
+    "pode_publicar_resultados": false,
+    "prontidao": {
+     "calculos_de_associacao_executados": 0,
+     "grupos_espaciais": 20,
+     "grupos_temporais": 8,
+     "hash_conteudo_plano": "4730313de9ec4612739c06b5e8d369f165170aeb7cc90dbb27e96a104a74f166",
+     "hashes_bases": [
+      "7e70d157d52258d413ea24b0510db78cd985c464418026777f5e8481de994e58",
+      "46ec8b6372397a0a495f08de43dfaec1dc178b6fb694ef49e764c816ceb9778c",
+      "fbc9f60bb6b5cdf950fb3793623b29057e50ca0eec4a45a7b274080989ec80b3",
+      "17219e642b785ab0b85892de2c3856c126ef911a4a162386bf362d86ed24fecb",
+      "8faaa50d2876ee78d30a09c3d103c2360e3d883154fd2a1e9b3f0d2a6241c6c9",
+      "e491af3dd1f5d0a38b792b3135c35f4b2d076daa5287ae7f763cf656a49b969f",
+      "0dc8d6abb7f10cffa9bade71b832f909a85a8701c96fa9aad30fef70ef17b5c1",
+      "9fa4bd0c4578e1850fc04ce6675cf9aedb2fcaa3fe30a7fa55e35e0863678c26"
+     ],
+     "meses": 8,
+     "motivos": [],
+     "observacoes": 160,
+     "pode_iniciar_estimacao": true,
+     "pode_publicar_resultados": false,
+     "verificacoes_posteriores_obrigatorias": [
+      "posto da matriz do modelo",
+      "dependência residual além dos blocos",
+      "validade da covariância e intervalos",
+      "influência e sensibilidades",
+      "revisão institucional dos resultados"
+     ]
+    },
+    "situacao": "CALCULADO",
+    "versao_calculo": "us21-ols-cluster-2vias-1.1",
+    "versoes": {
+     "numpy": "2.5.5",
+     "python": "3.14.7",
+     "scipy": "1.18.1",
+     "statsmodels": "0.14.6"
+    }
+   },
+   "revisao": {
+    "data": "2026-11-27",
+    "diagnosticos_aprovados": true,
+    "hash_resultado": "1cf4c08ae1d9b301da18096431522cc7760d12da182dccee571303e4de20af88",
+    "publicacao_aprovada": true,
+    "referencia": "urn:teste",
+    "responsavel": "REVISOR_FICTICIO"
+   },
+   "situacao": "PUBLICADO"
+  }
+ },
+ "nao_encontrado": {
+  "status": 404,
+  "corpo": {
+   "mensagem": "Não há relatório para o mês solicitado.",
+   "mes": "2025-02",
+   "situacao": "NAO_ENCONTRADO"
+  }
+ },
+ "invalido": {
+  "status": 409,
+  "corpo": {
+   "mes": "2025-03",
+   "motivo": "MATRIZ_SEM_POSTO_COMPLETO",
+   "situacao": "INVALIDO"
+  }
+ },
+ "erro_400": {
+  "status": 400,
+  "corpo": {
+   "erro": {
+    "campo": "mes",
+    "codigo": "PARAMETRO_INVALIDO",
+    "mensagem": "Informe mes no formato AAAA-MM."
+   }
+  }
+ },
+ "erro_503": {
+  "status": 503,
+  "corpo": {
+   "erro": {
+    "codigo": "CONSULTA_INDISPONIVEL",
+    "mensagem": "Não foi possível consultar o relatório."
+   }
+  }
+ }
+}
