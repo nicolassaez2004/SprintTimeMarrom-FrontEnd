@@ -94,3 +94,14 @@ da origem padrão para a API de ensaio ocorre somente durante o teste.
 
 Não houve publicação, geração de ranking no navegador ou alteração do banco
 compartilhado. Revisão do cartão continua pendente.
+
+## Revisão integrada US19/US20/US21/US30 (27/11/2026)
+
+- Controlador da seção coberto por `tests/series-ranking-tela.test.mjs`: carregamento,
+  lista vazia, erro 503, envio do mês escolhido e troca rápida de mês com a resposta
+  antiga chegando depois (não sobrescreve a seleção atual). Nenhuma correção de código foi necessária.
+- Conferência em Chrome headless (`google-chrome-stable --headless=new`) com a API de
+  demonstração C20 em SQLite na memória (`python -m scripts.demonstrar_ranking_us19 --porta 5000`):
+  ordem BC +240, AB +80, DE 0, CD −30 s, cobertura 66,67% em CD/DE e "4 de 4 trechos com valor · 1 sem valor".
+  Captura: [ranking-us19-revisao-chrome.png](evidencias/ranking-us19-revisao-chrome.png). Dados sintéticos.
+- Parecer completo no backend: `docs/reviews/us19-us20-us21-us30.md`.
