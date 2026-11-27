@@ -50,6 +50,37 @@
         </div>
         <p id="origem-catalogo" class="source-note"></p>
       </div>
+      <section class="extraction-section" id="extracao" aria-labelledby="titulo-extracao">
+        <div class="section-top"><div><p class="eyebrow">PERÍODOS LONGOS</p><h2 id="titulo-extracao">Extração por linha e período</h2><p class="muted">Peça os registros brutos de uma linha num período já encerrado. O servidor prepara o arquivo; acompanhe aqui, mesmo depois de atualizar a página.</p></div></div>
+        <div class="download-grid">
+          <div class="panel extraction-forms">
+            <form id="form-extracao" class="extraction-form">
+              <h3>Novo pedido</h3>
+              <label for="extracao-linha-campo">Linha (código Olho Vivo)<input id="extracao-linha-campo" name="linha" inputmode="numeric" pattern="[0-9]{1,16}" required></label>
+              <label for="extracao-inicio">Primeiro dia<input id="extracao-inicio" name="inicio" type="date" required></label>
+              <label for="extracao-fim">Último dia (inclusive)<input id="extracao-fim" name="fim" type="date" required></label>
+              <label for="extracao-formato-campo">Formato<select id="extracao-formato-campo" name="formato"><option value="PARQUET">Parquet</option><option value="CSV">CSV</option></select></label>
+              <button class="button primary" id="solicitar-extracao" type="submit">Solicitar extração</button>
+              <p id="status-solicitacao" class="download-status" role="status" aria-live="polite"></p>
+            </form>
+            <form id="form-retomar" class="extraction-form">
+              <h3>Já fez um pedido?</h3>
+              <label for="codigo-extracao">Código do pedido<input id="codigo-extracao" name="id" autocomplete="off" spellcheck="false" required></label>
+              <button class="button secondary" type="submit">Acompanhar pedido</button>
+            </form>
+          </div>
+          <section id="acompanhamento" class="panel file-panel" aria-labelledby="titulo-acompanhamento" hidden>
+            <div class="file-heading"><h3 id="titulo-acompanhamento">Acompanhamento</h3><span id="estado-extracao" class="status-tag" role="status" aria-live="polite"></span></div>
+            <p id="descricao-estado"></p>
+            <dl id="detalhes-extracao" class="file-metadata extraction-metadata" hidden><div><dt>Pedido</dt><dd><code id="extracao-id"></code></dd></div><div><dt>Linha</dt><dd id="extracao-linha"></dd></div><div><dt>Período</dt><dd id="extracao-periodo"></dd></div><div><dt>Formato</dt><dd id="extracao-formato"></dd></div><div><dt>Solicitado em</dt><dd id="extracao-solicitado"></dd></div></dl>
+            <p id="progresso-extracao" class="muted" hidden></p>
+            <div id="extracao-pronta" hidden><a id="baixar-extracao" class="button primary download-button">Baixar arquivo <span aria-hidden="true">↓</span></a><p id="arquivo-extracao" class="source-note"></p></div>
+            <section id="erro-acompanhamento" class="message error" role="alert" hidden><p id="erro-acompanhamento-texto"></p><button class="button secondary" id="tentar-acompanhamento" type="button">Tentar novamente</button></section>
+            <p id="consultado-em" class="source-note"></p>
+            <button class="button secondary" id="parar-extracao" type="button">Deixar de acompanhar</button>
+          </section>
+        </div>
+      </section>
       <section class="dictionary-section" id="dicionario" aria-labelledby="titulo-dicionario" tabindex="-1">
         <div class="section-top"><div><p class="eyebrow">ANTES DE ANALISAR</p><h2 id="titulo-dicionario">Dicionário dos dados</h2><p class="muted">Entenda os campos que acompanham o arquivo.</p></div><a id="dicionario-original" class="button secondary" target="_blank" rel="noopener noreferrer" hidden>Abrir original <span aria-hidden="true">↗</span><span class="sr-only"> em uma nova aba</span></a></div>
         <p id="carregando-dicionario" class="muted" role="status">O dicionário será consultado com o catálogo.</p>

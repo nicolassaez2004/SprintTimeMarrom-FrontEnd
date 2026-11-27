@@ -1,6 +1,7 @@
 import { ArquivoIndisponivel, consultarCatalogo, consultarDicionario, verificarArquivo } from './cliente.mjs';
 import { tamanhoArquivo } from './modelo.mjs';
 import { API_BASE as base } from '../comum/config.mjs';
+import { instalarExtracao } from './extracao.mjs';
 import { escapar as h, dataValida, dataExtensa, dataCurta, diaSemana, horario, hojeSP, numero } from '../comum/formatacao.mjs';
 
 const el = id => document.getElementById(id);
@@ -148,3 +149,4 @@ el('baixar-arquivo').addEventListener('click', async evento => {
 });
 
 void carregarCatalogo();
+instalarExtracao();

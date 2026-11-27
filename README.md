@@ -1,5 +1,12 @@
 # SprintTimeMarrom
 
+## Extração assíncrona de brutos (US28-T03B)
+
+Em **Dados brutos**, a seção **Extração por linha e período** envia o pedido,
+guarda o código na URL e no navegador e consulta `GET /extracoes/{id}` a cada
+5 s até `pronto` ou `erro`. O download só aparece quando o backend confirma o
+arquivo. Requer a US28-T03A no backend. [Entrega e evidências](docs/US28-T03B-FE.md).
+
 ## Ranking mensal de trechos (US19-T03-FE)
 
 No **Histórico por linha**, a seção **Ranking mensal de trechos** consulta a
