@@ -7,6 +7,9 @@ import { corpoSolicitacao, ESTADOS, FINAIS } from './extracao-modelo.mjs';
 import { tamanhoArquivo } from './modelo.mjs';
 
 export const INTERVALO_EXTRACAO_MS = 5000;
+// Falha temporária (rede, 503 com Retry-After) não encerra o acompanhamento: nova
+// consulta com espera dobrada a cada falha seguida, até este teto.
+export const ESPERA_MAXIMA_MS = 60000;
 const CHAVE = 'observasp.extracao';
 const PARAMETRO = 'extracao';
 // Só o identificador opaco do último pedido; armazenamento bloqueado não impede o uso pela URL.
@@ -17,10 +20,12 @@ const armazenamentoLocal = {
 const dataHora = valor => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }).format(new Date(valor));
 const hora = valor => new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', timeStyle: 'medium' }).format(valor);
 
-export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTRACAO_MS, armazenamento = armazenamentoLocal } = {}) {
+export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTRACAO_MS, esperaMaximaMs = ESPERA_MAXIMA_MS,
+  armazenamento = armazenamentoLocal } = {}) {
   const el = id => document.getElementById(id), form = el('form-extracao');
   if (!form) return null;
-  let idAtual = null, timer = null, controle = null, enviando = false;
+  // `vez` muda a cada troca de pedido: um POST que termina depois não assume o acompanhamento.
+  let idAtual = null, timer = null, controle = null, enviando = false, falhas = 0, vez = 0;
 
   function lembrar(id) {
     armazenamento.gravar(id);
@@ -73,6 +78,7 @@ export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTR
     try {
       const pedido = await consultarExtracao(base, idAtual, { signal: atual.signal });
       if (controle !== atual) return;
+      falhas = 0;
       renderizar(pedido);
       if (!FINAIS.has(pedido.estado)) timer = setTimeout(consultar, intervaloMs);
     } catch (erro) {
@@ -84,7 +90,12 @@ export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTR
         el('estado-extracao').setAttribute('data-estado', 'erro');
         el('descricao-estado').textContent = el('consultado-em').textContent = '';
         falha(erro.message, false);
-      } else falha(`${erro.message} O pedido continua registrado; nenhuma nova extração será criada.`, true);
+      } else {
+        const espera = Math.min(intervaloMs * 2 ** falhas++, esperaMaximaMs);
+        falha(`${erro.message} O pedido continua registrado; nenhuma nova extração será criada. `
+          + `Nova consulta automática em ${Math.round(espera / 1000)} s.`, true);
+        timer = setTimeout(consultar, espera);
+      }
     } finally {
       if (controle === atual) controle = null;
     }
@@ -92,6 +103,7 @@ export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTR
 
   function acompanhar(id, inicial) {
     parar();
+    vez++; falhas = 0;
     idAtual = id;
     lembrar(id);
     el('acompanhamento').hidden = false;
@@ -107,6 +119,7 @@ export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTR
   }
   function deixar() {
     parar();
+    vez++;
     idAtual = null;
     lembrar(null);
     el('acompanhamento').hidden = true;
@@ -120,8 +133,14 @@ export function instalarExtracao({ base = API_BASE, intervaloMs = INTERVALO_EXTR
     el('solicitar-extracao').disabled = true;
     status.classList.remove('error');
     status.textContent = 'Registrando o pedido…';
+    const antes = vez;
     try {
       const pedido = await solicitarExtracao(base, corpoSolicitacao(Object.fromEntries(new FormData(form))));
+      if (vez !== antes) {
+        // Outro pedido passou a ser acompanhado (ou o acompanhamento foi encerrado) durante o envio.
+        status.textContent = `Pedido registrado com o código ${pedido.id}. Para acompanhá-lo, informe o código em "Já fez um pedido?".`;
+        return;
+      }
       // 202 só confirma o registro; pedido idêntico pode voltar já pronto (idempotência do backend).
       status.textContent = pedido.estado === 'pronto' ? 'Pedido registrado. O servidor informa que este arquivo já está pronto.'
         : 'Pedido registrado. O arquivo ainda não está pronto: acompanhe o estado abaixo.';

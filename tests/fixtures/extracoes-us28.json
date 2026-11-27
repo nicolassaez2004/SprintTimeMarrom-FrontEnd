@@ -3,54 +3,48 @@
     "status": 202,
     "corpo": {
       "arquivo": null,
-      "consulta": "/api/extracoes/6a471f78-009b-4405-8aee-4b30a8c3c963",
+      "consulta": "/api/extracoes/e50bebc1-c16a-4639-94a4-bf70547de031",
       "erro": null,
       "estado": "aguardando",
       "formato": "CSV",
-      "id": "6a471f78-009b-4405-8aee-4b30a8c3c963",
+      "id": "e50bebc1-c16a-4639-94a4-bf70547de031",
       "linha": "33887",
       "mensagem": null,
       "periodo": {
         "fim": "2026-11-08T03:00:00Z",
         "inicio": "2026-11-01T03:00:00Z"
       },
-      "progresso": {
-        "atualizado_em": null,
-        "registros": 0
-      },
-      "solicitado_em": "2026-11-27T20:48:01.996072Z",
+      "progresso": null,
+      "solicitado_em": "2026-11-27T21:20:21.001718Z",
       "tentativas": 0,
       "versao_base": "registros_gps:id<=5"
     }
   },
   "aguardando": {
     "arquivo": null,
-    "consulta": "/api/extracoes/6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "consulta": "/api/extracoes/e50bebc1-c16a-4639-94a4-bf70547de031",
     "erro": null,
     "estado": "aguardando",
     "formato": "CSV",
-    "id": "6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "id": "e50bebc1-c16a-4639-94a4-bf70547de031",
     "linha": "33887",
     "mensagem": null,
     "periodo": {
       "fim": "2026-11-08T03:00:00Z",
       "inicio": "2026-11-01T03:00:00Z"
     },
-    "progresso": {
-      "atualizado_em": null,
-      "registros": 0
-    },
-    "solicitado_em": "2026-11-27T20:48:01.996072Z",
+    "progresso": null,
+    "solicitado_em": "2026-11-27T21:20:21.001718Z",
     "tentativas": 0,
     "versao_base": "registros_gps:id<=5"
   },
   "processando": {
     "arquivo": null,
-    "consulta": "/api/extracoes/6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "consulta": "/api/extracoes/e50bebc1-c16a-4639-94a4-bf70547de031",
     "erro": null,
     "estado": "processando",
     "formato": "CSV",
-    "id": "6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "id": "e50bebc1-c16a-4639-94a4-bf70547de031",
     "linha": "33887",
     "mensagem": null,
     "periodo": {
@@ -58,26 +52,26 @@
       "inicio": "2026-11-01T03:00:00Z"
     },
     "progresso": {
-      "atualizado_em": "2026-11-27T20:48:02.326302Z",
+      "atualizado_em": "2026-11-27T21:20:21.460429Z",
       "registros": 2
     },
-    "solicitado_em": "2026-11-27T20:48:01.996072Z",
+    "solicitado_em": "2026-11-27T21:20:21.001718Z",
     "tentativas": 1,
     "versao_base": "registros_gps:id<=5"
   },
   "pronto": {
     "arquivo": {
-      "download": "/api/extracoes/6a471f78-009b-4405-8aee-4b30a8c3c963/arquivo",
+      "download": "/api/extracoes/e50bebc1-c16a-4639-94a4-bf70547de031/arquivo",
       "formato": "CSV",
       "nome": "brutos_linha_33887_20261101T0300Z_20261108T0300Z.csv",
       "sha256": "76cd8c6fcf4ea31ee9e82e75952345768d7811180ac1830b2bc8e638b6400337",
       "tamanho_bytes": 790
     },
-    "consulta": "/api/extracoes/6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "consulta": "/api/extracoes/e50bebc1-c16a-4639-94a4-bf70547de031",
     "erro": null,
     "estado": "pronto",
     "formato": "CSV",
-    "id": "6a471f78-009b-4405-8aee-4b30a8c3c963",
+    "id": "e50bebc1-c16a-4639-94a4-bf70547de031",
     "linha": "33887",
     "mensagem": null,
     "periodo": {
@@ -85,31 +79,28 @@
       "inicio": "2026-11-01T03:00:00Z"
     },
     "progresso": {
-      "atualizado_em": "2026-11-27T20:48:02.345869Z",
+      "atualizado_em": "2026-11-27T21:20:21.488216Z",
       "registros": 5
     },
-    "solicitado_em": "2026-11-27T20:48:01.996072Z",
+    "solicitado_em": "2026-11-27T21:20:21.001718Z",
     "tentativas": 1,
     "versao_base": "registros_gps:id<=5"
   },
   "erro": {
     "arquivo": null,
-    "consulta": "/api/extracoes/287e2d8b-c5e0-4a23-b5d7-e11a48e59465",
+    "consulta": "/api/extracoes/3c448a29-84aa-4ce4-ab4a-e25616a3b4b2",
     "erro": "OperationalError",
     "estado": "erro",
     "formato": "PARQUET",
-    "id": "287e2d8b-c5e0-4a23-b5d7-e11a48e59465",
+    "id": "3c448a29-84aa-4ce4-ab4a-e25616a3b4b2",
     "linha": "33887",
     "mensagem": "A geração do arquivo falhou após esgotar as tentativas. Envie um novo pedido para tentar novamente.",
     "periodo": {
       "fim": "2026-11-08T03:00:00Z",
       "inicio": "2026-11-01T03:00:00Z"
     },
-    "progresso": {
-      "atualizado_em": null,
-      "registros": 0
-    },
-    "solicitado_em": "2026-11-27T20:48:02.365178Z",
+    "progresso": null,
+    "solicitado_em": "2026-11-27T21:20:21.515927Z",
     "tentativas": 3,
     "versao_base": "registros_gps:id<=5"
   },
@@ -132,5 +123,5 @@
       }
     }
   },
-  "_origem": "Respostas reais do Flask test client do backend (branch feat/us28-t03a-consulta-estado), SQLite temporário."
+  "_origem": "Respostas reais do Flask test client do backend (branch review/us28-extracoes-assincronas), SQLite temporário."
 }
