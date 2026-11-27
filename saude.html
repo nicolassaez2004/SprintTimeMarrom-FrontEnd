@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Saúde e disponibilidade mensal da API, do painel e da coleta do Observa SP.">
+  <meta name="theme-color" content="#765440">
+  <title>Saúde da plataforma · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/saude.css">
+  <script type="module" src="js/saude/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para a saúde da plataforma</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="Observa SP, início">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span>
+      <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+    </a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="./#mapa"><span aria-hidden="true">◎</span> Ônibus ao vivo</a>
+      <a class="nav-link" href="./#qualidade"><span aria-hidden="true">▥</span> Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
+      <a class="nav-link" href="brutos.html"><span aria-hidden="true">↓</span> Dados brutos</a>
+      <a class="nav-link" href="series.html"><span aria-hidden="true">◷</span> Histórico por linha</a>
+      <a class="nav-link" href="indicadores-mapa.html"><span aria-hidden="true">⌖</span> Mapa de indicadores</a>
+      <a class="nav-link active" href="saude.html" aria-current="page"><span aria-hidden="true">♥</span> Saúde da plataforma</a>
+    </nav>
+    <div class="sidebar-note"><span class="note-label">TRANSPARÊNCIA DO SERVIÇO</span><p>Quando a plataforma falhou, qual serviço foi afetado e o que não foi medido.</p><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> Saúde da plataforma</span><span class="public-pill">Acesso público</span></header>
+    <main id="conteudo" tabindex="-1">
+      <div class="page-heading"><div><p class="eyebrow">DISPONIBILIDADE MENSAL</p><h1>Saúde da plataforma</h1><p>API, painel e coleta da origem são medidos separadamente. Minutos sem medição aparecem como desconhecidos, nunca como funcionamento.</p></div></div>
+      <form id="filtro" class="filters" aria-label="Escolher mês">
+        <label for="mes">Mês (horário de São Paulo)<input id="mes" name="mes" type="month" required></label>
+        <button class="button primary" id="consultar" type="submit">Consultar</button>
+        <p>Meta: 99% de disponibilidade em cada mês encerrado</p>
+      </form>
+      <div id="carregamento" class="loading" role="status" hidden>Consultando a saúde da plataforma…</div>
+      <section id="erro" class="message error" role="alert" hidden><div><h2>Não foi possível consultar a saúde</h2><p id="erro-texto"></p></div><button class="button secondary" id="tentar" type="button">Tentar novamente</button></section>
+      <div id="relatorio" hidden>
+        <p id="periodo" class="context"></p>
+        <section id="resumo" class="message" role="status" aria-live="polite"></section>
+        <section class="service-grid" id="servicos" aria-label="Situação de cada serviço"></section>
+        <div class="section-top incidents-heading"><div><p class="eyebrow">NO PERÍODO</p><h2>Incidentes por serviço</h2><p class="muted">Intervalos em que a sondagem encontrou falha ou a coleta ficou sem dados.</p></div></div>
+        <div class="incident-grid" id="incidentes"></div>
+        <section class="method" aria-labelledby="titulo-limites"><h2 id="titulo-limites">Como ler estes números</h2><ul id="limites" class="limits"></ul></section>
+        <p id="consultado" class="source-note"></p>
+      </div>
+      <footer><span>Observa SP · Time Marrom</span><span>Dados públicos para análise</span></footer>
+    </main>
+  </div>
+  <noscript><p class="message">Ative o JavaScript para consultar a saúde da plataforma.</p></noscript>
+</body>
+</html>
