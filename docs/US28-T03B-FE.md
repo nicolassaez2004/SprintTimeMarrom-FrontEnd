@@ -30,15 +30,20 @@ pronto (idempotência), a mensagem diz isso; caso contrário, "ainda não está 
 - **Já fez um pedido?** aceita o código e passa a acompanhá-lo.
 - **Deixar de acompanhar** cancela timer e consulta e limpa URL/armazenamento.
 - Id inexistente (404): "Pedido de extração não encontrado", sem "Tentar novamente"; o id salvo é descartado.
-- Falha de conexão, 503 ou resposta inválida: o polling para, o último estado recebido continua visível
-  e **Tentar novamente** repete só o GET (nenhuma nova extração).
+- Falha de conexão, 503 ou resposta inválida: o último estado recebido continua visível, o aviso
+  informa a próxima consulta automática (espera dobrada a cada falha seguida, até 60 s; volta a 5 s
+  no primeiro sucesso) e **Tentar novamente** repete só o GET (nenhuma nova extração). Review US28:
+  antes o polling parava na primeira falha e um pedido em andamento deixava de ser acompanhado.
+- Um POST que termina depois de o usuário passar a acompanhar outro pedido (ou deixar de acompanhar)
+  não troca o acompanhamento: o novo código aparece na mensagem de status.
 
 ## Polling
 
 `INTERVALO_EXTRACAO_MS = 5000` (configurável em `instalarExtracao({ intervaloMs })`). Um único
 `setTimeout` agendado após cada resposta (nunca `setInterval`); no máximo uma consulta em andamento;
 trocar de pedido aborta a consulta anterior e respostas atrasadas são ignoradas. Tempo limite de 20 s
-por consulta (`requisitar`).
+por consulta (`requisitar`). Teto da espera após falhas: `ESPERA_MAXIMA_MS = 60000`
+(`instalarExtracao({ esperaMaximaMs })`).
 
 ## Arquivos
 

@@ -88,19 +88,20 @@ function ambiente({ busca = '', salvo = null } = {}) {
   globalThis.fetch = (url, init) => new Promise((resolver, rejeitar) =>
     chamadas.push({ url: String(url), metodo: init.method, corpo: init.body, resolver, rejeitar }));
 
-  // Só os timers de polling (delay INTERVALO) são capturados; o resto segue real.
+  // Só os timers de polling (múltiplos de INTERVALO, inclusive a espera após falha) são capturados.
   const timers = new Map(); let seq = 0;
   const [st, ct] = [globalThis.setTimeout, globalThis.clearTimeout];
-  globalThis.setTimeout = (f, ms, ...a) => ms === INTERVALO ? (timers.set(++seq, f), seq) : st(f, ms, ...a);
+  globalThis.setTimeout = (f, ms, ...a) => ms % INTERVALO === 0 ? (timers.set(++seq, { f, ms }), seq) : st(f, ms, ...a);
   globalThis.clearTimeout = id => { if (!timers.delete(id)) ct(id); };
   const restaurar = () => { globalThis.setTimeout = st; globalThis.clearTimeout = ct; };
-  const disparar = async () => { const [[id, f]] = timers; timers.delete(id); f(); await tick(); };
-  return { els, form, memoria, chamadas, timers, disparar, restaurar };
+  const disparar = async () => { const [[id, { f }]] = timers; timers.delete(id); f(); await tick(); };
+  const esperas = () => [...timers.values()].map(t => t.ms);
+  return { els, form, memoria, chamadas, timers, disparar, esperas, restaurar };
 }
 const tick = async () => { for (let i = 0; i < 6; i++) await new Promise(r => setImmediate(r)); };
 const responder = async (chamada, corpo, status = 200) => { chamada.resolver(Response.json(corpo, { status })); await tick(); };
 const { instalarExtracao } = await import('../js/brutos/extracao.mjs');
-const instalar = amb => instalarExtracao({ base: BASE, intervaloMs: INTERVALO, armazenamento: amb.memoria });
+const instalar = amb => instalarExtracao({ base: BASE, intervaloMs: INTERVALO, esperaMaximaMs: 4 * INTERVALO, armazenamento: amb.memoria });
 
 test('pedido aceito (202) guarda o id, mostra aguardando e não anuncia sucesso nem link', async t => {
   const amb = ambiente(); t.after(amb.restaurar);
@@ -210,14 +211,15 @@ test('recuperar pelo código e identificador inexistente', async t => {
   assert.equal(amb.timers.size, 0);
 });
 
-test('falha de conexão: para, oferece nova consulta e não cria outro pedido', async t => {
+test('falha de conexão: avisa, oferece nova consulta, continua acompanhando e não cria outro pedido', async t => {
   const amb = ambiente({ busca: `?extracao=${ID}` }); t.after(amb.restaurar);
   instalar(amb);
   amb.chamadas[0].rejeitar(new TypeError('Failed to fetch')); await tick();
   assert.equal(amb.els['erro-acompanhamento'].hidden, false);
   assert.match(amb.els['erro-acompanhamento-texto'].textContent, /conectar.*nenhuma nova extração/s);
   assert.equal(amb.els['tentar-acompanhamento'].hidden, false);
-  assert.equal(amb.timers.size, 0);
+  assert.deepEqual(amb.esperas(), [INTERVALO], 'acompanhamento continua: nova consulta automática');
+  assert.match(amb.els['erro-acompanhamento-texto'].textContent, /consulta automática em 4 s/);
   assert.equal(amb.memoria.valor, ID, 'falha temporária não descarta o pedido');
 
   await amb.els['tentar-acompanhamento'].disparar('click');
@@ -232,7 +234,7 @@ test('falha de conexão: para, oferece nova consulta e não cria outro pedido', 
   await responder(amb.chamadas[2], copia('processando'), 503);
   assert.match(amb.els['erro-acompanhamento-texto'].textContent, /indisponível/);
   assert.equal(amb.els['estado-extracao'].textContent, 'Processando', 'último estado do servidor preservado');
-  assert.equal(amb.timers.size, 0);
+  assert.deepEqual(amb.esperas(), [INTERVALO], 'um único timer, sem duplicar');
 });
 
 test('sem timers duplicados: acompanhar de novo e deixar de acompanhar', async t => {
@@ -254,4 +256,42 @@ test('sem timers duplicados: acompanhar de novo e deixar de acompanhar', async t
   const antes = amb.chamadas.length;
   await tick();
   assert.equal(amb.chamadas.length, antes, 'nenhuma consulta após encerrar');
+});
+
+test('falhas seguidas espaçam as consultas até o teto e o sucesso volta ao intervalo normal', async t => {
+  const amb = ambiente({ busca: `?extracao=${ID}` }); t.after(amb.restaurar);
+  instalar(amb);
+  const esperas = [];
+  for (let i = 0; i < 4; i++) {
+    if (i) await amb.disparar();
+    await responder(amb.chamadas.at(-1), {}, 503);
+    esperas.push(...amb.esperas());
+  }
+  assert.deepEqual(esperas, [1, 2, 4, 4].map(k => k * INTERVALO));
+  assert.equal(amb.els['estado-extracao'].atributos['data-estado'], undefined, 'nenhum estado inventado');
+  await amb.disparar();
+  await responder(amb.chamadas.at(-1), copia('processando'));
+  assert.deepEqual(amb.esperas(), [INTERVALO]);
+  assert.equal(amb.els['erro-acompanhamento'].hidden, true);
+  await amb.disparar();
+  await responder(amb.chamadas.at(-1), copia('pronto'));
+  assert.equal(amb.timers.size, 0, 'estado final encerra o polling');
+});
+
+test('POST que termina depois da troca de pedido não substitui o acompanhamento atual', async t => {
+  const amb = ambiente(); t.after(amb.restaurar);
+  instalar(amb);
+  const envio = amb.form.disparar('submit'); await tick();
+  const post = amb.chamadas[0];
+  document.getElementById('codigo-extracao').value = real.erro.id;
+  await amb.els['form-retomar'].disparar('submit');
+  await responder(amb.chamadas[1], copia('erro'));
+
+  await responder(post, real.solicitacao_202.corpo, 202); await envio; // resposta atrasada
+  assert.equal(amb.els['extracao-id'].textContent, real.erro.id, 'continua no pedido escolhido depois');
+  assert.equal(amb.memoria.valor, real.erro.id);
+  assert.equal(location.search, `?extracao=${real.erro.id}`);
+  assert.match(amb.els['status-solicitacao'].textContent, new RegExp(`código ${ID}`), 'novo código informado, sem perdê-lo');
+  assert.equal(amb.chamadas.length, 2, 'nenhuma consulta ao pedido atrasado');
+  assert.equal(amb.els['solicitar-extracao'].disabled, false);
 });

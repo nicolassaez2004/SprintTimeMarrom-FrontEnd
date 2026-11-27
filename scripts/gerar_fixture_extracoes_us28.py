@@ -60,7 +60,7 @@ def main(destino):
     invalido = cliente.post("/api/extracoes", json={**CORPO, "linha": "abc"})
     saida["pedido_invalido_400"] = {"status": invalido.status_code, "corpo": invalido.get_json()}
 
-    saida["_origem"] = "Respostas reais do Flask test client do backend (branch feat/us28-t03a-consulta-estado), SQLite temporário."
+    saida["_origem"] = "Respostas reais do Flask test client do backend (branch review/us28-extracoes-assincronas), SQLite temporário."
     Path(destino).write_text(json.dumps(saida, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
