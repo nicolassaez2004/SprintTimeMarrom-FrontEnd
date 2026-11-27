@@ -68,6 +68,26 @@
           <p id="status-csv" role="status" aria-live="polite"></p>
         </section>
       </div>
+      <section id="ranking-atrasos" class="panel ranking-panel" aria-labelledby="titulo-ranking">
+        <div class="ranking-cabecalho"><div><p class="eyebrow">ATRASOS AO LONGO DO PERCURSO</p><h2 id="titulo-ranking">Ranking mensal de trechos</h2><p>Veja onde o atraso mais aumentou entre paradas consecutivas, conforme o ranking publicado.</p></div><span class="small-tag">Acesso público</span></div>
+        <form id="filtros-ranking" class="ranking-filtros" aria-label="Filtros do ranking mensal">
+          <label for="ranking-mes">Mês<input id="ranking-mes" name="mes" type="month" min="0001-01" max="9999-11" required></label>
+          <label for="ranking-linha">Linha · opcional<input id="ranking-linha" name="linha" maxlength="64" placeholder="Todas as linhas" list="linhas"></label>
+          <label for="ranking-sentido">Sentido<select id="ranking-sentido" name="sentido"><option value="">Todos os sentidos</option><option value="0">Ida</option><option value="1">Volta</option></select></label>
+          <button type="submit" class="button primary">Consultar ranking</button>
+        </form>
+        <p class="ranking-ajuda">Este ranking usa o mês inteiro. As datas, a faixa diária e o indicador do histórico acima não alteram essa consulta.</p>
+        <p id="ranking-carregando" class="loading" role="status" hidden>Buscando o ranking publicado…</p>
+        <section id="ranking-erro" class="message error" role="alert" hidden><div><h3>Ranking indisponível</h3><p id="ranking-erro-texto"></p></div><button id="ranking-tentar" class="button secondary" type="button">Tentar novamente</button></section>
+        <div id="resultado-ranking" hidden>
+          <p id="ranking-sintetico" class="message warning" hidden><strong>Cenário de teste.</strong> Dados sintéticos; não representam a operação real.</p>
+          <div class="ranking-resumo"><h3 id="ranking-mes-exibido"></h3><p id="ranking-contexto"></p><p id="ranking-periodo"></p><p id="ranking-contagens"></p></div>
+          <p id="ranking-vazio" class="series-vazio" role="status" hidden>Nenhum trecho com valor publicado para esta consulta. Ausência de resultado não significa atraso zero.</p>
+          <div id="ranking-tabela" class="ranking-scroll" tabindex="0" role="region" aria-label="Trechos na ordem do ranking mensal"><table><caption class="sr-only">Posição, trecho, variação do atraso em segundos, cobertura e versões da resposta recebida</caption><thead><tr><th scope="col">Posição</th><th scope="col">Trecho</th><th scope="col">Variação do atraso</th><th scope="col">Cobertura</th><th scope="col">Versões</th></tr></thead><tbody id="linhas-ranking"></tbody></table></div>
+          <p id="ranking-ordenacao" class="ranking-ajuda"></p>
+        </div>
+        <p class="ranking-leitura">Positivo: aumento do atraso. Negativo: redução. Zero: sem variação. A lista descreve variações observadas; não identifica suas causas.</p>
+      </section>
       <footer><span>Observa SP · Time Marrom</span><span>Fonte: indicadores operacionais publicados</span></footer>
     </main>
   </div>
