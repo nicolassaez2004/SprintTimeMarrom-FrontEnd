@@ -9,10 +9,12 @@ import { ESPERA, buscarComExcesso, detalheEspera } from './espera.mjs';
 import { instalarExportacao, instalarExportacaoPainel } from './exportacao.mjs';
 import { avisosQualidade, estadoQualidade, textoIndeterminado } from './avisos.mjs';
 import { fixarPainel } from './painel-exportacao.mjs';
+import { instalarRanking } from './ranking.mjs';
 
 instalarGraficos();
 instalarExportacao();
 instalarExportacaoPainel();
+instalarRanking();
 
 const el = id => document.getElementById(id);
 const form = el('filtros-series');

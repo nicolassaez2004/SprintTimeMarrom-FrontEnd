@@ -1,5 +1,12 @@
 # SprintTimeMarrom
 
+## Ranking mensal de trechos (US19-T03-FE)
+
+No **Histórico por linha**, a seção **Ranking mensal de trechos** consulta a
+API pronta por mês, linha opcional e sentido. Exibe ordem, variação do atraso,
+unidade, cobertura e versões, com carregamento, vazio e erro. Não recalcula o
+ranking. [Entrega e evidências](docs/US19-T03-FE.md).
+
 ## Integração com o backend (review das Sprints 1 e 2)
 
 Com a API de demonstração do backend em execução

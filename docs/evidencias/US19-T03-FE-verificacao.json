@@ -1,0 +1,543 @@
+{
+  "data": "2026-11-27",
+  "origem": "SINTETICA_CONTROLADA",
+  "navegador": "158.0.8127.37",
+  "api": "Backend real US19, SQLite em memória; 409/429/503/cobertura nula simulados no transporte para conferir estados da interface",
+  "verificacoes": [
+    "ordem, trechos, valores, unidades e cobertura iguais à resposta HTTP",
+    "zero e redução preservados",
+    "mês, período e versões visíveis",
+    "CORS real permite a origem padrão do frontend no alias /api/atrasos/ranking",
+    "lista vazia distinta de erro",
+    "503 limpa valores antigos",
+    "409 informa publicação pendente",
+    "429 respeita Retry-After",
+    "cobertura nula não vira zero nem é deduzida das amostras",
+    "carregando e cancelamento de resposta antiga",
+    "ranking mensal não herda faixa ou datas diárias do histórico",
+    "celular sem transbordamento",
+    "nenhum erro JavaScript"
+  ],
+  "comparacao": {
+    "recebido": [
+      {
+        "amostras": 3,
+        "amostras_total": 3,
+        "aumento_atraso": 240,
+        "cobertura": 1,
+        "posicao": 1,
+        "qualidade": {
+          "amostras_total": 3,
+          "amostras_validas": 3,
+          "cobertura": 1,
+          "criterio_mes": "data operacional",
+          "falhas_coleta": {
+            "ciclos_com_dados": 3,
+            "ciclos_em_andamento": 0,
+            "ciclos_esperados": 8840,
+            "ciclos_falha": 0,
+            "ciclos_registrados": 3,
+            "denominador": 8840,
+            "escopo": "COLETA_GLOBAL",
+            "falhas": 8837,
+            "falhas_da_fonte": 0,
+            "fim": "2026-12-01T03:00:00+00:00",
+            "fonte": "OLHO_VIVO",
+            "incompleto": true,
+            "inicio": "2026-11-01T03:00:00+00:00",
+            "intervalo_coleta_segundos": 30,
+            "janelas_15min": 2880,
+            "janelas_sem_expectativa": 2585,
+            "lacunas": [
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:15:00+00:00",
+                "id": "inferida:2026-11-24T12:02:30+00:00",
+                "inicio": "2026-11-24T12:02:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:31:00+00:00",
+                "id": "inferida:2026-11-24T12:15:30+00:00",
+                "inicio": "2026-11-24T12:15:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ABERTA",
+                "fim": null,
+                "id": "inferida:2026-11-24T12:31:30+00:00",
+                "inicio": "2026-11-24T12:31:30+00:00",
+                "origem": "INFERIDA"
+              }
+            ],
+            "limite_percentual": 10,
+            "linha_exibida": "8000-10",
+            "motivo": "FALHAS_ACIMA_DO_LIMITE",
+            "operacao_linha": "CORRESPONDENCIA_PENDENTE",
+            "percentual_falhas": 99.97,
+            "sem_registro": 8837,
+            "situacao": "INCOMPLETA",
+            "versao_regra": "us26-falhas-coleta-1.0"
+          },
+          "fuso": "America/Sao_Paulo",
+          "mes": "2026-11",
+          "metrica": "MEDIA",
+          "metrica_origem": "PROPAGACAO_RANKING_METRICA (decisão do PO)",
+          "motivo_sem_valor": null,
+          "origem": "SINTETICA",
+          "sem_valor_por_motivo": {},
+          "versoes_entrada": [
+            {
+              "versao_calculo": "propagacao-atraso-1.0",
+              "versao_correspondencia": "match-controle",
+              "versao_estimativa": "estimativa-controle",
+              "versao_gtfs_id": "00000000-0000-0000-0000-000000000019",
+              "versao_reconstrucao": "recon-controle"
+            }
+          ],
+          "viagens": 3
+        },
+        "trecho": {
+          "id": "T-BC",
+          "linha": "8000-10",
+          "ordem": 2,
+          "parada_destino": "C",
+          "parada_origem": "B",
+          "sentido": "0",
+          "trajeto": "CONTROLE"
+        },
+        "unidade": "s",
+        "versao_calculo": "aumento-atraso-mensal-1.0:MEDIA",
+        "versao_conjunto": "171e34b9f0d00bd3178c5151226d70c2",
+        "versao_correspondencia": "match-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000019"
+      },
+      {
+        "amostras": 3,
+        "amostras_total": 3,
+        "aumento_atraso": 80,
+        "cobertura": 1,
+        "posicao": 2,
+        "qualidade": {
+          "amostras_total": 3,
+          "amostras_validas": 3,
+          "cobertura": 1,
+          "criterio_mes": "data operacional",
+          "falhas_coleta": {
+            "ciclos_com_dados": 3,
+            "ciclos_em_andamento": 0,
+            "ciclos_esperados": 8840,
+            "ciclos_falha": 0,
+            "ciclos_registrados": 3,
+            "denominador": 8840,
+            "escopo": "COLETA_GLOBAL",
+            "falhas": 8837,
+            "falhas_da_fonte": 0,
+            "fim": "2026-12-01T03:00:00+00:00",
+            "fonte": "OLHO_VIVO",
+            "incompleto": true,
+            "inicio": "2026-11-01T03:00:00+00:00",
+            "intervalo_coleta_segundos": 30,
+            "janelas_15min": 2880,
+            "janelas_sem_expectativa": 2585,
+            "lacunas": [
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:15:00+00:00",
+                "id": "inferida:2026-11-24T12:02:30+00:00",
+                "inicio": "2026-11-24T12:02:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:31:00+00:00",
+                "id": "inferida:2026-11-24T12:15:30+00:00",
+                "inicio": "2026-11-24T12:15:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ABERTA",
+                "fim": null,
+                "id": "inferida:2026-11-24T12:31:30+00:00",
+                "inicio": "2026-11-24T12:31:30+00:00",
+                "origem": "INFERIDA"
+              }
+            ],
+            "limite_percentual": 10,
+            "linha_exibida": "8000-10",
+            "motivo": "FALHAS_ACIMA_DO_LIMITE",
+            "operacao_linha": "CORRESPONDENCIA_PENDENTE",
+            "percentual_falhas": 99.97,
+            "sem_registro": 8837,
+            "situacao": "INCOMPLETA",
+            "versao_regra": "us26-falhas-coleta-1.0"
+          },
+          "fuso": "America/Sao_Paulo",
+          "mes": "2026-11",
+          "metrica": "MEDIA",
+          "metrica_origem": "PROPAGACAO_RANKING_METRICA (decisão do PO)",
+          "motivo_sem_valor": null,
+          "origem": "SINTETICA",
+          "sem_valor_por_motivo": {},
+          "versoes_entrada": [
+            {
+              "versao_calculo": "propagacao-atraso-1.0",
+              "versao_correspondencia": "match-controle",
+              "versao_estimativa": "estimativa-controle",
+              "versao_gtfs_id": "00000000-0000-0000-0000-000000000019",
+              "versao_reconstrucao": "recon-controle"
+            }
+          ],
+          "viagens": 3
+        },
+        "trecho": {
+          "id": "T-AB",
+          "linha": "8000-10",
+          "ordem": 1,
+          "parada_destino": "B",
+          "parada_origem": "A",
+          "sentido": "0",
+          "trajeto": "CONTROLE"
+        },
+        "unidade": "s",
+        "versao_calculo": "aumento-atraso-mensal-1.0:MEDIA",
+        "versao_conjunto": "bf7fdd15604f45eb18259834edd2b64d",
+        "versao_correspondencia": "match-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000019"
+      },
+      {
+        "amostras": 2,
+        "amostras_total": 3,
+        "aumento_atraso": 0,
+        "cobertura": 0.6666666666666666,
+        "posicao": 3,
+        "qualidade": {
+          "amostras_total": 3,
+          "amostras_validas": 2,
+          "cobertura": 0.6666666666666666,
+          "criterio_mes": "data operacional",
+          "falhas_coleta": {
+            "ciclos_com_dados": 3,
+            "ciclos_em_andamento": 0,
+            "ciclos_esperados": 8840,
+            "ciclos_falha": 0,
+            "ciclos_registrados": 3,
+            "denominador": 8840,
+            "escopo": "COLETA_GLOBAL",
+            "falhas": 8837,
+            "falhas_da_fonte": 0,
+            "fim": "2026-12-01T03:00:00+00:00",
+            "fonte": "OLHO_VIVO",
+            "incompleto": true,
+            "inicio": "2026-11-01T03:00:00+00:00",
+            "intervalo_coleta_segundos": 30,
+            "janelas_15min": 2880,
+            "janelas_sem_expectativa": 2585,
+            "lacunas": [
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:15:00+00:00",
+                "id": "inferida:2026-11-24T12:02:30+00:00",
+                "inicio": "2026-11-24T12:02:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:31:00+00:00",
+                "id": "inferida:2026-11-24T12:15:30+00:00",
+                "inicio": "2026-11-24T12:15:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ABERTA",
+                "fim": null,
+                "id": "inferida:2026-11-24T12:31:30+00:00",
+                "inicio": "2026-11-24T12:31:30+00:00",
+                "origem": "INFERIDA"
+              }
+            ],
+            "limite_percentual": 10,
+            "linha_exibida": "8000-10",
+            "motivo": "FALHAS_ACIMA_DO_LIMITE",
+            "operacao_linha": "CORRESPONDENCIA_PENDENTE",
+            "percentual_falhas": 99.97,
+            "sem_registro": 8837,
+            "situacao": "INCOMPLETA",
+            "versao_regra": "us26-falhas-coleta-1.0"
+          },
+          "fuso": "America/Sao_Paulo",
+          "mes": "2026-11",
+          "metrica": "MEDIA",
+          "metrica_origem": "PROPAGACAO_RANKING_METRICA (decisão do PO)",
+          "motivo_sem_valor": null,
+          "origem": "SINTETICA",
+          "sem_valor_por_motivo": {
+            "passagem_ausente": 1
+          },
+          "versoes_entrada": [
+            {
+              "versao_calculo": "propagacao-atraso-1.0",
+              "versao_correspondencia": "match-controle",
+              "versao_estimativa": "estimativa-controle",
+              "versao_gtfs_id": "00000000-0000-0000-0000-000000000019",
+              "versao_reconstrucao": "recon-controle"
+            }
+          ],
+          "viagens": 3
+        },
+        "trecho": {
+          "id": "T-DE",
+          "linha": "8000-10",
+          "ordem": 4,
+          "parada_destino": "E",
+          "parada_origem": "D",
+          "sentido": "0",
+          "trajeto": "CONTROLE"
+        },
+        "unidade": "s",
+        "versao_calculo": "aumento-atraso-mensal-1.0:MEDIA",
+        "versao_conjunto": "1f05d6e45044b4daa34cfa1c740deb37",
+        "versao_correspondencia": "match-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000019"
+      },
+      {
+        "amostras": 2,
+        "amostras_total": 3,
+        "aumento_atraso": -30,
+        "cobertura": 0.6666666666666666,
+        "posicao": 4,
+        "qualidade": {
+          "amostras_total": 3,
+          "amostras_validas": 2,
+          "cobertura": 0.6666666666666666,
+          "criterio_mes": "data operacional",
+          "falhas_coleta": {
+            "ciclos_com_dados": 3,
+            "ciclos_em_andamento": 0,
+            "ciclos_esperados": 8840,
+            "ciclos_falha": 0,
+            "ciclos_registrados": 3,
+            "denominador": 8840,
+            "escopo": "COLETA_GLOBAL",
+            "falhas": 8837,
+            "falhas_da_fonte": 0,
+            "fim": "2026-12-01T03:00:00+00:00",
+            "fonte": "OLHO_VIVO",
+            "incompleto": true,
+            "inicio": "2026-11-01T03:00:00+00:00",
+            "intervalo_coleta_segundos": 30,
+            "janelas_15min": 2880,
+            "janelas_sem_expectativa": 2585,
+            "lacunas": [
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:15:00+00:00",
+                "id": "inferida:2026-11-24T12:02:30+00:00",
+                "inicio": "2026-11-24T12:02:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ENCERRADA",
+                "fim": "2026-11-24T12:31:00+00:00",
+                "id": "inferida:2026-11-24T12:15:30+00:00",
+                "inicio": "2026-11-24T12:15:30+00:00",
+                "origem": "INFERIDA"
+              },
+              {
+                "causa": "SEM_CICLO_REGISTRADO",
+                "estado": "ABERTA",
+                "fim": null,
+                "id": "inferida:2026-11-24T12:31:30+00:00",
+                "inicio": "2026-11-24T12:31:30+00:00",
+                "origem": "INFERIDA"
+              }
+            ],
+            "limite_percentual": 10,
+            "linha_exibida": "8000-10",
+            "motivo": "FALHAS_ACIMA_DO_LIMITE",
+            "operacao_linha": "CORRESPONDENCIA_PENDENTE",
+            "percentual_falhas": 99.97,
+            "sem_registro": 8837,
+            "situacao": "INCOMPLETA",
+            "versao_regra": "us26-falhas-coleta-1.0"
+          },
+          "fuso": "America/Sao_Paulo",
+          "mes": "2026-11",
+          "metrica": "MEDIA",
+          "metrica_origem": "PROPAGACAO_RANKING_METRICA (decisão do PO)",
+          "motivo_sem_valor": null,
+          "origem": "SINTETICA",
+          "sem_valor_por_motivo": {
+            "passagem_ausente": 1
+          },
+          "versoes_entrada": [
+            {
+              "versao_calculo": "propagacao-atraso-1.0",
+              "versao_correspondencia": "match-controle",
+              "versao_estimativa": "estimativa-controle",
+              "versao_gtfs_id": "00000000-0000-0000-0000-000000000019",
+              "versao_reconstrucao": "recon-controle"
+            }
+          ],
+          "viagens": 3
+        },
+        "trecho": {
+          "id": "T-CD",
+          "linha": "8000-10",
+          "ordem": 3,
+          "parada_destino": "D",
+          "parada_origem": "C",
+          "sentido": "0",
+          "trajeto": "CONTROLE"
+        },
+        "unidade": "s",
+        "versao_calculo": "aumento-atraso-mensal-1.0:MEDIA",
+        "versao_conjunto": "3af65022d737ba4223103f81212cbd55",
+        "versao_correspondencia": "match-controle",
+        "versao_gtfs_id": "00000000-0000-0000-0000-000000000019"
+      }
+    ],
+    "desenhado": [
+      {
+        "id": "T-BC",
+        "valor": 240,
+        "cobertura": "1"
+      },
+      {
+        "id": "T-AB",
+        "valor": 80,
+        "cobertura": "1"
+      },
+      {
+        "id": "T-DE",
+        "valor": 0,
+        "cobertura": "0.6666666666666666"
+      },
+      {
+        "id": "T-CD",
+        "valor": -30,
+        "cobertura": "0.6666666666666666"
+      }
+    ]
+  },
+  "consultas": [
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "real"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "real"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "real"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "9999-99",
+        "sentido": "0"
+      },
+      "modo": "real"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "9999-99",
+        "sentido": "0"
+      },
+      "modo": "erro"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "9999-99",
+        "sentido": "0"
+      },
+      "modo": "pendente"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "9999-99",
+        "sentido": "0"
+      },
+      "modo": "limite"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "cobertura"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "lento"
+    },
+    {
+      "filtros": {
+        "mes": "2026-10",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "lento"
+    },
+    {
+      "filtros": {
+        "mes": "2026-10",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "lento"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "real"
+    },
+    {
+      "filtros": {
+        "mes": "2026-11",
+        "linha": "8000-10",
+        "sentido": "0"
+      },
+      "modo": "real"
+    }
+  ],
+  "erros_javascript": [],
+  "revisao": "PENDENTE"
+}
