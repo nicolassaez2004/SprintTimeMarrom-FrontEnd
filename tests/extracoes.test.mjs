@@ -295,3 +295,41 @@ test('POST que termina depois da troca de pedido não substitui o acompanhamento
   assert.equal(amb.chamadas.length, 2, 'nenhuma consulta ao pedido atrasado');
   assert.equal(amb.els['solicitar-extracao'].disabled, false);
 });
+
+// --- US28-T04-FE: painel utilizável durante a extração ---------------------------------
+
+test('consulta pendente não trava a tela: outro pedido e "deixar de acompanhar" respondem na hora', async t => {
+  const amb = ambiente({ busca: `?extracao=${ID}` }); t.after(amb.restaurar);
+  instalar(amb);
+  await responder(amb.chamadas[0], copia('processando'));
+  await amb.disparar();                       // GET seguinte enviado e ainda sem resposta (servidor ocupado)
+  const pendente = amb.chamadas[1];
+  assert.equal(amb.els['estado-extracao'].textContent, 'Processando', 'mantém o último estado recebido');
+
+  document.getElementById('codigo-extracao').value = real.erro.id; // usuário troca de pedido sem esperar
+  await amb.els['form-retomar'].disparar('submit');
+  assert.equal(amb.chamadas.length, 3, 'nova consulta enviada sem aguardar a pendente');
+  await responder(amb.chamadas[2], copia('erro'));
+  assert.equal(amb.els['estado-extracao'].textContent, 'Erro');
+
+  await responder(pendente, copia('pronto'));  // resposta atrasada do pedido anterior
+  assert.equal(amb.els['estado-extracao'].textContent, 'Erro', 'resposta atrasada de outro pedido é ignorada');
+  assert.equal(amb.els['baixar-extracao'].atributos.href, undefined, 'nenhum download de outro pedido');
+
+  await amb.els['parar-extracao'].disparar('click');
+  assert.equal(amb.timers.size, 0);
+  assert.equal(amb.memoria.valor, null);
+});
+
+test('"pronto" e o download só aparecem com a resposta pronto correspondente', async t => {
+  const amb = ambiente({ busca: `?extracao=${ID}` }); t.after(amb.restaurar);
+  instalar(amb);
+  await responder(amb.chamadas[0], copia('processando'));
+  await amb.disparar();
+  assert.equal(amb.els['estado-extracao'].textContent, 'Processando', 'enquanto a resposta não chega, nada muda');
+  assert.equal(amb.els['extracao-pronta'].hidden, true);
+  const semArquivo = { ...copia('pronto'), arquivo: null };    // pronto sem arquivo publicado: contrato inválido
+  await responder(amb.chamadas[1], semArquivo);
+  assert.notEqual(amb.els['estado-extracao'].textContent, 'Pronto');
+  assert.equal(amb.els['baixar-extracao'].atributos.href, undefined);
+});
