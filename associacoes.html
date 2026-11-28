@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Relatório mensal de associação entre clima, tráfego e o desempenho dos ônibus de São Paulo.">
+  <meta name="theme-color" content="#765440">
+  <title>Relatório de associações · Observa SP</title>
+  <link rel="icon" href="assets/qualidade.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/qualidade.css">
+  <link rel="stylesheet" href="css/associacoes.css">
+  <script type="module" src="js/relatorios/app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o relatório</a>
+  <aside class="sidebar">
+    <a class="brand" href="./" aria-label="Observa SP, início">
+      <span class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="16" rx="3"/><path d="M5 11h14M8 3v8m8-8v8M8 19v2m8-2v2"/><circle cx="8.5" cy="15.5" r=".7"/><circle cx="15.5" cy="15.5" r=".7"/></svg></span>
+      <span>observa<span class="brand-sp">sp</span><small>Auditoria cidadã do transporte</small></span>
+    </a>
+    <p class="nav-caption">DADOS ABERTOS</p>
+    <nav aria-label="Navegação principal">
+      <a class="nav-link" href="./#mapa"><span aria-hidden="true">◎</span> Ônibus ao vivo</a>
+      <a class="nav-link" href="./#qualidade"><span aria-hidden="true">▥</span> Qualidade da coleta</a>
+      <a class="nav-link" href="./#acervo"><span aria-hidden="true">▤</span> Acervo oficial</a>
+      <a class="nav-link" href="brutos.html"><span aria-hidden="true">↓</span> Dados brutos</a>
+      <a class="nav-link" href="series.html"><span aria-hidden="true">◷</span> Histórico por linha</a>
+      <a class="nav-link active" href="associacoes.html" aria-current="page"><span aria-hidden="true">≈</span> Clima e tráfego</a>
+      <a class="nav-link" href="indicadores-mapa.html"><span aria-hidden="true">⌖</span> Mapa de indicadores</a>
+    </nav>
+    <div class="sidebar-note"><span class="note-label">ASSOCIAÇÃO NÃO É CAUSA</span><p>Os números mostram o que andou junto no período, com a incerteza de cada estimativa.</p><span>Desenvolvido pelo Time Marrom</span></div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar"><span>São Paulo <span class="separator">/</span> Clima e tráfego</span><span class="public-pill">Acesso público</span></header>
+    <main id="conteudo" tabindex="-1">
+      <div class="page-heading"><div><p class="eyebrow">RELATÓRIO MENSAL</p><h1>Clima, tráfego e atraso dos ônibus</h1><p>Associação entre chuva, velocidade do tráfego e o aumento de atraso nos trechos. Mostra quanto essas medidas andaram juntas, não o que causou o atraso.</p></div></div>
+      <form id="filtro" class="filters" aria-label="Escolher mês do relatório">
+        <label for="mes">Mês de referência<input id="mes" name="mes" type="month" required></label>
+        <button class="button primary" id="consultar" type="submit">Consultar</button>
+      </form>
+      <div id="carregamento" class="loading" role="status" hidden>Consultando o relatório…</div>
+      <section id="erro" class="message error" role="alert" hidden><div><h2>Não foi possível consultar o relatório</h2><p id="erro-texto"></p></div><button class="button secondary" id="tentar" type="button">Tentar novamente</button></section>
+      <section id="ausente" class="message warning" role="status" hidden><div><h2 id="ausente-titulo"></h2><p id="ausente-texto"></p></div></section>
+      <div id="relatorio" hidden>
+        <div class="report-heading"><h2 id="titulo-relatorio"></h2><p id="registro" class="muted"></p></div>
+        <section class="message info causality" aria-label="Como interpretar"><div><h2>Associação observada, não causa</h2><p id="interpretacao"></p><p id="desfecho"></p></div></section>
+        <div id="modelos"></div>
+        <div class="details-grid report-details">
+          <section class="panel" aria-labelledby="titulo-fontes"><div class="section-top"><div><h2 id="titulo-fontes">Fontes usadas</h2><p class="muted">Cada mês da base com sua versão e identificação.</p></div><span id="total-fontes" class="small-tag"></span></div>
+            <div class="table-wrap"><table><thead><tr><th scope="col">Mês</th><th scope="col">Versão da base</th><th scope="col">Clima</th><th scope="col">Tráfego</th><th scope="col">Hash</th></tr></thead><tbody id="fontes"></tbody></table></div></section>
+          <section class="panel" aria-labelledby="titulo-versoes"><h2 id="titulo-versoes">Método e versões</h2><dl id="versoes" class="versions"></dl></section>
+        </div>
+        <section class="method" aria-labelledby="titulo-pendencias"><h2 id="titulo-pendencias">Verificações que este tipo de análise exige</h2><ul id="verificacoes" class="limits"></ul></section>
+      </div>
+      <footer><span>Observa SP · Time Marrom</span><span>Dados públicos para análise</span></footer>
+    </main>
+  </div>
+  <noscript><p class="message">Ative o JavaScript para consultar o relatório.</p></noscript>
+</body>
+</html>
