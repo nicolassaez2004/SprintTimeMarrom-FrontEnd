@@ -43,6 +43,20 @@
             <select id="line-color"><option value="">Todas as cores</option></select>
           </span>
         </label>
+        <label class="view-filter" for="map-view">
+          <span class="select-label">VISUALIZAÇÃO</span>
+          <select id="map-view">
+            <option value="onibus">Ônibus</option>
+            <option value="chuva">Chuva</option>
+            <option value="temperatura">Temperatura</option>
+            <option value="transito">Trânsito</option>
+          </select>
+        </label>
+        <label class="moment-filter" id="moment-filter" for="map-moment" hidden>
+          <span class="select-label">MOMENTO (SÃO PAULO)</span>
+          <input id="map-moment" type="datetime-local" step="900" aria-describedby="moment-help" />
+          <small id="moment-help">Vazio = agora</small>
+        </label>
         <div class="vehicle-count" aria-live="polite">
           <span class="count-icon" aria-hidden="true">●</span>
           <strong id="vehicle-count">—</strong>
@@ -60,6 +74,8 @@
           <button id="retry-button" type="button" hidden>Tentar novamente</button>
         </div>
         <button class="locate-button" id="fit-button" type="button" aria-label="Voltar para a visão do município" title="Voltar para a visão do município">⤢</button>
+        <p class="context-note" id="context-note" role="status" hidden></p>
+        <div class="map-legend" id="map-legend" aria-label="Legenda da visualização" hidden></div>
       </section>
       <footer class="page-footer">
         <span>Fonte: SPTrans Olho Vivo</span>

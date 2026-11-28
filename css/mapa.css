@@ -124,3 +124,24 @@ select:disabled { color:#aab1ac; }
 .bus-cluster.fresh { background: #23634d; }
 .bus-cluster.delayed { background: #8c5517; }
 .bus-cluster.mixed { outline: 3px solid #d4933e; outline-offset: 1px; }
+
+/* Visualizações de contexto: clima (US06) e trânsito (US08) no mapa ao vivo. */
+.view-filter,.moment-filter { display:grid; gap:4px; min-height:55px; align-content:center; padding:8px 12px; border:1px solid var(--border); border-radius:9px; background:white; }
+.moment-filter[hidden] { display:none; }
+.view-filter select,.moment-filter input { border:0; background:transparent; color:var(--text); font:inherit; font-size:13px; font-weight:600; cursor:pointer; }
+.moment-filter small { color:var(--muted); font-size:10px; }
+.view-filter select:focus-visible,.moment-filter input:focus-visible { outline:3px solid #a57a50; outline-offset:2px; }
+[hidden].vehicle-count,.last-update[hidden] { display:none; }
+.map-legend { position:absolute; z-index:450; left:14px; bottom:24px; max-width:min(260px, calc(100% - 28px)); padding:10px 12px; border:1px solid var(--border); border-radius:8px; background:#fffffff2; box-shadow:0 4px 14px #24372c18; font-size:11px; }
+.map-legend[hidden] { display:none; }
+.map-legend strong { display:block; margin-bottom:6px; font-size:12px; }
+.map-legend ul { margin:0; padding:0; list-style:none; display:grid; gap:4px; }
+.map-legend li { display:flex; align-items:center; gap:7px; color:var(--text); }
+.map-legend i { width:14px; height:14px; flex:none; border-radius:3px; border:1px solid #0002; }
+.context-note { position:absolute; z-index:450; left:50%; bottom:24px; transform:translateX(-50%); max-width:min(460px, calc(100% - 300px)); margin:0; padding:8px 12px; border:1px solid #e7d9bb; border-radius:6px; background:#fff8ea; color:#785621; font-size:12px; font-weight:600; box-shadow:0 4px 14px #24372c18; }
+.context-note[hidden] { display:none; }
+.context-popup { display:grid; gap:3px; font-size:12px; }
+.context-popup small { color:var(--muted); }
+@media (max-width: 700px) {
+  .context-note { left:14px; right:14px; bottom:auto; top:64px; transform:none; max-width:none; }
+}

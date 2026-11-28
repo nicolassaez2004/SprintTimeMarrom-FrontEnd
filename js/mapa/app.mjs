@@ -10,6 +10,10 @@ import {
   criarCoordenadorDeRequisicoes,
   criarEstadoPosicoes,
 } from './atualizacao.mjs';
+import {
+  corDoValor, descreverJanela, ehContexto, instanteDoCampo, legendaDa, rotuloDoValor, situacaoDa,
+  urlDaVisualizacao, valorDaFeature, VISUALIZACOES,
+} from './contexto.mjs';
 
 (() => {
   const API_BASE_URL = API_BASE.replace(/\/$/, '');
@@ -36,8 +40,20 @@ import {
   let ultimaColetaEm = null;
   let ultimaEtag = null;
 
+  const viewSelect = document.querySelector('#map-view');
+  const momentFilter = document.querySelector('#moment-filter');
+  const momentInput = document.querySelector('#map-moment');
+  const legendElement = document.querySelector('#map-legend');
+  const contextNote = document.querySelector('#context-note');
+  const busSummary = document.querySelectorAll('.vehicle-count, #last-update');
+  const CONTEXTO_MS = 5 * 60_000;
+  let visualizacao = 'onibus';
+  let contextoController;
+  let contextoTimer;
+
   let map;
   let markers;
+  let camadaContexto;
   let poligonosMunicipais;
   let municipioBounds;
   const requestCoordinator = criarCoordenadorDeRequisicoes(criarBuscaPosicoes());
@@ -62,6 +78,12 @@ import {
   function hideMessage() {
     message.hidden = true;
     message.className = 'map-message';
+  }
+
+  // O carregamento dos ônibus continua em segundo plano nas outras visualizações, mas só
+  // mostra mensagens quando os ônibus estão na tela.
+  function mensagemOnibus(...argumentos) {
+    if (visualizacao === 'onibus') setMessage(...argumentos);
   }
 
   function ensureLeaflet() {
@@ -89,6 +111,7 @@ import {
     }).addTo(map);
     L.control.zoom({ position: 'topleft' }).addTo(map);
     markers = L.layerGroup().addTo(map);
+    camadaContexto = L.layerGroup().addTo(map);
   }
 
   function enquadrarLocalizacao(latitude, longitude) {
@@ -325,6 +348,7 @@ import {
     lastUpdate.textContent = coleta.texto;
     lastUpdate.classList.toggle('stale', coleta.desatualizada);
     agendarDesenho();
+    if (visualizacao !== 'onibus') return;
     if (preservarErro && message.classList.contains('error')) return;
     if (quantidade === 0 && positionStore.obter().length === 0) {
       setMessage('empty', 'Nenhuma posição disponível', 'Não há posições coletadas nas últimas 24 h. Isso não indica que a frota esteja parada.');
@@ -363,6 +387,7 @@ import {
     foco.focus();
     map.closePopup();
     if (hasSuccessfulResponse) atualizarMapa({ preservarErro: true });
+    if (visualizacao === 'transito') carregarContexto();
   }
 
   async function carregarCatalogo() {
@@ -380,6 +405,131 @@ import {
     }
   }
 
+  function elemento(tag, texto, classe) {
+    const no = document.createElement(tag);
+    if (texto !== undefined) no.textContent = texto;
+    if (classe) no.className = classe;
+    return no;
+  }
+
+  function popupDoContexto(propriedades, janela) {
+    const valor = valorDaFeature(visualizacao, propriedades);
+    const caixa = elemento('div', undefined, 'context-popup');
+    const titulo = visualizacao === 'transito'
+      ? `Linha ${propriedades.linha} · sentido ${propriedades.sentido} · trecho ${propriedades.ordem}`
+      : `${propriedades.nome} (${propriedades.fonte} ${propriedades.codigo})`;
+    caixa.append(
+      elemento('strong', titulo),
+      elemento('span', `${VISUALIZACOES[visualizacao].rotulo}: ${rotuloDoValor(visualizacao, valor)}`),
+    );
+    if (valor === null && propriedades.motivo) caixa.append(elemento('small', `Motivo: ${propriedades.motivo}`));
+    caixa.append(elemento('small', `Janela ${descreverJanela(janela)} (horário de São Paulo)`));
+    return caixa;
+  }
+
+  function desenharLegenda() {
+    const lista = elemento('ul');
+    for (const { cor, rotulo } of legendaDa(visualizacao)) {
+      const item = elemento('li', rotulo);
+      const amostra = elemento('i');
+      amostra.style.backgroundColor = cor;
+      item.prepend(amostra);
+      lista.append(item);
+    }
+    legendElement.replaceChildren(elemento('strong', VISUALIZACOES[visualizacao].rotulo), lista);
+    legendElement.hidden = false;
+  }
+
+  function desenharContexto(corpo) {
+    camadaContexto.clearLayers();
+    const cor = feature => corDoValor(visualizacao, valorDaFeature(visualizacao, feature.properties));
+    const camada = L.geoJSON(corpo, {
+      pointToLayer: (feature, latlng) => L.circleMarker(latlng, {
+        radius: 9, color: '#3d4a52', weight: 1.5, fillOpacity: 0.95, fillColor: cor(feature),
+      }),
+      style: feature => ({ color: cor(feature), weight: 7, opacity: 0.9 }),
+      onEachFeature: (feature, layer) => layer.bindPopup(popupDoContexto(feature.properties, corpo.janela)),
+    }).addTo(camadaContexto);
+    if (visualizacao === 'transito' && corpo.features?.length) {
+      map.fitBounds(camada.getBounds(), { padding: [30, 30] });
+    }
+  }
+
+  async function carregarContexto() {
+    clearTimeout(contextoTimer);
+    contextoController?.abort();
+    if (!ehContexto(visualizacao)) return;
+    camadaContexto.clearLayers();
+    contextNote.hidden = true;
+    let instante;
+    try {
+      instante = instanteDoCampo(momentInput.value);
+    } catch {
+      setMessage('error', 'Momento inválido', 'Escolha data e hora no campo MOMENTO.');
+      return;
+    }
+    const url = urlDaVisualizacao(API_BASE_URL, visualizacao, { instante, linha: linhaSelecionada });
+    if (!url) {
+      const { titulo, detalhe } = situacaoDa(visualizacao, null, { linha: linhaSelecionada });
+      setMessage('empty', titulo, detalhe);
+      return;
+    }
+    const controller = new AbortController();
+    contextoController = controller;
+    setMessage('loading', `Carregando ${VISUALIZACOES[visualizacao].rotulo.toLowerCase()}…`,
+      'Consultando os dados públicos de contexto.');
+    try {
+      const resposta = await fetch(url, {
+        headers: { Accept: 'application/geo+json, application/json' }, signal: controller.signal,
+      });
+      const corpo = await resposta.json().catch(() => null);
+      if (!resposta.ok || !corpo) {
+        throw new Error(corpo?.erro?.mensagem || (resposta.status === 503
+          ? 'O serviço está indisponível agora.' : `Resposta inesperada (HTTP ${resposta.status}).`));
+      }
+      if (contextoController !== controller) return;
+      desenharContexto(corpo);
+      if (corpo.aviso) {
+        contextNote.textContent = corpo.aviso;
+        contextNote.hidden = false;
+      }
+      const situacao = situacaoDa(visualizacao, corpo, { linha: linhaSelecionada });
+      if (situacao) setMessage('empty', situacao.titulo, situacao.detalhe);
+      else hideMessage();
+    } catch (erro) {
+      if (erro.name === 'AbortError') return;
+      setMessage('error', 'Não foi possível carregar o contexto', erro instanceof TypeError
+        ? 'Não foi possível conectar ao serviço. Verifique a conexão e tente novamente.' : erro.message, true);
+    } finally {
+      if (contextoController === controller && !momentInput.value) {
+        contextoTimer = setTimeout(carregarContexto, CONTEXTO_MS);  // "agora" acompanha o relógio
+      }
+    }
+  }
+
+  function mostrarVisualizacao(nova) {
+    visualizacao = nova;
+    const contexto = ehContexto(nova);
+    momentFilter.hidden = !contexto;
+    for (const no of busSummary) no.hidden = contexto;
+    map.closePopup();
+    if (contexto) {
+      map.removeLayer(markers);
+      desenharLegenda();
+      carregarContexto();
+      return;
+    }
+    clearTimeout(contextoTimer);
+    contextoController?.abort();
+    camadaContexto.clearLayers();
+    legendElement.hidden = true;
+    contextNote.hidden = true;
+    map.addLayer(markers);
+    hideMessage();
+    if (hasSuccessfulResponse) atualizarMapa();
+    else loadPositions();
+  }
+
   async function loadPositions() {
     const modo = usaUltimaColeta ? '?modo=ultima_coleta' : '';
     const endpoint = API_BASE_URL + '/posicoes/atuais' + modo;
@@ -387,8 +537,8 @@ import {
       headers: { Accept: 'application/json' },
       etagLocal: ultimaEtag,
     });
-    if (!hasSuccessfulResponse) setMessage('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
-    retryButton.hidden = true;
+    if (!hasSuccessfulResponse) mensagemOnibus('loading', 'Carregando posições…', 'Consultando dados públicos da frota.');
+    if (visualizacao === 'onibus') retryButton.hidden = true;
 
     try {
       const { response } = await request.promise;
@@ -429,9 +579,9 @@ import {
           : error.message || 'Não foi possível consultar as posições agora.';
       if (hasSuccessfulResponse) {
         agendarDesenho();
-        setMessage('error', 'Falha ao atualizar o mapa', `${detail} Os marcadores exibidos são da última consulta válida. Posições com mais de 60 s aparecem em âmbar.`, true);
+        mensagemOnibus('error', 'Falha ao atualizar o mapa', `${detail} Os marcadores exibidos são da última consulta válida. Posições com mais de 60 s aparecem em âmbar.`, true);
       } else {
-        setMessage('error', 'Não foi possível carregar o mapa', detail, true);
+        mensagemOnibus('error', 'Não foi possível carregar o mapa', detail, true);
         countElement.textContent = '—';
       }
     } finally {
@@ -459,6 +609,8 @@ import {
         requestCoordinator.cancelar();
         clearTimeout(timer);
         clearTimeout(freshnessTimer);
+        clearTimeout(contextoTimer);
+        contextoController?.abort();
         cancelAnimationFrame(redrawFrame);
       }, { once: true });
       lineFilter.addEventListener('toggle', () => {
@@ -504,7 +656,9 @@ import {
       document.addEventListener('click', event => {
         if (lineFilter.open && !lineFilter.contains(event.target)) lineFilter.open = false;
       });
-      retryButton.addEventListener('click', () => loadPositions());
+      retryButton.addEventListener('click', () => (ehContexto(visualizacao) ? carregarContexto() : loadPositions()));
+      viewSelect.addEventListener('change', () => mostrarVisualizacao(viewSelect.value));
+      momentInput.addEventListener('change', () => carregarContexto());
       document.querySelector('#fit-button').addEventListener('click', () => {
         if (municipioBounds) map.fitBounds(municipioBounds, { padding: [20, 20] });
       });
