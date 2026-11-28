@@ -1,0 +1,477 @@
+{
+ "origem": "GET /saude do backend (US30-T03A), SQLite temporário, dados SINTÉTICOS",
+ "parcial": {
+  "status": 200,
+  "corpo": {
+   "corte_exclusivo_utc": "2026-11-10T16:00:00+00:00",
+   "fim_mes_utc": "2026-12-01T03:00:00+00:00",
+   "fuso_mes": "America/Sao_Paulo",
+   "inicio_utc": "2026-11-01T03:00:00+00:00",
+   "limites": [
+    "API e PAINEL: minutos sem sondagem são lacunas de monitoramento, não sucesso nem queda.",
+    "Sondagem do PAINEL confirma a entrega da página, não a execução do JavaScript nem dos gráficos.",
+    "Sondagem da API comprova a rota configurada; /health não testa o banco.",
+    "Monitor no mesmo host/banco: queda do banco também impede gravar a sondagem (vira lacuna).",
+    "COLETA: falha da fonte só é excluída com evidência; timeout e conexão ficam indeterminados.",
+    "Última medição pode ser anterior ao período quando não houve sondagem nele (no_periodo=false)."
+   ],
+   "mes": "2026-11",
+   "mes_parcial": true,
+   "politica_lacunas": "Minuto sem sondagem não é sucesso nem queda; a meta só é concluída quando os limites inferior e superior concordam.",
+   "servicos": {
+    "API": {
+     "denominador_observado": 60,
+     "incidentes": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-11-10T16:00:00+00:00",
+        "inicio": "2026-11-10T15:59:00+00:00",
+        "minutos": 1,
+        "tipo": "INDISPONIBILIDADE_OBSERVADA"
+       },
+       {
+        "fim_exclusivo": "2026-11-10T15:23:00+00:00",
+        "inicio": "2026-11-10T15:20:00+00:00",
+        "minutos": 3,
+        "tipo": "INDISPONIBILIDADE_OBSERVADA"
+       }
+      ],
+      "total": 2,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-11-10T15:00:00+00:00",
+        "inicio": "2026-11-01T03:00:00+00:00",
+        "minutos": 13680,
+        "tipo": "SEM_MEDICAO"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "limite_inferior": 0.4076,
+     "limite_superior": 99.9709,
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 13740,
+     "minutos_falha": 4,
+     "minutos_observados": 60,
+     "minutos_sem_medicao": 13680,
+     "minutos_sucesso": 56,
+     "motivo_meta_indefinida": "mes_parcial",
+     "numerador": 56,
+     "percentual_cobertura": 0.4367,
+     "percentual_observado": 93.3333,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 60,
+     "ultima_medicao": {
+      "alvo": "GET /saude",
+      "detalhe": "HTTP_ERRO",
+      "estado": "INDISPONIVEL",
+      "instante": "2026-11-10T15:59:05+00:00",
+      "latencia_ms": 15000,
+      "no_periodo": true,
+      "status_http": 503
+     }
+    },
+    "COLETA": {
+     "ciclos_com_prevista_em_repetida": 0,
+     "ciclos_esperados": 27480,
+     "ciclos_nao_registrados": 27360,
+     "ciclos_registrados": 120,
+     "ciclos_registrados_alem_do_esperado": 0,
+     "denominador": 27440,
+     "falhas_fonte_excluidas": 40,
+     "falhas_proprias": 0,
+     "formula": "sucessos / (esperados - falhas_fonte); indeterminados e não registrados permanecem no denominador; percentual_maximo os exclui",
+     "incidentes": {
+      "itens": [
+       {
+        "causa": "SPTRANS_HTTP_503",
+        "estado_no_corte": "ABERTA",
+        "fim": null,
+        "id": "lacuna-aberta",
+        "inicio": "2026-11-10T15:40:00+00:00",
+        "tipo": "LACUNA_COLETA"
+       },
+       {
+        "causa": "SPTransTimeoutError",
+        "estado_no_corte": "ENCERRADA",
+        "fim": "2026-11-10T15:07:00+00:00",
+        "id": "lacuna-encerrada",
+        "inicio": "2026-11-10T15:05:00+00:00",
+        "tipo": "LACUNA_COLETA"
+       }
+      ],
+      "total": 2,
+      "truncado": false
+     },
+     "indeterminados_registrados": 0,
+     "indeterminados_total": 27360,
+     "intervalo_configurado_seg": 30,
+     "lacunas_vinculadas": [
+      "lacuna-aberta"
+     ],
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "motivo_meta_indefinida": "mes_parcial",
+     "motivo_sem_percentual": null,
+     "numerador": 80,
+     "percentual": 0.2915,
+     "percentual_maximo": 100.0,
+     "regras_aplicadas": {
+      "estado_ok": 80,
+      "http_5xx_da_fonte": 40
+     },
+     "sucessos": 80,
+     "sucessos_sem_veiculos": 0
+    },
+    "PAINEL": {
+     "denominador_observado": 60,
+     "incidentes": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-11-10T15:00:00+00:00",
+        "inicio": "2026-11-01T03:00:00+00:00",
+        "minutos": 13680,
+        "tipo": "SEM_MEDICAO"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "limite_inferior": 0.4367,
+     "limite_superior": 100.0,
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 13740,
+     "minutos_falha": 0,
+     "minutos_observados": 60,
+     "minutos_sem_medicao": 13680,
+     "minutos_sucesso": 60,
+     "motivo_meta_indefinida": "mes_parcial",
+     "numerador": 60,
+     "percentual_cobertura": 0.4367,
+     "percentual_observado": 100.0,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 60,
+     "ultima_medicao": {
+      "alvo": "GET /index.html",
+      "detalhe": "OK",
+      "estado": "OK",
+      "instante": "2026-11-10T15:59:05+00:00",
+      "latencia_ms": 90,
+      "no_periodo": true,
+      "status_http": 200
+     }
+    }
+   }
+  }
+ },
+ "encerrado": {
+  "status": 200,
+  "corpo": {
+   "corte_exclusivo_utc": "2026-03-01T03:00:00+00:00",
+   "fim_mes_utc": "2026-03-01T03:00:00+00:00",
+   "fuso_mes": "America/Sao_Paulo",
+   "inicio_utc": "2026-02-01T03:00:00+00:00",
+   "limites": [
+    "API e PAINEL: minutos sem sondagem são lacunas de monitoramento, não sucesso nem queda.",
+    "Sondagem do PAINEL confirma a entrega da página, não a execução do JavaScript nem dos gráficos.",
+    "Sondagem da API comprova a rota configurada; /health não testa o banco.",
+    "Monitor no mesmo host/banco: queda do banco também impede gravar a sondagem (vira lacuna).",
+    "COLETA: falha da fonte só é excluída com evidência; timeout e conexão ficam indeterminados.",
+    "Última medição pode ser anterior ao período quando não houve sondagem nele (no_periodo=false)."
+   ],
+   "mes": "2026-02",
+   "mes_parcial": false,
+   "politica_lacunas": "Minuto sem sondagem não é sucesso nem queda; a meta só é concluída quando os limites inferior e superior concordam.",
+   "servicos": {
+    "API": {
+     "denominador_observado": 40320,
+     "incidentes": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-02-01T21:20:00+00:00",
+        "inicio": "2026-02-01T19:40:00+00:00",
+        "minutos": 100,
+        "tipo": "INDISPONIBILIDADE_OBSERVADA"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "limite_inferior": 99.752,
+     "limite_superior": 99.752,
+     "meta_atendida": true,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 40320,
+     "minutos_falha": 100,
+     "minutos_observados": 40320,
+     "minutos_sem_medicao": 0,
+     "minutos_sucesso": 40220,
+     "motivo_meta_indefinida": null,
+     "numerador": 40220,
+     "percentual_cobertura": 100.0,
+     "percentual_observado": 99.752,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 40320,
+     "ultima_medicao": {
+      "alvo": "GET /saude",
+      "detalhe": "OK",
+      "estado": "OK",
+      "instante": "2026-03-01T02:59:05+00:00",
+      "latencia_ms": 90,
+      "no_periodo": true,
+      "status_http": 200
+     }
+    },
+    "COLETA": {
+     "ciclos_com_prevista_em_repetida": 0,
+     "ciclos_esperados": 80640,
+     "ciclos_nao_registrados": 80640,
+     "ciclos_registrados": 0,
+     "ciclos_registrados_alem_do_esperado": 0,
+     "denominador": 80640,
+     "falhas_fonte_excluidas": 0,
+     "falhas_proprias": 0,
+     "formula": "sucessos / (esperados - falhas_fonte); indeterminados e não registrados permanecem no denominador; percentual_maximo os exclui",
+     "incidentes": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "indeterminados_registrados": 0,
+     "indeterminados_total": 80640,
+     "intervalo_configurado_seg": 30,
+     "lacunas_vinculadas": [],
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "motivo_meta_indefinida": "ciclos_indeterminados_impedem_concluir",
+     "motivo_sem_percentual": null,
+     "numerador": 0,
+     "percentual": 0.0,
+     "percentual_maximo": null,
+     "regras_aplicadas": {},
+     "sucessos": 0,
+     "sucessos_sem_veiculos": 0
+    },
+    "PAINEL": {
+     "denominador_observado": 40320,
+     "incidentes": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-02-04T22:40:00+00:00",
+        "inicio": "2026-02-04T14:20:00+00:00",
+        "minutos": 500,
+        "tipo": "INDISPONIBILIDADE_OBSERVADA"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "limite_inferior": 98.7599,
+     "limite_superior": 98.7599,
+     "meta_atendida": false,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 40320,
+     "minutos_falha": 500,
+     "minutos_observados": 40320,
+     "minutos_sem_medicao": 0,
+     "minutos_sucesso": 39820,
+     "motivo_meta_indefinida": null,
+     "numerador": 39820,
+     "percentual_cobertura": 100.0,
+     "percentual_observado": 98.7599,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 40320,
+     "ultima_medicao": {
+      "alvo": "GET /index.html",
+      "detalhe": "OK",
+      "estado": "OK",
+      "instante": "2026-03-01T02:59:05+00:00",
+      "latencia_ms": 90,
+      "no_periodo": true,
+      "status_http": 200
+     }
+    }
+   }
+  }
+ },
+ "sem_sondagem": {
+  "status": 200,
+  "corpo": {
+   "corte_exclusivo_utc": "2026-11-01T03:00:00+00:00",
+   "fim_mes_utc": "2026-11-01T03:00:00+00:00",
+   "fuso_mes": "America/Sao_Paulo",
+   "inicio_utc": "2026-10-01T03:00:00+00:00",
+   "limites": [
+    "API e PAINEL: minutos sem sondagem são lacunas de monitoramento, não sucesso nem queda.",
+    "Sondagem do PAINEL confirma a entrega da página, não a execução do JavaScript nem dos gráficos.",
+    "Sondagem da API comprova a rota configurada; /health não testa o banco.",
+    "Monitor no mesmo host/banco: queda do banco também impede gravar a sondagem (vira lacuna).",
+    "COLETA: falha da fonte só é excluída com evidência; timeout e conexão ficam indeterminados.",
+    "Última medição pode ser anterior ao período quando não houve sondagem nele (no_periodo=false)."
+   ],
+   "mes": "2026-10",
+   "mes_parcial": false,
+   "politica_lacunas": "Minuto sem sondagem não é sucesso nem queda; a meta só é concluída quando os limites inferior e superior concordam.",
+   "servicos": {
+    "API": {
+     "denominador_observado": 0,
+     "incidentes": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-11-01T03:00:00+00:00",
+        "inicio": "2026-10-01T03:00:00+00:00",
+        "minutos": 44640,
+        "tipo": "SEM_MEDICAO"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "limite_inferior": 0.0,
+     "limite_superior": 100.0,
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 44640,
+     "minutos_falha": 0,
+     "minutos_observados": 0,
+     "minutos_sem_medicao": 44640,
+     "minutos_sucesso": 0,
+     "motivo_meta_indefinida": "lacunas_de_monitoramento_impedem_concluir",
+     "numerador": 0,
+     "percentual_cobertura": 0.0,
+     "percentual_observado": null,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 0,
+     "ultima_medicao": {
+      "alvo": "GET /saude",
+      "detalhe": "OK",
+      "estado": "OK",
+      "instante": "2026-03-01T02:59:05+00:00",
+      "latencia_ms": 90,
+      "no_periodo": false,
+      "status_http": 200
+     }
+    },
+    "COLETA": {
+     "ciclos_com_prevista_em_repetida": 0,
+     "ciclos_esperados": 89280,
+     "ciclos_nao_registrados": 89280,
+     "ciclos_registrados": 0,
+     "ciclos_registrados_alem_do_esperado": 0,
+     "denominador": 89280,
+     "falhas_fonte_excluidas": 0,
+     "falhas_proprias": 0,
+     "formula": "sucessos / (esperados - falhas_fonte); indeterminados e não registrados permanecem no denominador; percentual_maximo os exclui",
+     "incidentes": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "indeterminados_registrados": 0,
+     "indeterminados_total": 89280,
+     "intervalo_configurado_seg": 30,
+     "lacunas_vinculadas": [],
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "motivo_meta_indefinida": "ciclos_indeterminados_impedem_concluir",
+     "motivo_sem_percentual": null,
+     "numerador": 0,
+     "percentual": 0.0,
+     "percentual_maximo": null,
+     "regras_aplicadas": {},
+     "sucessos": 0,
+     "sucessos_sem_veiculos": 0
+    },
+    "PAINEL": {
+     "denominador_observado": 0,
+     "incidentes": {
+      "itens": [],
+      "total": 0,
+      "truncado": false
+     },
+     "lacunas_monitoramento": {
+      "itens": [
+       {
+        "fim_exclusivo": "2026-11-01T03:00:00+00:00",
+        "inicio": "2026-10-01T03:00:00+00:00",
+        "minutos": 44640,
+        "tipo": "SEM_MEDICAO"
+       }
+      ],
+      "total": 1,
+      "truncado": false
+     },
+     "limite_inferior": 0.0,
+     "limite_superior": 100.0,
+     "meta_atendida": null,
+     "meta_percentual": 99.0,
+     "minutos_esperados": 44640,
+     "minutos_falha": 0,
+     "minutos_observados": 0,
+     "minutos_sem_medicao": 44640,
+     "minutos_sucesso": 0,
+     "motivo_meta_indefinida": "lacunas_de_monitoramento_impedem_concluir",
+     "numerador": 0,
+     "percentual_cobertura": 0.0,
+     "percentual_observado": null,
+     "sondagens_adicionais_no_mesmo_minuto": 0,
+     "sondagens_registradas": 0,
+     "ultima_medicao": {
+      "alvo": "GET /index.html",
+      "detalhe": "OK",
+      "estado": "OK",
+      "instante": "2026-03-01T02:59:05+00:00",
+      "latencia_ms": 90,
+      "no_periodo": false,
+      "status_http": 200
+     }
+    }
+   }
+  }
+ },
+ "erro_400": {
+  "status": 400,
+  "corpo": {
+   "erro": {
+    "campo": "mes",
+    "codigo": "PARAMETRO_INVALIDO",
+    "mensagem": "Informe um mês válido, não futuro, no formato AAAA-MM."
+   }
+  }
+ },
+ "erro_503": {
+  "status": 503,
+  "corpo": {
+   "erro": {
+    "codigo": "CONSULTA_INDISPONIVEL",
+    "mensagem": "Não foi possível consultar a saúde."
+   }
+  }
+ }
+}
